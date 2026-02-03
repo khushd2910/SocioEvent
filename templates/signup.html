@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-image: url("Event_Man.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .signup-card {
+            width: 450px;
+            padding: 35px;
+            margin-left: 180px;
+            border-radius: 12px;
+            background-color: rgb(255, 255, 255);
+        }
+
+        .error {
+            color: red;
+        }
+
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="signup-card shadow">
+        <h3 class="text-center mb-4">Sign Up</h3>
+
+        <form id="signupForm">
+            <div class="mb-3">
+                <label>Full Name</label>
+                <input type="text" id="name" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label>Email</label>
+                <input type="email" id="email" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label>Password</label>
+                <input type="password" id="password" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label>Confirm Password</label>
+                <input type="password" id="confirmPassword" class="form-control">
+            </div>
+
+            <div class="mb-2 form-check">
+                <input type="checkbox" class="form-check-input" onclick="toggleSignupPassword()">
+                <label class="form-check-label">Show Password</label>
+            </div>
+
+
+            <div id="message" class="mb-3"></div>
+
+            <button type="submit" class="btn btn-success w-100">Create Account</button>
+        </form>
+
+        <p class="text-center mt-3">
+            Already have an account?
+            <a href="login.html">Login</a>
+        </p>
+    </div>
+
+    <script>
+        function toggleSignupPassword() {
+            let pwd = document.getElementById("password");
+            let confirmPwd = document.getElementById("confirmPassword");
+
+            pwd.type = pwd.type === "password" ? "text" : "password";
+            confirmPwd.type = confirmPwd.type === "password" ? "text" : "password";
+        }
+
+        document.getElementById("signupForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            let name = document.getElementById("name").value.trim();
+            let email = document.getElementById("email").value.trim();
+            let password = document.getElementById("password").value.trim();
+            let confirm = document.getElementById("confirmPassword").value.trim();
+            let message = document.getElementById("message");
+
+            // Email & password validation
+            let emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+            let hasUppercase = /[A-Z]/.test(password);
+            let hasNumber = /[0-9]/.test(password);
+            let hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+            if (!name || !email || !password || !confirm) {
+                message.innerHTML = "<p class='error'>All fields are required</p>";
+                return;
+            }
+
+            if (!emailPattern.test(email)) {
+                message.innerHTML = "<p class='error'>Email must end with @gmail.com</p>";
+                return;
+            }
+
+            if (password.length < 8 || !hasUppercase || !hasNumber || !hasSpecial) {
+                message.innerHTML = `
+            <p class='error'>
+                Password must contain:
+                <br>• 8 characters
+                <br>• 1 uppercase letter
+                <br>• 1 number
+                <br>• 1 special character
+            </p>`;
+                return;
+            }
+
+            if (password !== confirm) {
+                message.innerHTML = "<p class='error'>Passwords do not match</p>";
+                return;
+            }
+
+            // Get existing users or empty array
+            let users = JSON.parse(localStorage.getItem("users")) || [];
+
+            // Check if email already exists
+            let userExists = users.some(user => user.email === email);
+            if (userExists) {
+                message.innerHTML = "<p class='error'>Email already registered</p>";
+                return;
+            }
+
+            // Add new user
+            users.push({ email, password });
+
+            // Save back to localStorage
+            localStorage.setItem("users", JSON.stringify(users));
+
+            message.innerHTML = "<p class='success'>Account created successfully</p>";
+
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 1200);
+        });
+    </script>
+
+
+
+
+</body>
+
+</html>

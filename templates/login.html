@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-image: url("Event_Man.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+
+        }
+
+        .login-card {
+            width: 450px;
+            padding: 35px;
+            margin-left: 180px;
+            border-radius: 12px;
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        .error {
+            color: red;
+        }
+
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-card shadow">
+        <h3 class="text-center mb-4">Login</h3>
+
+        <form id="loginForm">
+            <div class="mb-3">
+                <label>Email</label>
+                <input type="email" id="email" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label>Password</label>
+                <input type="password" id="password" class="form-control">
+            </div>
+
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="showPwd">
+                <label class="form-check-label" for="showPwd">Show Password</label>
+            </div>
+
+
+            <div id="message" class="mb-3"></div>
+
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+
+        <p class="text-center mt-3">
+            Don’t have an account?
+            <a href="signup.html">Sign Up</a>
+        </p>
+    </div>
+
+    <script>
+        document.getElementById("showPwd").addEventListener("change", function () {
+            let pwd = document.getElementById("password");
+            pwd.type = this.checked ? "text" : "password";
+        });
+
+        document.getElementById("loginForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            let email = document.getElementById("email").value.trim();
+            let password = document.getElementById("password").value.trim();
+            let message = document.getElementById("message");
+
+            let users = JSON.parse(localStorage.getItem("users")) || [];
+
+            if (users.length === 0) {
+                message.innerHTML = "<p class='error'>No accounts found. Please sign up.</p>";
+                return;
+            }
+
+            // Find matching user
+            let validUser = users.find(
+                user => user.email === email && user.password === password
+            );
+
+            if (validUser) {
+                message.innerHTML = "<p class='success'>Login successful</p>";
+
+                // Optional: save logged-in user
+                localStorage.setItem("loggedInUser", email);
+
+                setTimeout(() => {
+                    window.location.href = "home.html";
+                }, 800);
+
+            } else {
+                message.innerHTML = "<p class='error'>Invalid email or password</p>";
+            }
+        });
+    </script>
+
+
+
+</body>
+
+</html>

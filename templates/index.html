@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Page</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #74ebd5, #9face6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dashboard-card {
+            width: 500px;
+            padding: 40px;
+            border-radius: 15px;
+            background: white;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-card shadow">
+    <h2 class="mb-3">Welcome 🎉</h2>
+    <p class="text-muted">You have successfully logged in</p>
+
+    <hr>
+
+    <h5 id="userEmail" class="mb-4"></h5>
+
+    <div class="d-grid gap-2">
+        <button class="btn btn-primary">Go to Dashboard</button>
+        <button class="btn btn-outline-danger" onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<script>
+    // Protect page (block access without login)
+    let loggedInUser = localStorage.getItem("loggedInUser");
+
+    if (!loggedInUser) {
+        window.location.href = "login.html";
+    }
+
+    // Show logged-in user email
+    document.getElementById("userEmail").innerText = "Logged in as: " + loggedInUser;
+
+    // Logout function
+    function logout() {
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "login.html";
+    }
+</script>
+
+</body>
+</html>

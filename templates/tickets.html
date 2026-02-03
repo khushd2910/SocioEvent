@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Tickets</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f8f9fa;
+        }
+
+        .ticket-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .ticket-card img {
+            width: 140px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .ticket-status {
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .upcoming {
+            background: #e6f4ea;
+            color: #1e7e34;
+        }
+
+        .past {
+            background: #f1f1f1;
+            color: #666;
+        }
+
+        .section-title {
+            margin: 30px 0 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top px-3">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold text-danger" href="home.html">event</a>
+
+        <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item"><a class="nav-link fw-semibold" href="home.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link fw-semibold" href="find_events.html">Find Events</a></li>
+            <li class="nav-item"><a class="nav-link fw-semibold" href="create_event.html">Create Event</a></li>
+            <li class="nav-item"><a class="nav-link fw-semibold active" href="tickets.html">My Tickets</a></li>
+
+            <li class="nav-item" id="loginNav">
+                <a class="nav-link fw-semibold" href="login.html">Login</a>
+            </li>
+            <li class="nav-item" id="signupNav">
+                <a class="nav-link fw-semibold" href="signup.html">Sign Up</a>
+            </li>
+
+            <li class="nav-item d-none" id="userNav">
+                <a class="nav-link" href="account.html">
+                    <i class="bi bi-person-circle fs-4"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- MY TICKETS -->
+<div class="container my-5">
+
+    <h2 class="mb-4">My Tickets</h2>
+
+    <!-- UPCOMING TICKETS -->
+    <h4 class="section-title">Upcoming Events</h4>
+
+    <div class="ticket-card">
+        <img src="concertbg.jpg">
+        <div class="flex-grow-1">
+            <h5>Live Rock Concert</h5>
+            <p class="mb-1"><i class="bi bi-calendar-event"></i> 25 Feb 2026 · 7:00 PM</p>
+            <p class="mb-1"><i class="bi bi-tag"></i> Music · VIP Ticket</p>
+            <p class="mb-0"><i class="bi bi-geo-alt"></i> New York City</p>
+        </div>
+        <span class="ticket-status upcoming">Upcoming</span>
+    </div>
+
+    <div class="ticket-card">
+        <img src="sportsevent.jpg">
+        <div class="flex-grow-1">
+            <h5>Football League Final</h5>
+            <p class="mb-1"><i class="bi bi-calendar-event"></i> 10 Mar 2026 · 5:00 PM</p>
+            <p class="mb-1"><i class="bi bi-tag"></i> Sports · Regular</p>
+            <p class="mb-0"><i class="bi bi-geo-alt"></i> London Stadium</p>
+        </div>
+        <span class="ticket-status upcoming">Upcoming</span>
+    </div>
+
+    <!-- PAST TICKETS -->
+    <h4 class="section-title">Past Events</h4>
+
+    <div class="ticket-card">
+        <img src="partyevent.jpg">
+        <div class="flex-grow-1">
+            <h5>New Year Party</h5>
+            <p class="mb-1"><i class="bi bi-calendar-event"></i> 31 Dec 2025 · 10:00 PM</p>
+            <p class="mb-1"><i class="bi bi-tag"></i> Party · Free Entry</p>
+            <p class="mb-0"><i class="bi bi-geo-alt"></i> Downtown Club</p>
+        </div>
+        <span class="ticket-status past">Completed</span>
+    </div>
+
+</div>
+
+<!-- LOGIN STATE SCRIPT -->
+<script>
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    if (loggedInUser) {
+        document.getElementById("loginNav").classList.add("d-none");
+        document.getElementById("signupNav").classList.add("d-none");
+        document.getElementById("userNav").classList.remove("d-none");
+    }
+</script>
+
+</body>
+</html>

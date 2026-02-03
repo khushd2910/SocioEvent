@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Event</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f8f9fa;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .btn-create {
+            background-color: #f05537;
+            color: white;
+            font-weight: 600;
+        }
+
+        .btn-create:hover {
+            background-color: #d9472d;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top px-3">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold text-danger" href="home.html">event</a>
+
+        <!-- Search -->
+            <form class="d-flex align-items-center me-4">
+                <div class="input-group">
+                    <span class="input-group-text bg-white">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" class="form-control navbar-search" placeholder="Search events">
+                </div>
+                <button type="button" class="btn search-btn ms-2">
+                    <i class="bi bi-search"></i>
+                </button>
+            </form>
+
+        <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item"><a class="nav-link fw-semibold" href="">Home</a></li>
+            <li class="nav-item"><a class="nav-link fw-semibold" href="/find_events">Find Events</a></li>
+            <li class="nav-item"><a class="nav-link fw-semibold active" href="/create_event">Create Event</a></li>
+            <li class="nav-item"><a class="nav-link fw-semibold" href="tickets">My Tickets</a></li>
+
+            <li class="nav-item" id="loginNav">
+                <a class="nav-link fw-semibold" href="login.html">Login</a>
+            </li>
+            <li class="nav-item" id="signupNav">
+                <a class="nav-link fw-semibold" href="signup.html">Sign Up</a>
+            </li>
+
+            <li class="nav-item d-none" id="userNav">
+                <a class="nav-link" href="account.html">
+                    <i class="bi bi-person-circle fs-4"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- CREATE EVENT FORM -->
+<div class="container my-5">
+    <div class="form-card">
+        <h2 class="mb-4">Create Your Event</h2>
+
+        <form action="/create_event" method="POST" enctype="multipart/form-data">
+
+            <!-- Event Name -->
+            <div class="mb-3">
+                <label class="form-label">Event Name</label>
+                <input type="text" name="event_name" class="form-control" placeholder="Enter event name" required>
+            </div>
+
+            <!-- Date & Time -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Event Date</label>
+                    <input type="date" name="event_date" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Event Time</label>
+                    <input type="time" name="event_time" class="form-control" required>
+                </div>
+            </div>
+
+            <!-- Category -->
+            <div class="mb-3">
+                <label class="form-label">Category</label>
+                <select class="form-select" required name="categories">
+                    <option value="">Select category</option>
+                    <option>Party</option>
+                    <option>Music</option>
+                    <option>Sports</option>
+                    <option>Dance</option>
+                    <option>Conference</option>
+                    <option>Workshop</option>
+                    <option>Others</option>
+                </select>
+            </div>
+
+            <!-- Features -->
+            <div class="mb-3">
+                <label class="form-label">Event Features</label>
+                <input type="text" name="event_features" class="form-control" placeholder="e.g. Live DJ, Free Drinks, VIP Area">
+            </div>
+
+            <!-- Guests -->
+            <div class="mb-3">
+                <label class="form-label">Guests / Speakers</label>
+                <input type="text" name="guest_speaker" class="form-control" placeholder="Guest names (comma separated)">
+            </div>
+
+            <!-- Capacity -->
+            <div class="mb-3">
+                <label class="form-label">Event Capacity</label>
+                <input type="number" name="event_capacity" class="form-control" placeholder="Maximum attendees">
+            </div>
+
+            <!-- Tickets -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Ticket Type</label>
+                    <select class="form-select" name="ticket_type">
+                        <option value="free">Free</option>
+                        <option value="paid">Paid</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Ticket Price</label>
+                    <input type="number" name="ticket_price" class="form-control" placeholder="Enter amount in rupees" >
+                </div>
+            </div>
+
+            <!-- Images -->
+            <div class="mb-3">
+                <label class="form-label">Event Images</label>
+                <input type="file" name="event_images" multiple accept="image/*" required>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-4">
+                <label class="form-label">Event Description</label>
+                <textarea class="form-control" name="event_description" rows="4" placeholder="Describe your event"></textarea>
+            </div>
+
+            <!-- Submit -->
+            <div class="text-end">
+                <button type="submit" class="btn btn-create px-4 py-2">
+                    Create Event
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<!-- LOGIN STATE SCRIPT -->
+<script>
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    if (loggedInUser) {
+        document.getElementById("loginNav").classList.add("d-none");
+        document.getElementById("signupNav").classList.add("d-none");
+        document.getElementById("userNav").classList.remove("d-none");
+    }
+</script>
+
+</body>
+</html>

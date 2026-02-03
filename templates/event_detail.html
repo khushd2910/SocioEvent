@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ event.event_name }}</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f8f9fa;
+        }
+
+        .detail-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .main-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .small-img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .badge-category {
+            background: #f05537;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SAME NAVBAR -->
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top px-3">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold text-danger" href="/">event</a>
+
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item"><a class="nav-link fw-semibold" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link fw-semibold" href="/find_events">Find Events</a></li>
+                <li class="nav-item"><a class="nav-link fw-semibold" href="/create_event">Create Event</a></li>
+                <li class="nav-item"><a class="nav-link fw-semibold" href="/tickets">My Tickets</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="detail-card">
+
+            <div class="row">
+                <div class="col-md-7">
+                    {% if event.images and event.images|length > 0 %}
+                    <img src="/uploads/{{ event.images[0].split('/')[-1] }}" class="main-image shadow">
+                    {% else %}
+                    <img src="/static/default.jpg" class="main-image shadow">
+                    {% endif %}
+
+                </div>
+
+                <div class="col-md-5">
+                    <h2 class="fw-bold">{{ event.event_name }}</h2>
+                    <span class="badge badge-category mb-3">{{ event.categories }}</span>
+
+                    <p><strong>📅 Date:</strong> {{ event.event_date }}</p>
+                    <p><strong>⏰ Time:</strong> {{ event.event_time }}</p>
+                    <p><strong>🎯 Capacity:</strong> {{ event.event_capacity }}</p>
+
+                    <p><strong>🎟 Ticket:</strong> {{ event.ticket_type | capitalize }}
+                        {% if event.ticket_type == 'paid' %}
+                        - ₹{{ event.ticket_price }}
+                        {% endif %}
+                    </p>
+
+                    <p><strong>🎤 Guests:</strong> {{ event.guest_speaker or "Not specified" }}</p>
+
+                    <h5 class="mt-3">Features</h5>
+                    <p>{{ event.event_features }}</p>
+
+                    <h5 class="mt-3">Description</h5>
+                    <p>{{ event.event_description }}</p>
+
+                    <a href="/find_events" class="btn btn-outline-secondary mt-3">← Back to Events</a>
+                </div>
+            </div>
+
+            <h4 class="mt-5 mb-3">More Images</h4>
+            <div class="row">
+                {% for img in event.images %}
+                <div class="col-md-3 col-sm-6">
+                    <img src="/static/uploads/{{ img }}" class="small-img shadow">
+                </div>
+                {% endfor %}
+
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>
