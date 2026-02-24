@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Create Event</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -10,181 +12,276 @@
 
     <style>
         body {
-            background: #f8f9fa;
+            background-color: #F5F1EB;
+        }
+
+        .form-wrapper {
+            max-width: 1100px;
+            margin: auto;
         }
 
         .form-card {
-            background: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 36px;
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.08);
         }
 
-        .section-title {
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        .btn-create {
-            background-color: #f05537;
-            color: white;
+        .page-title {
+            color: #0F172A;
             font-weight: 600;
         }
 
-        .btn-create:hover {
-            background-color: #d9472d;
+        .section-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            color: #64748B;
+            margin-bottom: 14px;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 10px;
+            padding: 10px 14px;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #0F172A;
+            box-shadow: none;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #E5E7EB;
+            margin: 34px 0;
+        }
+
+        .action-btn {
+            background-color: #0F172A;
+            border: 2px solid #000;
+            border-radius: 12px;
+            padding: 12px 32px;
+            color: #fff !important;
+            font-weight: 500;
+            transition: all 0.25s ease;
+        }
+
+        .action-btn:hover {
+            background-color: #ffffff;
+            color: #000 !important;
+            border: 2px solid #000;
+        }
+
+        .hint-text {
+            font-size: 0.85rem;
+            color: #64748B;
+        }
+
+        .info-box {
+            background: #F8FAFC;
+            border-radius: 14px;
+            padding: 20px;
+            border: 1px solid #E5E7EB;
+        }
+
+        .info-box i {
+            color: #0F172A;
+        }
+
+        .trust-badge {
+            font-size: 0.85rem;
+            color: #475569;
+        }
+
+        .note-box {
+            background: #FFF7ED;
+            border-left: 4px solid #F59E0B;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
         }
     </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top px-3">
-    <div class="container-fluid">
-        <a class="navbar-brand fw-bold text-danger" href="home.html">event</a>
+    {% include "navbar.html" %}
 
-        <!-- Search -->
-            <form class="d-flex align-items-center me-4">
-                <div class="input-group">
-                    <span class="input-group-text bg-white">
-                        <i class="bi bi-search"></i>
-                    </span>
-                    <input type="text" class="form-control navbar-search" placeholder="Search events">
+    <div class="container my-5">
+        <div class="form-wrapper">
+            <div class="row g-4">
+
+                <!-- MAIN FORM -->
+                <div class="col-lg-8">
+                    <div class="form-card">
+
+                        <div class="mb-4">
+                            <h2 class="page-title mb-1">
+                                <i class="bi bi-calendar-plus me-2"></i>Create Event
+                            </h2>
+                            <p class="text-muted">Fill in the details below to publish your event</p>
+                        </div>
+
+                        <form action="/create_event" method="POST" enctype="multipart/form-data">
+
+                            <!-- BASIC DETAILS -->
+                            <div class="section-label">BASIC DETAILS</div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Event Name</label>
+                                <input type="text" name="event_name" class="form-control"
+                                    placeholder="Eg. Sunburn After Party" required>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Event Date</label>
+                                    <input type="date" name="event_date" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Event Time</label>
+                                    <input type="time" name="event_time" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Category</label>
+                                <select class="form-select" name="categories" required>
+                                    <option value="">Select category</option>
+                                    <option>Music</option>
+                                    <option>dance</option>
+                                    <option>Sports</option>
+                                    <option>Comedy</option>
+                                    <option>Workshop</option>
+                                    <option>Conference</option>
+                                    <option>Others</option>
+                                </select>
+                            </div>
+
+                            <div class="divider"></div>
+
+                            <!-- LOCATION -->
+                            <div class="section-label">LOCATION & RULES</div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Event Location</label>
+                                <input type="text" name="event_address" class="form-control"
+                                    placeholder="Venue name & address" required>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Age Limit</label>
+                                    <select name="age_limit" class="form-select">
+                                        <option>All Ages</option>
+                                        <option>18+</option>
+                                        <option>21+</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Event Language</label>
+                                    <select name="event_language" class="form-select">
+                                        <option>English</option>
+                                        <option>Hindi</option>
+                                        <option>Bilingual</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Event Capacity</label>
+                                    <input type="number" name="event_capacity" class="form-control"
+                                        placeholder="Total seats available" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Guest / Speaker</label>
+                                    <input type="text" name="guest_speaker" class="form-control"
+                                        placeholder="Eg. DJ Snake, Vir Das">
+                                </div>
+                            </div>
+
+
+                            <div class="divider"></div>
+
+                            <!-- TICKETS -->
+                            <div class="section-label">TICKETS</div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Ticket Type</label>
+                                    <select class="form-select" name="ticket_type">
+                                        <option value="free">Free</option>
+                                        <option value="paid">Paid</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Ticket Price (₹)</label>
+                                    <input type="number" name="ticket_price" class="form-control"
+                                        placeholder="Enter amount">
+                                </div>
+                            </div>
+
+                            <div class="note-box mb-4">
+                                <i class="bi bi-info-circle me-2"></i>
+                                Platform fee & GST will be calculated automatically at checkout.
+                            </div>
+
+                            <div class="divider"></div>
+
+                            <!-- MEDIA -->
+                            <div class="section-label">MEDIA & DESCRIPTION</div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Event Images</label>
+                                <input type="file" name="event_images" class="form-control" multiple accept="image/*"
+                                    required>
+
+                                <div class="hint-text mt-1">Recommended: 1200×600px, JPG or PNG</div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">Event Description</label>
+                                <textarea name="event_description" class="form-control" rows="4"
+                                    placeholder="Describe what attendees can expect"></textarea>
+                            </div>
+
+                            <div class="text-end">
+                                <button type="submit" class="btn action-btn">
+                                    <i class="bi bi-upload me-2"></i>Publish Event
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
                 </div>
-                <button type="button" class="btn search-btn ms-2">
-                    <i class="bi bi-search"></i>
-                </button>
-            </form>
 
-        <ul class="navbar-nav ms-auto align-items-center">
-            <li class="nav-item"><a class="nav-link fw-semibold" href="">Home</a></li>
-            <li class="nav-item"><a class="nav-link fw-semibold" href="/find_events">Find Events</a></li>
-            <li class="nav-item"><a class="nav-link fw-semibold active" href="/create_event">Create Event</a></li>
-            <li class="nav-item"><a class="nav-link fw-semibold" href="tickets">My Tickets</a></li>
+                <!-- SIDEBAR -->
+                <div class="col-lg-4">
+                    <div class="info-box mb-3">
+                        <h6 class="mb-3"><i class="bi bi-shield-check me-2"></i>Why publish with us?</h6>
+                        <div class="trust-badge mb-2">✔ Secure payments</div>
+                        <div class="trust-badge mb-2">✔ Verified attendees</div>
+                        <div class="trust-badge mb-2">✔ Zero spam policy</div>
+                        <div class="trust-badge">✔ 24/7 support</div>
+                    </div>
 
-            <li class="nav-item" id="loginNav">
-                <a class="nav-link fw-semibold" href="login.html">Login</a>
-            </li>
-            <li class="nav-item" id="signupNav">
-                <a class="nav-link fw-semibold" href="signup.html">Sign Up</a>
-            </li>
+                    <div class="info-box">
+                        <h6 class="mb-3"><i class="bi bi-check2-circle me-2"></i>Before publishing</h6>
+                        <ul class="small mb-0">
+                            <li>Double-check date & location</li>
+                            <li>Upload clear event images</li>
+                            <li>Set correct ticket pricing</li>
+                        </ul>
+                    </div>
+                </div>
 
-            <li class="nav-item d-none" id="userNav">
-                <a class="nav-link" href="account.html">
-                    <i class="bi bi-person-circle fs-4"></i>
-                </a>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
-</nav>
-
-<!-- CREATE EVENT FORM -->
-<div class="container my-5">
-    <div class="form-card">
-        <h2 class="mb-4">Create Your Event</h2>
-
-        <form action="/create_event" method="POST" enctype="multipart/form-data">
-
-            <!-- Event Name -->
-            <div class="mb-3">
-                <label class="form-label">Event Name</label>
-                <input type="text" name="event_name" class="form-control" placeholder="Enter event name" required>
-            </div>
-
-            <!-- Date & Time -->
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label class="form-label">Event Date</label>
-                    <input type="date" name="event_date" class="form-control" required>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Event Time</label>
-                    <input type="time" name="event_time" class="form-control" required>
-                </div>
-            </div>
-
-            <!-- Category -->
-            <div class="mb-3">
-                <label class="form-label">Category</label>
-                <select class="form-select" required name="categories">
-                    <option value="">Select category</option>
-                    <option>Party</option>
-                    <option>Music</option>
-                    <option>Sports</option>
-                    <option>Dance</option>
-                    <option>Conference</option>
-                    <option>Workshop</option>
-                    <option>Others</option>
-                </select>
-            </div>
-
-            <!-- Features -->
-            <div class="mb-3">
-                <label class="form-label">Event Features</label>
-                <input type="text" name="event_features" class="form-control" placeholder="e.g. Live DJ, Free Drinks, VIP Area">
-            </div>
-
-            <!-- Guests -->
-            <div class="mb-3">
-                <label class="form-label">Guests / Speakers</label>
-                <input type="text" name="guest_speaker" class="form-control" placeholder="Guest names (comma separated)">
-            </div>
-
-            <!-- Capacity -->
-            <div class="mb-3">
-                <label class="form-label">Event Capacity</label>
-                <input type="number" name="event_capacity" class="form-control" placeholder="Maximum attendees">
-            </div>
-
-            <!-- Tickets -->
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label class="form-label">Ticket Type</label>
-                    <select class="form-select" name="ticket_type">
-                        <option value="free">Free</option>
-                        <option value="paid">Paid</option>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Ticket Price</label>
-                    <input type="number" name="ticket_price" class="form-control" placeholder="Enter amount in rupees" >
-                </div>
-            </div>
-
-            <!-- Images -->
-            <div class="mb-3">
-                <label class="form-label">Event Images</label>
-                <input type="file" name="event_images" multiple accept="image/*" required>
-            </div>
-
-            <!-- Description -->
-            <div class="mb-4">
-                <label class="form-label">Event Description</label>
-                <textarea class="form-control" name="event_description" rows="4" placeholder="Describe your event"></textarea>
-            </div>
-
-            <!-- Submit -->
-            <div class="text-end">
-                <button type="submit" class="btn btn-create px-4 py-2">
-                    Create Event
-                </button>
-            </div>
-
-        </form>
-    </div>
-</div>
-
-<!-- LOGIN STATE SCRIPT -->
-<script>
-    const loggedInUser = localStorage.getItem("loggedInUser");
-    if (loggedInUser) {
-        document.getElementById("loginNav").classList.add("d-none");
-        document.getElementById("signupNav").classList.add("d-none");
-        document.getElementById("userNav").classList.remove("d-none");
-    }
-</script>
 
 </body>
+
 </html>

@@ -5,114 +5,189 @@
     <meta charset="UTF-8">
     <title>Login</title>
 
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
         body {
-            background-image: url("Event_Man.jpg");
+            min-height: 100vh;
+            background:
+                linear-gradient(rgba(26, 60, 140, 0.65), rgba(26, 60, 140, 0.65)),
+                url("/static/uploads/loginbg.jpg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            height: 100vh;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        .login-wrapper {
+            min-height: 90vh;
             display: flex;
             align-items: center;
-            justify-content: flex-start;
-
+            justify-content: center;
         }
 
         .login-card {
-            width: 450px;
+            width: 440px;
             padding: 35px;
-            margin-left: 180px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .login-title {
+            color: #1A3C8C;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #6c757d;
+        }
+
+        .input-group-text {
+            background: #fbf7f2;
+            border-right: 0;
+        }
+
+        .form-control {
+            border-left: 0;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #1A3C8C;
+        }
+
+        .btn-login {
+            background-color: #1A3C8C;
+            color: white;
+            font-weight: 600;
+            border-radius: 10px;
+            padding: 10px;
+            transition: 0.3s;
+        }
+
+        .btn-login:hover {
+            background-color: #143070;
+        }
+
+        .trust-box {
+            background: #fbf7f2;
             border-radius: 12px;
-            background-color: rgba(255, 255, 255, 0.95);
+            padding: 12px;
+            font-size: 0.85rem;
+            margin-top: 18px;
         }
 
-        .error {
-            color: red;
+        .trust-box i {
+            color: #1A3C8C;
         }
 
-        .success {
-            color: green;
+        a {
+            color: #1A3C8C;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            max-width: 420px;
+            margin: 15px auto;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="login-card shadow">
-        <h3 class="text-center mb-4">Login</h3>
+    {% include "navbar.html" %}
 
-        <form id="loginForm">
-            <div class="mb-3">
-                <label>Email</label>
-                <input type="email" id="email" class="form-control">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-danger text-center">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div class="login-wrapper">
+        <div class="login-card">
+
+            <h3 class="text-center login-title mb-1">Welcome Back</h3>
+            <p class="text-center subtitle mb-4">
+                Login to manage events & tickets
+            </p>
+
+            <form action="/login" method="POST">
+
+                <!-- Email -->
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-envelope-fill"></i>
+                        </span>
+                        <input type="email" name="email" class="form-control" placeholder="you@example.com" required>
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="mb-2">
+                    <label class="form-label">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-lock-fill"></i>
+                        </span>
+                        <input type="password" name="password" id="loginPassword" class="form-control"
+                            placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                <!-- Options -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" onclick="toggleLoginPassword()">
+                        <label class="form-check-label">Show Password</label>
+                    </div>
+                    <a href="#">Forgot Password?</a>
+                </div>
+
+                <!-- Button -->
+                <button type="submit" class="btn btn-login w-100">
+                    <i class="bi bi-box-arrow-in-right me-1"></i> Login
+                </button>
+            </form>
+
+            <p class="text-center mt-3">
+                Don’t have an account?
+                <a href="/signup">Create one</a>
+            </p>
+
+            <!-- Trust Indicators -->
+            <div class="trust-box text-center">
+                <div class="d-flex justify-content-around">
+                    <span><i class="bi bi-shield-lock-fill"></i> Secure</span>
+                    <span><i class="bi bi-lock-fill"></i> Encrypted</span>
+                    <span><i class="bi bi-check-circle-fill"></i> Trusted</span>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label>Password</label>
-                <input type="password" id="password" class="form-control">
-            </div>
-
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="showPwd">
-                <label class="form-check-label" for="showPwd">Show Password</label>
-            </div>
-
-
-            <div id="message" class="mb-3"></div>
-
-            <button type="submit" class="btn btn-primary w-100">Login</button>
-        </form>
-
-        <p class="text-center mt-3">
-            Don’t have an account?
-            <a href="signup.html">Sign Up</a>
-        </p>
+        </div>
     </div>
 
     <script>
-        document.getElementById("showPwd").addEventListener("change", function () {
-            let pwd = document.getElementById("password");
-            pwd.type = this.checked ? "text" : "password";
-        });
-
-        document.getElementById("loginForm").addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            let email = document.getElementById("email").value.trim();
-            let password = document.getElementById("password").value.trim();
-            let message = document.getElementById("message");
-
-            let users = JSON.parse(localStorage.getItem("users")) || [];
-
-            if (users.length === 0) {
-                message.innerHTML = "<p class='error'>No accounts found. Please sign up.</p>";
-                return;
-            }
-
-            // Find matching user
-            let validUser = users.find(
-                user => user.email === email && user.password === password
-            );
-
-            if (validUser) {
-                message.innerHTML = "<p class='success'>Login successful</p>";
-
-                // Optional: save logged-in user
-                localStorage.setItem("loggedInUser", email);
-
-                setTimeout(() => {
-                    window.location.href = "home.html";
-                }, 800);
-
-            } else {
-                message.innerHTML = "<p class='error'>Invalid email or password</p>";
-            }
-        });
+        function toggleLoginPassword() {
+            let pwd = document.getElementById("loginPassword");
+            pwd.type = pwd.type === "password" ? "text" : "password";
+        }
     </script>
-
-
 
 </body>
 

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Event Calendar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #F5F1EB;
+        }
+
+        /* PAST DATE */
+        .past-day {
+            background: #f1f1f1 !important;
+            color: #9ca3af;
+            pointer-events: none;
+            /* disables clicks */
+            opacity: 0.7;
+        }
+
+        .past-day .date-number {
+            color: #9ca3af;
+        }
+
+        .past-day .event-pill {
+            background: #d1d5db;
+            color: #6b7280;
+        }
+
+
+        /* PAGE WRAPPER */
+        .calendar-page {
+            padding: 40px 16px;
+        }
+
+        /* MAIN CARD */
+        .calendar-card {
+            max-width: 1100px;
+            margin: auto;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        /* HEADER */
+        .calendar-top {
+            background-color: #1A3C8C;
+            color: #ffffff;
+            text-align: center;
+            padding: 28px 0;
+        }
+
+        .calendar-top h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* GRID */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+
+        /* WEEKDAYS */
+        .calendar-weekdays div {
+            padding: 14px;
+            text-align: center;
+            font-size: 0.85rem;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+            background: #F8FAFC;
+            color: #475569;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        /* DAY CELLS */
+        .calendar-days .day,
+        .calendar-days .empty {
+            min-height: 120px;
+            padding: 12px;
+            border-right: 1px solid #E5E7EB;
+            border-bottom: 1px solid #E5E7EB;
+            background: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        .calendar-days .day:hover {
+            background: #F8FAFC;
+        }
+
+        .calendar-days .day:nth-child(7n),
+        .calendar-days .empty:nth-child(7n) {
+            border-right: none;
+        }
+
+        /* DATE NUMBER */
+        .date-number {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1A3C8C;
+            margin-bottom: 6px;
+        }
+
+        /* TODAY */
+        .today {
+            background: #EEF2FF;
+        }
+
+        /* EVENT PILL */
+        .event-pill {
+            display: block;
+            background: #1A3C8C;
+            color: #ffffff;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            margin-top: 6px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .event-pill:hover {
+            background: #020617;
+            color: #ffffff;
+        }
+
+        /* BACK BUTTON */
+        .back-btn {
+            background-color: #1A3C8C;
+            border: 2px solid #1A3C8C;
+            border-radius: 14px;
+            padding: 12px 28px;
+            color: #ffffff;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .back-btn:hover {
+            background-color: #ffffff;
+            color: #1A3C8C;
+            border: 2px solid #1A3C8C;
+        }
+
+        
+    </style>
+</head>
+
+<body>
+
+    {% include "navbar.html" %}
+
+    <div class="calendar-page">
+
+        <div class="calendar-card">
+
+            <!-- HEADER -->
+            <div class="calendar-top">
+                <h2>{{ month_name }} {{ year }}</h2>
+            </div>
+
+            <!-- WEEKDAYS -->
+            <div class="calendar-grid calendar-weekdays">
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+                <div>Sun</div>
+            </div>
+
+            <!-- DAYS -->
+            <div class="calendar-grid calendar-days">
+
+                {% for i in range(first_weekday) %}
+                <div class="empty"></div>
+                {% endfor %}
+
+                {% for day in range(1, total_days + 1) %}
+
+                {% set is_past = (year < current_year) or (year==current_year and month < current_month) or
+                    (year==current_year and month==current_month and day < today) %} <div class="day 
+        {% if day == today and month == current_month and year == current_year %}today{% endif %}
+        {% if is_past %}past-day{% endif %}">
+
+                    <div class="date-number">{{ day }}</div>
+
+                    {% if not is_past %}
+                    {% for e in events %}
+                    {% if e[2].day == day and e[2].month == month and e[2].year == year %}
+                    <a href="/event/{{ e[0] }}" class="event-pill">
+                        {{ e[1] }}
+                    </a>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+
+    </div>
+
+    <!-- BACK -->
+    <div class="text-center mt-4">
+        <a href="/find_events" class="back-btn">
+            <i class="bi bi-arrow-left me-2"></i>Back to List View
+        </a>
+    </div>
+
+    </div>
+
+</body>
+
+</html>

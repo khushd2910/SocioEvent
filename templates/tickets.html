@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>My Tickets</title>
@@ -10,135 +11,268 @@
 
     <style>
         body {
-            background: #f8f9fa;
+            background: #fbf7f2;
+        }
+
+        .page-title {
+            font-weight: 800;
+            color: #1A3C8C;
+        }
+
+        .section-title {
+            margin: 40px 0 20px;
+            font-weight: 700;
+            color: #1A3C8C;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .ticket-card {
             background: white;
-            border-radius: 12px;
+            border-radius: 18px;
             padding: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 22px;
             display: flex;
-            align-items: center;
             gap: 20px;
+            align-items: center;
         }
 
-        .ticket-card img {
-            width: 140px;
-            height: 100px;
+        .ticket-image {
+            width: 170px;
+            height: 120px;
             object-fit: cover;
-            border-radius: 10px;
+            border-radius: 14px;
         }
 
-        .ticket-status {
-            font-weight: 600;
-            padding: 5px 12px;
-            border-radius: 20px;
+        .ticket-meta p {
+            margin-bottom: 6px;
             font-size: 14px;
+            color: #475569;
         }
 
-        .upcoming {
+        .ticket-meta i {
+            color: #1A3C8C;
+            margin-right: 6px;
+        }
+
+        .ticket-actions a {
+            margin-right: 8px;
+        }
+
+        /* SHARED BUTTON STYLE */
+        .btn-ticket {
+            background: #ffffff;
+            border: 2px solid #1A3C8C;
+            color: #1A3C8C;
+            font-weight: 600;
+            transition: all 0.25s ease;
+        }
+
+        .btn-ticket i {
+            transition: color 0.25s ease;
+        }
+
+        .btn-ticket:hover {
+            background: #1A3C8C;
+            color: #ffffff;
+        }
+
+        /* DOWNLOAD ICON BLACK ON HOVER */
+        .btn-download:hover i {
+            color: #000000;
+        }
+
+        .status-badge {
+            font-size: 13px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .status-today {
+            background: #e0f2fe;
+            color: #075985;
+        }
+
+        .status-upcoming {
             background: #e6f4ea;
-            color: #1e7e34;
+            color: #166534;
         }
 
-        .past {
+        .status-past {
             background: #f1f1f1;
-            color: #666;
+            color: #555;
         }
 
-        .section-title {
-            margin: 30px 0 20px;
-            font-weight: bold;
+        .qr-box {
+            text-align: center;
+            font-size: 12px;
+            color: #64748B;
+        }
+
+        .qr-box img {
+            width: 90px;
+            height: 90px;
+            margin-bottom: 4px;
+        }
+
+        .empty-state {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            color: #64748B;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-state i {
+            font-size: 40px;
+            color: #1A3C8C;
+            margin-bottom: 10px;
         }
     </style>
+
+    <script>
+        function confirmCancel() {
+            return confirm("Are you sure you want to cancel this ticket?\nThis action cannot be undone.");
+        }
+    </script>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top px-3">
-    <div class="container-fluid">
-        <a class="navbar-brand fw-bold text-danger" href="home.html">event</a>
+    {% include "navbar.html" %}
 
-        <ul class="navbar-nav ms-auto align-items-center">
-            <li class="nav-item"><a class="nav-link fw-semibold" href="home.html">Home</a></li>
-            <li class="nav-item"><a class="nav-link fw-semibold" href="find_events.html">Find Events</a></li>
-            <li class="nav-item"><a class="nav-link fw-semibold" href="create_event.html">Create Event</a></li>
-            <li class="nav-item"><a class="nav-link fw-semibold active" href="tickets.html">My Tickets</a></li>
+    <div class="container my-5">
 
-            <li class="nav-item" id="loginNav">
-                <a class="nav-link fw-semibold" href="login.html">Login</a>
-            </li>
-            <li class="nav-item" id="signupNav">
-                <a class="nav-link fw-semibold" href="signup.html">Sign Up</a>
-            </li>
+        <h2 class="page-title mb-2">My Tickets</h2>
+        <p class="text-muted mb-4">Manage, download, and track all your event tickets in one place.</p>
 
-            <li class="nav-item d-none" id="userNav">
-                <a class="nav-link" href="account.html">
-                    <i class="bi bi-person-circle fs-4"></i>
-                </a>
-            </li>
-        </ul>
-    </div>
-</nav>
+        <!-- TODAY -->
+        <h4 class="section-title">
+            <i class="bi bi-calendar-check"></i> Today
+        </h4>
 
-<!-- MY TICKETS -->
-<div class="container my-5">
+        {% for t in today_events %}
+        <div class="ticket-card">
 
-    <h2 class="mb-4">My Tickets</h2>
+            <a href="/event/{{ t.event_id }}">
+                <img src="{{ url_for('static', filename='uploads/' + t.image) }}" class="ticket-image">
+            </a>
 
-    <!-- UPCOMING TICKETS -->
-    <h4 class="section-title">Upcoming Events</h4>
+            <div class="flex-grow-1 ticket-meta">
+                <h5 class="mb-2">
+                    <a href="/event/{{ t.event_id }}" class="text-decoration-none text-dark fw-bold">
+                        {{ t.name }}
+                    </a>
+                </h5>
 
-    <div class="ticket-card">
-        <img src="concertbg.jpg">
-        <div class="flex-grow-1">
-            <h5>Live Rock Concert</h5>
-            <p class="mb-1"><i class="bi bi-calendar-event"></i> 25 Feb 2026 · 7:00 PM</p>
-            <p class="mb-1"><i class="bi bi-tag"></i> Music · VIP Ticket</p>
-            <p class="mb-0"><i class="bi bi-geo-alt"></i> New York City</p>
+                <p><i class="bi bi-calendar-event"></i>{{ t.date }} · {{ t.time }}</p>
+                <p><i class="bi bi-receipt"></i>Booking ID: {{ t.booking_id }}</p>
+                <p><i class="bi bi-credit-card"></i>Payment: {{ t.payment }}</p>
+
+                <div class="ticket-actions mt-2">
+                    <a href="/download_ticket/{{ t.booking_id }}" class="btn btn-sm btn-ticket btn-download">
+                        <i class="bi bi-download me-1"></i>Download
+                    </a>
+
+                    <a href="/cancel_ticket/{{ t.booking_id }}" class="btn btn-sm btn-ticket"
+                        onclick="return confirmCancel();">
+                        <i class="bi bi-x-circle me-1"></i>Cancel
+                    </a>
+                </div>
+            </div>
+
+            <div class="qr-box">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{ t.booking_id }}">
+                <div>Scan at entry</div>
+            </div>
+
+            <span class="status-badge status-today">Today</span>
         </div>
-        <span class="ticket-status upcoming">Upcoming</span>
-    </div>
-
-    <div class="ticket-card">
-        <img src="sportsevent.jpg">
-        <div class="flex-grow-1">
-            <h5>Football League Final</h5>
-            <p class="mb-1"><i class="bi bi-calendar-event"></i> 10 Mar 2026 · 5:00 PM</p>
-            <p class="mb-1"><i class="bi bi-tag"></i> Sports · Regular</p>
-            <p class="mb-0"><i class="bi bi-geo-alt"></i> London Stadium</p>
+        {% else %}
+        <div class="empty-state">
+            <i class="bi bi-calendar-x"></i>
+            <p>No events scheduled for today.</p>
         </div>
-        <span class="ticket-status upcoming">Upcoming</span>
-    </div>
+        {% endfor %}
 
-    <!-- PAST TICKETS -->
-    <h4 class="section-title">Past Events</h4>
+        <!-- UPCOMING -->
+        <h4 class="section-title">
+            <i class="bi bi-clock-history"></i> Upcoming
+        </h4>
 
-    <div class="ticket-card">
-        <img src="partyevent.jpg">
-        <div class="flex-grow-1">
-            <h5>New Year Party</h5>
-            <p class="mb-1"><i class="bi bi-calendar-event"></i> 31 Dec 2025 · 10:00 PM</p>
-            <p class="mb-1"><i class="bi bi-tag"></i> Party · Free Entry</p>
-            <p class="mb-0"><i class="bi bi-geo-alt"></i> Downtown Club</p>
+        {% for t in upcoming_events %}
+        <div class="ticket-card">
+            <a href="/event/{{ t.event_id }}">
+                <img src="{{ url_for('static', filename='uploads/' + t.image) }}" class="ticket-image">
+            </a>
+
+            <div class="flex-grow-1 ticket-meta">
+                <h5 class="fw-bold">{{ t.name }}</h5>
+                <p><i class="bi bi-calendar-event"></i>{{ t.date }} · {{ t.time }}</p>
+                <p><i class="bi bi-receipt"></i>Booking ID: {{ t.booking_id }}</p>
+                <p><i class="bi bi-credit-card"></i>Payment: {{ t.payment }}</p>
+
+                <div class="ticket-actions mt-2">
+                    <a href="/download_ticket/{{ t.booking_id }}" class="btn btn-sm btn-ticket btn-download">
+                        <i class="bi bi-download me-1"></i>Download
+                    </a>
+
+                    <a href="/cancel_ticket/{{ t.booking_id }}" class="btn btn-sm btn-ticket"
+                        onclick="return confirmCancel();">
+                        <i class="bi bi-x-circle me-1"></i>Cancel
+                    </a>
+                </div>
+            </div>
+
+            <div class="qr-box">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{ t.booking_id }}">
+                <div>Entry QR</div>
+            </div>
+
+            <span class="status-badge status-upcoming">Upcoming</span>
         </div>
-        <span class="ticket-status past">Completed</span>
+        {% else %}
+        <div class="empty-state">
+            <i class="bi bi-hourglass-split"></i>
+            <p>No upcoming events.</p>
+        </div>
+        {% endfor %}
+
+        <!-- PAST -->
+        <h4 class="section-title">
+            <i class="bi bi-check-circle"></i> Past Events
+        </h4>
+
+        {% for t in past_events %}
+        <div class="ticket-card">
+            <a href="/event/{{ t.event_id }}">
+                <img src="{{ url_for('static', filename='uploads/' + t.image) }}" class="ticket-image">
+            </a>
+
+            <div class="flex-grow-1 ticket-meta">
+                <h5 class="fw-bold">{{ t.name }}</h5>
+                <p><i class="bi bi-calendar-event"></i>{{ t.date }} · {{ t.time }}</p>
+                <p><i class="bi bi-receipt"></i>Booking ID: {{ t.booking_id }}</p>
+                <p><i class="bi bi-credit-card"></i>Payment: {{ t.payment }}</p>
+            </div>
+
+            <span class="status-badge status-past">Completed</span>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="bi bi-archive"></i>
+            <p>No past events found.</p>
+        </div>
+        {% endfor %}
+
     </div>
 
-</div>
-
-<!-- LOGIN STATE SCRIPT -->
-<script>
-    const loggedInUser = localStorage.getItem("loggedInUser");
-    if (loggedInUser) {
-        document.getElementById("loginNav").classList.add("d-none");
-        document.getElementById("signupNav").classList.add("d-none");
-        document.getElementById("userNav").classList.remove("d-none");
-    }
-</script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

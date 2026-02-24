@@ -1,11 +1,225 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+<nav class="navbar bg-white shadow-sm sticky-top py-3">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-nowrap">
+
+        <!-- BRAND -->
+        <a class="navbar-brand d-flex align-items-center m-0" href="{{ url_for('home') }}" style="padding-left:5px;">
+
+            <img src="{{ url_for('static', filename='uploads/logo.jpg') }}" alt="SocioEvent Logo"
+                style="height:42px; width:auto; margin-right:10px;">
+
+            <span style="font-size:22px; font-weight:700; color:#1A3C8C;">
+                Socio<span style="color:#6c757d;">Event</span>
+            </span>
+        </a>
+
+        <!-- CENTER -->
+        <div class="d-flex align-items-center gap-4 flex-nowrap">
+
+            <!-- NAV BOX -->
+            <div class="nav-box">
+
+                <a href="{{ url_for('home') }}" class="nav-pill">
+                    <i class="bi bi-house"></i> Home
+                </a>
+
+                <a href="{{ url_for('find_events') }}" class="nav-pill">
+                    <i class="bi bi-search"></i> Find Events
+                </a>
+
+                {% if session.get("user") and session["user"]["role"] == "admin" %}
+                <a href="{{ url_for('create_event') }}" class="nav-pill">
+                    <i class="bi bi-plus-circle"></i> Create Event
+                </a>
+                {% endif %}
+
+            </div>
+
+            <!-- SEARCH -->
+            <form action="{{ url_for('search') }}" method="get">
+                <div class="search-box">
+                    <input type="text" name="q" placeholder="Search events..." value="{{ search_query or '' }}"
+                        required>
+                    <button type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+
+            <!-- RIGHT -->
+            <div class="nav-box">
+
+                {% if session.get("user") %}
+
+                <a href="{{ url_for('tickets') }}" class="nav-pill">
+                    <i class="bi bi-ticket-perforated"></i> My Tickets
+                </a>
+
+                <!-- ACCOUNT DROPDOWN -->
+                <div class="dropdown position-relative">
+
+                    <a class="nav-pill" href="#" id="accountDropdown">
+                        <i class="bi bi-person-circle"></i> Account
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end account-dropdown shadow" id="accountMenu"
+                        style="display:none; position:absolute; right:0; top:100%;">
+
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('profile') }}">
+                                <i class="bi bi-person"></i> Your Profile
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('settings') }}">
+                                <i class="bi bi-gear"></i> Settings
+                            </a>
+                        </li>
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item logout" href="{{ url_for('logout') }}">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+                {% else %}
+
+                <a href="{{ url_for('login') }}" class="nav-pill">
+                    <i class="bi bi-box-arrow-in-right"></i> Login
+                </a>
+
+                <a href="{{ url_for('signup') }}" class="nav-pill">
+                    <i class="bi bi-person-plus"></i> Sign Up
+                </a>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</nav>
+
+<style>
+    .nav-box {
+        background: #ECEFF3;
+        border-radius: 50px;
+        padding: 6px 10px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+    }
+
+    .nav-pill {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 30px;
+        text-decoration: none;
+        color: #1A3C8C;
+        transition: all 0.25s ease;
+        white-space: nowrap;
+        cursor: pointer;
+    }
+
+    .nav-pill:hover {
+        background: #1A3C8C;
+        color: white;
+    }
+
+    .search-box {
+        display: flex;
+        align-items: center;
+        background: #ECEFF3;
+        border-radius: 50px;
+        overflow: hidden;
+        width: 360px;
+    }
+
+    .search-box input {
+        border: none;
+        outline: none;
+        padding: 8px 18px;
+        width: 100%;
+        background: transparent;
+        font-size: 14px;
+    }
+
+    .search-box button {
+        background: #1A3C8C;
+        border: none;
+        color: white;
+        padding: 8px 20px;
+        cursor: pointer;
+    }
+
+    .account-dropdown {
+        background: #fbf7f2;
+        border-radius: 14px;
+        border: 1px solid #e5e7eb;
+        padding: 8px;
+        min-width: 220px;
+    }
+
+    .account-dropdown .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        font-weight: 500;
+        color: #1A3C8C;
+        transition: all 0.2s ease;
+    }
+
+    .account-dropdown .dropdown-item:hover {
+        background: #1A3C8C;
+        color: white;
+    }
+
+    .logout {
+        color: #b91c1c;
+    }
+
+    .logout:hover {
+        background: #b91c1c !important;
+        color: white !important;
+    }
+</style>
+
+<!-- 🔥 Manual Dropdown Script (Works Everywhere) -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const dropdownBtn = document.getElementById("accountDropdown");
+        const dropdownMenu = document.getElementById("accountMenu");
+
+        if (dropdownBtn) {
+            dropdownBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                dropdownMenu.style.display =
+                    dropdownMenu.style.display === "block" ? "none" : "block";
+            });
+
+            document.addEventListener("click", function (e) {
+                if (!dropdownBtn.contains(e.target) &&
+                    !dropdownMenu.contains(e.target)) {
+                    dropdownMenu.style.display = "none";
+                }
+            });
+        }
+    });
+</script>

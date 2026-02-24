@@ -5,111 +5,335 @@
     <meta charset="UTF-8">
     <title>{{ event.event_name }}</title>
 
-    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
+        :root {
+            --navy: #1A3C8C;
+            --beige: #fbf7f2;
+        }
+
         body {
-            background: #f8f9fa;
+            background: var(--beige);
+            font-family: 'Segoe UI', sans-serif;
         }
 
         .detail-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            background: #fff;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
         }
 
-        .main-image {
+        /* ===== NAVY BUTTON SYSTEM ===== */
+        .btn-navy {
+            background: var(--navy);
+            color: #fff;
+            border: 2px solid var(--navy);
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all .3s ease;
+        }
+
+        .btn-navy:hover {
+            background: #fff;
+            color: var(--navy);
+            border: 2px solid var(--navy);
+        }
+
+        /* ===== LIKE & SHARE ===== */
+        .action-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--navy);
+            background: #fff;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .3s ease;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Keep icon centered */
+        .action-btn i {
+            font-size: 18px;
+        }
+
+        /* Hide label initially */
+        .action-btn .label,
+        .action-btn span:not(.label) {
+            display: none;
+        }
+
+        /* On hover expand */
+        .action-btn:hover {
+            width: 140px;
+            border-radius: 50px;
+            background: var(--navy);
+            color: #fff;
+            justify-content: flex-start;
+            padding-left: 18px;
+            gap: 10px;
+        }
+
+        /* Show text on hover */
+        .action-btn:hover .label,
+        .action-btn:hover span:not(.label) {
+            display: inline;
+        }
+
+
+        /* permanent liked */
+        .liked {
+            background: var(--navy);
+            color: #fff;
+        }
+
+        /* ===== META ===== */
+        .event-meta li {
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .event-meta i {
+            color: var(--navy);
+        }
+
+        /* ===== GALLERY ===== */
+        .gallery-img {
+            height: 90px;
             width: 100%;
-            height: 350px;
             object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all .3s ease;
+        }
+
+        .gallery-img:hover {
+            transform: scale(1.05);
+        }
+
+        /* ===== COMMENTS ===== */
+        .comment-card {
+            background: var(--beige);
+            padding: 14px 18px;
+            border-radius: 14px;
+            font-size: 14px;
+        }
+
+        textarea {
+            font-size: 14px;
+        }
+
+        /* ===== SHARE MODAL STYLE ===== */
+        .share-option {
             border-radius: 12px;
+            padding: 12px;
+            transition: 0.2s;
+            cursor: pointer;
         }
 
-        .small-img {
+        .share-option:hover {
+            background: #f1f1f1;
+        }
+
+        /* ===== STICKY BOTTOM BAR ===== */
+        .sticky-action-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
             width: 100%;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-top: 10px;
+            background: #fff;
+            padding: 14px 0;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.08);
+            z-index: 1000;
         }
 
-        .badge-category {
-            background: #f05537;
-            color: white;
+        /* prevent content hiding behind bar */
+        body {
+            padding-bottom: 100px;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- SAME NAVBAR -->
-    <nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top px-3">
-        <div class="container-fluid">
-            <a class="navbar-brand fw-bold text-danger" href="/">event</a>
-
-            <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item"><a class="nav-link fw-semibold" href="/">Home</a></li>
-                <li class="nav-item"><a class="nav-link fw-semibold" href="/find_events">Find Events</a></li>
-                <li class="nav-item"><a class="nav-link fw-semibold" href="/create_event">Create Event</a></li>
-                <li class="nav-item"><a class="nav-link fw-semibold" href="/tickets">My Tickets</a></li>
-            </ul>
-        </div>
-    </nav>
+    {% include "navbar.html" %}
 
     <div class="container my-5">
         <div class="detail-card">
 
-            <div class="row">
-                <div class="col-md-7">
-                    {% if event.images and event.images|length > 0 %}
-                    <img src="/uploads/{{ event.images[0].split('/')[-1] }}" class="main-image shadow">
-                    {% else %}
-                    <img src="/static/default.jpg" class="main-image shadow">
-                    {% endif %}
+            <div class="row g-4">
+
+                <!-- LEFT SIDE -->
+                <div class="col-md-6">
+
+                    {% set main_img = event.images[0] if event.images else 'default.jpg' %}
+                    <img src="{{ url_for('static', filename='uploads/' + main_img) }}"
+                        class="img-fluid rounded shadow mb-3" style="height:330px;object-fit:cover;width:100%;">
+
+                    <!-- MULTIPLE IMAGES GALLERY -->
+                    <div class="row g-2 mb-3">
+                        {% for img in event.images[1:] %}
+                        <div class="col-3">
+                            <img src="{{ url_for('static', filename='uploads/' + img) }}" class="gallery-img">
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- LIKE & SHARE -->
+                    <div class="d-flex gap-3">
+
+                        <form action="{{ url_for('like_event', event_id=event.id) }}" method="POST">
+                            <button type="submit" class="action-btn {% if user_liked %}liked{% endif %}">
+                                <i class="bi bi-heart-fill"></i>
+                                <span>{{ event.like_count }}</span>
+                                <span class="label">
+                                    {% if user_liked %}Unlike{% else %}Like{% endif %}
+                                </span>
+                            </button>
+                        </form>
+
+                        <button class="action-btn" data-bs-toggle="modal" data-bs-target="#shareModal">
+                            <i class="bi bi-share-fill"></i>
+                            <span class="label">Share</span>
+                        </button>
+
+                    </div>
 
                 </div>
 
-                <div class="col-md-5">
-                    <h2 class="fw-bold">{{ event.event_name }}</h2>
-                    <span class="badge badge-category mb-3">{{ event.categories }}</span>
+                <!-- RIGHT SIDE DETAILS -->
+                <div class="col-md-6">
+                    <h3 class="fw-semibold">{{ event.event_name }}</h3>
+                    <span class="badge bg-dark mt-2">{{ event.categories }}</span>
 
-                    <p><strong>📅 Date:</strong> {{ event.event_date }}</p>
-                    <p><strong>⏰ Time:</strong> {{ event.event_time }}</p>
-                    <p><strong>🎯 Capacity:</strong> {{ event.event_capacity }}</p>
-
-                    <p><strong>🎟 Ticket:</strong> {{ event.ticket_type | capitalize }}
-                        {% if event.ticket_type == 'paid' %}
-                        - ₹{{ event.ticket_price }}
-                        {% endif %}
-                    </p>
-
-                    <p><strong>🎤 Guests:</strong> {{ event.guest_speaker or "Not specified" }}</p>
-
-                    <h5 class="mt-3">Features</h5>
-                    <p>{{ event.event_features }}</p>
-
-                    <h5 class="mt-3">Description</h5>
-                    <p>{{ event.event_description }}</p>
-
-                    <a href="/find_events" class="btn btn-outline-secondary mt-3">← Back to Events</a>
+                    <ul class="list-unstyled mt-3 event-meta">
+                        <li><i class="bi bi-calendar-event"></i><strong>Date:</strong> {{ event.event_date }}</li>
+                        <li><i class="bi bi-clock"></i><strong>Time:</strong> {{ event.event_time }}</li>
+                        <li><i class="bi bi-geo-alt"></i><strong>Location:</strong> {{ event.event_address }}</li>
+                        <li><i class="bi bi-people"></i><strong>Capacity:</strong> {{ event.event_capacity }}</li>
+                        <li><i class="bi bi-shield-check"></i><strong>Age Limit:</strong> {{ event.age_limit }}</li>
+                        <li><i class="bi bi-translate"></i><strong>Language:</strong> {{ event.event_language }}</li>
+                        <li><i class="bi bi-ticket-perforated"></i><strong>Ticket:</strong> {{ event.ticket_type }} -
+                            ₹{{ event.ticket_price }}</li>
+                        <li><i class="bi bi-mic"></i><strong>Guests:</strong> {{ event.guest_speaker }}</li>
+                    </ul>
                 </div>
+
             </div>
 
-            <h4 class="mt-5 mb-3">More Images</h4>
-            <div class="row">
-                {% for img in event.images %}
-                <div class="col-md-3 col-sm-6">
-                    <img src="/static/uploads/{{ img }}" class="small-img shadow">
+            <!-- DESCRIPTION -->
+            <div class="mt-4">
+                <h5>Event Description</h5>
+                <p style="font-size:14px;line-height:1.7;">
+                    {{ event.event_description }}
+                </p>
+            </div>
+
+            <hr class="my-5">
+
+            <!-- COMMENTS -->
+            <h5 class="fw-semibold mb-3">Comments</h5>
+
+            {% if session.get("user") %}
+            <form action="{{ url_for('add_comment', event_id=event.id) }}" method="POST">
+                <textarea name="comment" rows="2" class="form-control mb-3" placeholder="Write your comment..."
+                    required></textarea>
+
+                <button type="submit" class="btn btn-navy px-4">
+                    <i class="bi bi-chat-dots"></i> Post Comment
+                </button>
+            </form>
+            {% endif %}
+
+            <div class="mt-4">
+                {% for c in comments %}
+                <div class="comment-card mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <strong>{{ c[2] }}</strong>
+                        <small class="text-muted">
+                            {{ c[1] | time_ago }}
+                        </small>
+                    </div>
+                    <p class="mb-0">{{ c[0] }}</p>
                 </div>
                 {% endfor %}
-
             </div>
+
+
+            <!-- BUY & BACK -->
+            <!-- STICKY BOTTOM ACTION BAR -->
+            <div class="sticky-action-bar">
+                <div class="container">
+                    <div class="d-flex gap-3">
+                        <a href="{{ url_for('buy_ticket', event_id=event.id) }}" class="btn btn-navy w-100 py-2">
+                            <i class="bi bi-ticket-perforated"></i> Buy Ticket
+                        </a>
+
+                        <a href="{{ url_for('find_events') }}" class="btn btn-navy w-100 py-2">
+                            <i class="bi bi-arrow-left"></i> Go Back
+                        </a>
+                    </div>
+                </div>
+            </div>
+
 
         </div>
     </div>
+
+    <!-- YOUTUBE STYLE SHARE MODAL -->
+    <div class="modal fade" id="shareModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content p-4">
+
+                <h5 class="mb-3">Share</h5>
+
+                <div class="d-flex flex-wrap gap-3">
+
+                    <div class="share-option" onclick="copyLink()">
+                        <i class="bi bi-link-45deg fs-4"></i>
+                        <p class="mb-0 small">Copy Link</p>
+                    </div>
+
+                    <a class="share-option text-dark" href="https://wa.me/?text={{ request.url }}" target="_blank">
+                        <i class="bi bi-whatsapp fs-4"></i>
+                        <p class="mb-0 small">WhatsApp</p>
+                    </a>
+
+                    <a class="share-option text-dark" href="https://twitter.com/intent/tweet?url={{ request.url }}"
+                        target="_blank">
+                        <i class="bi bi-twitter fs-4"></i>
+                        <p class="mb-0 small">Twitter</p>
+                    </a>
+
+                    <a class="share-option text-dark"
+                        href="https://www.facebook.com/sharer/sharer.php?u={{ request.url }}" target="_blank">
+                        <i class="bi bi-facebook fs-4"></i>
+                        <p class="mb-0 small">Facebook</p>
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href);
+            alert("Link copied!");
+        }
+    </script>
 
 </body>
 

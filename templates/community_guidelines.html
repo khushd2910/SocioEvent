@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Community Guidelines</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #fbf7f2;
+        }
+
+        .guidelines-wrapper {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .guidelines-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+        }
+
+        .page-title {
+            color: #1A3C8C;
+            font-weight: 600;
+        }
+
+        .page-subtitle {
+            color: #64748B;
+            font-size: 0.95rem;
+        }
+
+        .guideline-item {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .guideline-icon {
+            font-size: 20px;
+            color: #1A3C8C;
+            margin-top: 3px;
+        }
+
+        .guideline-title {
+            font-weight: 600;
+            color: #0F172A;
+            margin-bottom: 4px;
+        }
+
+        .guideline-text {
+            font-size: 0.9rem;
+            color: #475569;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #E5E7EB;
+            margin: 30px 0;
+        }
+
+        .note-box {
+            background: #F8FAFC;
+            border-radius: 14px;
+            padding: 16px;
+            font-size: 0.85rem;
+            color: #475569;
+            border: 1px solid #E5E7EB;
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include "navbar.html" %}
+
+    <div class="container my-5">
+        <div class="guidelines-wrapper">
+
+            <!-- HEADER -->
+            <div class="mb-4">
+                <h2 class="page-title mb-1">Community Guidelines</h2>
+                <p class="page-subtitle">
+                    These guidelines help keep our platform safe, respectful, and trustworthy for everyone.
+                </p>
+            </div>
+
+            <div class="guidelines-card">
+
+                <!-- GUIDELINES -->
+                <div class="guideline-item">
+                    <i class="bi bi-people guideline-icon"></i>
+                    <div>
+                        <div class="guideline-title">Respect All Users</div>
+                        <div class="guideline-text">
+                            Treat event organizers, attendees, and staff with respect at all times.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guideline-item">
+                    <i class="bi bi-exclamation-triangle guideline-icon"></i>
+                    <div>
+                        <div class="guideline-title">No Fake or Misleading Events</div>
+                        <div class="guideline-text">
+                            Creating misleading, duplicate, or fraudulent events may result in account suspension.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guideline-item">
+                    <i class="bi bi-calendar-check guideline-icon"></i>
+                    <div>
+                        <div class="guideline-title">Accurate Event Information</div>
+                        <div class="guideline-text">
+                            Ensure event date, time, location, pricing, and descriptions are correct and up to date.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guideline-item">
+                    <i class="bi bi-shield-exclamation guideline-icon"></i>
+                    <div>
+                        <div class="guideline-title">No Harassment or Abuse</div>
+                        <div class="guideline-text">
+                            Harassment, hate speech, or abusive behavior is strictly prohibited on the platform.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guideline-item">
+                    <i class="bi bi-ticket-perforated guideline-icon"></i>
+                    <div>
+                        <div class="guideline-title">Fair Ticket Usage</div>
+                        <div class="guideline-text">
+                            Tickets must not be resold, duplicated, or misused outside the platform.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guideline-item">
+                    <i class="bi bi-lock guideline-icon"></i>
+                    <div>
+                        <div class="guideline-title">Privacy & Data Protection</div>
+                        <div class="guideline-text">
+                            Personal information must never be shared, misused, or collected without consent.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guideline-item">
+                    <i class="bi bi-x-octagon guideline-icon"></i>
+                    <div>
+                        <div class="guideline-title">No Platform Misuse</div>
+                        <div class="guideline-text">
+                            Automated scraping, spamming, or abusing platform features is not allowed.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guideline-item">
+                    <i class="bi bi-file-earmark-text guideline-icon"></i>
+                    <div>
+                        <div class="guideline-title">Intellectual Property</div>
+                        <div class="guideline-text">
+                            Do not upload copyrighted images, logos, or content without proper rights.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guideline-item">
+                    <i class="bi bi-arrow-repeat guideline-icon"></i>
+                    <div>
+                        <div class="guideline-title">Event Cancellations & Changes</div>
+                        <div class="guideline-text">
+                            Organizers are responsible for informing attendees of cancellations or changes.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- NOTE -->
+                <div class="note-box">
+                    <strong>Enforcement Notice:</strong>
+                    Violations of these guidelines may result in content removal, account suspension, or permanent bans.
+                    These guidelines may be updated periodically to improve platform safety.
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

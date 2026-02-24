@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Your Profile</title>
+
+    <!-- Bootstrap + Icons + Animate -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" />
+
+    <style>
+        :root {
+            --navy: #0b1f3a;
+            --beige: #f3e7d3;
+            --soft-beige: #fbf7f2;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8f5f0, #ebe3d5);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.08);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        /* Avatar */
+        .avatar-wrapper {
+            position: relative;
+            width: 140px;
+            height: 140px;
+        }
+
+        .avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f3e7d3, #e6d5b8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            font-weight: bold;
+            color: var(--navy);
+            transition: 0.4s;
+        }
+
+        .avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .edit-avatar {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: white;
+            border-radius: 50%;
+            padding: 8px 10px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .edit-avatar:hover {
+            background: var(--navy);
+            color: white;
+        }
+
+        /* Stats */
+        .stat-box {
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            text-align: center;
+            transition: 0.4s;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-box:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-box h3 {
+            font-weight: 800;
+            color: var(--navy);
+        }
+
+        /* Beige Badges */
+        .badge-custom {
+            background: var(--beige);
+            color: var(--navy);
+            padding: 8px 14px;
+            border-radius: 50px;
+            font-size: 13px;
+            margin-right: 6px;
+            font-weight: 500;
+        }
+
+        .section-title {
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 20px;
+        }
+
+        .activity-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            transition: 0.3s;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .activity-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .btn-navy {
+            background: var(--navy);
+            color: white;
+            border-radius: 12px;
+            padding: 10px 25px;
+        }
+
+        .btn-navy:hover {
+            background: #07172b;
+            color: white;
+        }
+
+        .progress {
+            height: 12px;
+            border-radius: 50px;
+            background: #e9e1d3;
+        }
+
+        .progress-bar {
+            background: var(--navy);
+        }
+
+        .info-box {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include "navbar.html" %}
+
+    <div class="container py-5">
+
+        <div class="profile-card">
+
+            <!-- TOP SECTION -->
+            <div class="row align-items-center mb-5">
+
+                <div class="col-md-3 text-center">
+                    <div class="avatar-wrapper mx-auto">
+                        <div class="avatar">
+                            {% if user and user[0] %}
+                            {{ user[0][0] | upper }}
+                            {% else %}
+                            U
+                            {% endif %}
+                        </div>
+                        <div class="edit-avatar">
+                            <i class="bi bi-pencil"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <h2 class="fw-bold mb-1">
+                        {{ user[0] if user else "User Name" }}
+                    </h2>
+
+                    <p class="text-muted">
+                        <i class="bi bi-envelope"></i>
+                        {{ user[1] if user else "No Email Provided" }}
+                    </p>
+
+                    <p class="text-muted">
+                        <i class="bi bi-geo-alt"></i> New York, USA
+                        &nbsp; | &nbsp;
+                        <i class="bi bi-calendar-check"></i> Member since 2024
+                    </p>
+
+                    <small class="text-muted">Profile Strength</small>
+                    <div class="progress mt-2">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 85%"></div>
+                    </div>
+
+                    <div class="mt-3">
+                        <span class="badge-custom"><i class="bi bi-award"></i> Event Pro</span>
+                        <span class="badge-custom"><i class="bi bi-star"></i> Top Organizer</span>
+                        <span class="badge-custom"><i class="bi bi-chat-dots"></i> Active Member</span>
+                    </div>
+                </div>
+
+                <div class="col-md-3 text-end">
+                    <a href="/settings" class="btn btn-navy">
+                        <i class="bi bi-gear"></i> Settings
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- STATS SECTION -->
+            <div class="row g-4 mb-5">
+
+                <div class="col-md-4">
+                    <div class="stat-box">
+                        <h3>{{ events_created }}</h3>
+                        <p><i class="bi bi-calendar-event"></i> Events Created</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="stat-box">
+                        <h3>{{ tickets_bought }}</h3>
+                        <p><i class="bi bi-ticket-perforated"></i> Tickets Purchased</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="stat-box">
+                        <h3>{{ comments_count }}</h3>
+                        <p><i class="bi bi-chat-left-text"></i> Community Comments</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- EXTRA INFO SECTION -->
+            <div class="row g-4">
+
+                <div class="col-md-6">
+                    <div class="info-box">
+                        <h5 class="section-title"><i class="bi bi-person-lines-fill"></i> About Me</h5>
+                        <p class="text-muted">
+                            Passionate event organizer who loves creating unforgettable experiences.
+                            Specialized in tech conferences, music festivals, and networking meetups.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="info-box">
+                        <h5 class="section-title"><i class="bi bi-clock-history"></i> Recent Activity</h5>
+
+                        <div class="activity-card mb-3">
+                            <strong><i class="bi bi-music-note-beamed"></i> Music Fest 2025</strong>
+                            <p class="text-muted mb-0">Booked 4 tickets • 2 days ago</p>
+                        </div>
+
+                        <div class="activity-card">
+                            <strong><i class="bi bi-laptop"></i> Tech Conference</strong>
+                            <p class="text-muted mb-0">Created new event • 1 week ago</p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

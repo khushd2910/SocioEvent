@@ -3,160 +3,291 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Sign Up</title>
+    <title>Create Account</title>
 
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
         body {
-            background-image: url("Event_Man.jpg");
+            min-height: 100vh;
+            background:
+                linear-gradient(rgba(26, 60, 140, 0.65), rgba(26, 60, 140, 0.65)),
+                url("/static/uploads/loginbg.jpg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            height: 100vh;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        .signup-wrapper {
+            min-height: 90vh;
             display: flex;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
         }
 
         .signup-card {
-            width: 450px;
+            width: 460px;
             padding: 35px;
-            margin-left: 180px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        /* 🔥 FIXED: matches h3 class="title" */
+        .title {
+            color: #1A3C8C;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #6c757d;
+        }
+
+        /* EXACT same input look as login */
+        .input-group-text {
+            background: #fbf7f2;
+            border-right: 0;
+        }
+
+        .form-control,
+        .form-select {
+            border-left: 0;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            box-shadow: none;
+            border-color: #1A3C8C;
+        }
+
+        /* 🔥 FIXED: you are using btn-primary, not btn-signup */
+        .btn-primary {
+            background-color: #1A3C8C;
+            border-radius: 10px;
+            font-weight: 600;
+            padding: 10px;
+            transition: 0.3s;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #143070;
+        }
+
+        /* Trust box same as login */
+        .trust-box {
+            background: #fbf7f2;
             border-radius: 12px;
-            background-color: rgb(255, 255, 255);
+            padding: 12px;
+            font-size: 0.85rem;
+            margin-top: 18px;
         }
 
-        .error {
-            color: red;
+        .trust-box i {
+            color: #1A3C8C;
         }
 
-        .success {
-            color: green;
+        a {
+            color: #1A3C8C;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            max-width: 460px;
+            margin: 15px auto;
+        }
+
+        .admin-section {
+            display: none;
+            margin-top: 10px;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="signup-card shadow">
-        <h3 class="text-center mb-4">Sign Up</h3>
+    {% include "navbar.html" %}
 
-        <form id="signupForm">
-            <div class="mb-3">
-                <label>Full Name</label>
-                <input type="text" id="name" class="form-control">
-            </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} text-center">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
 
-            <div class="mb-3">
-                <label>Email</label>
-                <input type="email" id="email" class="form-control">
-            </div>
+    <div class="signup-wrapper">
+        <div class="signup-card">
 
-            <div class="mb-3">
-                <label>Password</label>
-                <input type="password" id="password" class="form-control">
-            </div>
+            <h3 class="text-center title mb-1">Create Your Account</h3>
+            <p class="text-center text-muted mb-4">
+                Join the platform & start managing events
+            </p>
 
-            <div class="mb-3">
-                <label>Confirm Password</label>
-                <input type="password" id="confirmPassword" class="form-control">
-            </div>
+            <form method="POST" action="{{ url_for('signup') }}" autocomplete="off" enctype="multipart/form-data">
 
-            <div class="mb-2 form-check">
-                <input type="checkbox" class="form-check-input" onclick="toggleSignupPassword()">
-                <label class="form-check-label">Show Password</label>
-            </div>
+                <!-- Full Name -->
+                <div class="mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                        <input type="text" name="full_name" class="form-control" placeholder="Full Name" required>
+                    </div>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">@</span>
+                    <input type="text" name="username" class="form-control" placeholder="Username" required
+                        autocomplete="off">
+                </div>
+
+                {% if errors and errors.get('username') %}
+                <div class="text-danger small mt-1">{{ errors.username }}</div>
+                {% endif %}
+
+                <!-- Email -->
+                <div class="mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                        <input type="email" name="email" class="form-control" placeholder="Email" required
+                            autocomplete="off">
+                    </div>
+                </div>
+
+                {% if errors and errors.get('email') %}
+                <div class="text-danger small mt-1">{{ errors.email }}</div>
+                {% endif %}
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
+                    <input type="text" name="phone" class="form-control" placeholder="Phone Number" required
+                        autocomplete="off">
+                </div>
+
+                {% if errors and errors.get('phone') %}
+                <div class="text-danger small mt-1">{{ errors.phone }}</div>
+                {% endif %}
 
 
-            <div id="message" class="mb-3"></div>
+                <!-- Password -->
+                <div class="mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                        <input type="password" name="password" class="form-control" placeholder="Password" required
+                            autocomplete="new-password">
+                    </div>
+                </div>
 
-            <button type="submit" class="btn btn-success w-100">Create Account</button>
-        </form>
+                <!-- Confirm Password -->
+                <div class="mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-shield-lock-fill"></i></span>
+                        <input type="password" name="confirm_password" class="form-control"
+                            placeholder="Confirm Password" required autocomplete="new-password">
+                    </div>
+                </div>
 
-        <p class="text-center mt-3">
-            Already have an account?
-            <a href="login.html">Login</a>
-        </p>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" onclick="toggleLoginPassword()">
+                    <label class="form-check-label">Show Password</label>
+                </div>
+
+                <!-- Role -->
+                <div class="mb-3">
+                    <select name="role" class="form-select" onchange="toggleAdmin(this.value)" required>
+                        <option value="client">Client (Buy Tickets)</option>
+                        <option value="admin">Organizer (Create Events)</option>
+                    </select>
+                </div>
+
+                <!-- ADMIN VERIFICATION -->
+                <div class="admin-section" id="adminSection">
+
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-person-badge-fill"></i></span>
+                            <input type="text" name="admin_username" class="form-control" placeholder="Admin Username">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                            <input type="password" name="admin_password" class="form-control"
+                                placeholder="Admin Password">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-key-fill"></i></span>
+                            <input type="text" name="verification_code" class="form-control"
+                                placeholder="Verification Code">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
+                    <input type="text" name="location" class="form-control" placeholder="Location">
+                </div>
+
+                <textarea name="bio" class="form-control mb-3" rows="2" placeholder="Short bio"></textarea>
+
+                <div class="mb-3">
+                    <label class="form-label">Date of Birth</label>
+                    <input type="date" name="date_of_birth" class="form-control">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Profile Image</label>
+                    <input type="file" name="profile_image" class="form-control">
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-person-plus-fill me-1"></i> Create Account
+                </button>
+
+                <p class="text-center mt-3">
+                    Already have an account? <a href="/login">Login</a>
+                </p>
+
+                <!-- TRUST -->
+                <div class="trust-box text-center">
+                    <div class="d-flex justify-content-around">
+                        <span><i class="bi bi-shield-lock-fill"></i> Secure</span>
+                        <span><i class="bi bi-lock-fill"></i> Encrypted</span>
+                        <span><i class="bi bi-check-circle-fill"></i> Trusted</span>
+                    </div>
+                </div>
+
+            </form>
+        </div>
     </div>
 
     <script>
-        function toggleSignupPassword() {
-            let pwd = document.getElementById("password");
-            let confirmPwd = document.getElementById("confirmPassword");
-
-            pwd.type = pwd.type === "password" ? "text" : "password";
-            confirmPwd.type = confirmPwd.type === "password" ? "text" : "password";
+        function toggleAdmin(role) {
+            document.getElementById("adminSection").style.display =
+                role === "admin" ? "block" : "none";
         }
 
-        document.getElementById("signupForm").addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            let name = document.getElementById("name").value.trim();
-            let email = document.getElementById("email").value.trim();
-            let password = document.getElementById("password").value.trim();
-            let confirm = document.getElementById("confirmPassword").value.trim();
-            let message = document.getElementById("message");
-
-            // Email & password validation
-            let emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-            let hasUppercase = /[A-Z]/.test(password);
-            let hasNumber = /[0-9]/.test(password);
-            let hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-
-            if (!name || !email || !password || !confirm) {
-                message.innerHTML = "<p class='error'>All fields are required</p>";
-                return;
-            }
-
-            if (!emailPattern.test(email)) {
-                message.innerHTML = "<p class='error'>Email must end with @gmail.com</p>";
-                return;
-            }
-
-            if (password.length < 8 || !hasUppercase || !hasNumber || !hasSpecial) {
-                message.innerHTML = `
-            <p class='error'>
-                Password must contain:
-                <br>• 8 characters
-                <br>• 1 uppercase letter
-                <br>• 1 number
-                <br>• 1 special character
-            </p>`;
-                return;
-            }
-
-            if (password !== confirm) {
-                message.innerHTML = "<p class='error'>Passwords do not match</p>";
-                return;
-            }
-
-            // Get existing users or empty array
-            let users = JSON.parse(localStorage.getItem("users")) || [];
-
-            // Check if email already exists
-            let userExists = users.some(user => user.email === email);
-            if (userExists) {
-                message.innerHTML = "<p class='error'>Email already registered</p>";
-                return;
-            }
-
-            // Add new user
-            users.push({ email, password });
-
-            // Save back to localStorage
-            localStorage.setItem("users", JSON.stringify(users));
-
-            message.innerHTML = "<p class='success'>Account created successfully</p>";
-
-            setTimeout(() => {
-                window.location.href = "login.html";
-            }, 1200);
-        });
+        function toggleLoginPassword() {
+            let pwd = document.getElementById("loginPassword");
+            pwd.type = pwd.type === "password" ? "text" : "password";
+        }
     </script>
-
-
-
 
 </body>
 

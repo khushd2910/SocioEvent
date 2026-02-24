@@ -1,93 +1,297 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Find Events</title>
 
-    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
+        /* ===== PAGE BACKGROUND ===== */
         body {
-            background: #f8f9fa;
+            background: #fffcf7;
+            /* beige */
         }
 
-        .event-card {
-            border-radius: 12px;
-            overflow: hidden;
-            transition: transform 0.2s, box-shadow 0.2s;
-            cursor: pointer;
+        /* ===== SIDEBAR BOXES ===== */
+        .filter-box,
+        .trending-box {
+            background: #ffffff;
+            /* pure white */
+            padding: 20px;
+            border-radius: 14px;
+            border: 1px solid #e6dccf;
+            /* soft beige border */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
         }
+
+        .filter-box h5,
+        .trending-box h5 {
+            color: #1A3C8C;
+            font-weight: 600;
+        }
+
+        /* ===== SELECT + INPUT ===== */
+        .form-select,
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #d8d1c6;
+        }
+
+        .form-select:focus,
+        .form-control:focus {
+            border-color: #1A3C8C;
+            box-shadow: 0 0 0 0.15rem rgba(26, 60, 140, 0.15);
+        }
+
+        /* ===== APPLY BUTTON ===== */
+        /* ===== APPLY FILTER BUTTON ===== */
+        .btn-apply {
+            background: #1A3C8C;
+            color: white;
+            border-radius: 8px;
+            font-weight: 500;
+            border: 2px solid #1A3C8C;
+            transition: 0.3s ease;
+        }
+
+        .btn-apply:hover {
+            background: white;
+            color: #1A3C8C;
+            border: #1A3C8C solid 2px;
+            border-radius: 10px;
+
+        }
+
+        /* ===== CALENDAR BUTTON ===== */
+        .btn-calendar {
+            background: #1A3C8C;
+            color: white;
+            border-radius: 8px;
+            border: 2px solid #1A3C8C;
+            transition: 0.3s ease;
+        }
+
+        .btn-calendar:hover {
+            background: white;
+            color: #1A3C8C;
+            border: #1A3C8C solid 2px;
+            border-radius: 10px;
+        }
+
+
+        /* ===== EVENT CARD ===== */
+        .event-card {
+            background: #fbf7f2;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #e6dccf;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+            transition: 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        /* White content area inside card */
+        .event-card .card-content {
+            background: #ffffff;
+            padding: 16px;
+        }
+
 
         .event-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
         }
 
-        .event-img {
+        .event-card img {
+            width: 100%;
             height: 180px;
             object-fit: cover;
         }
 
-        .category-badge {
-            background: #f05537;
-            color: white;
-            font-size: 12px;
+        .event-card h6 {
+            font-weight: 600;
+            color: #1A3C8C;
+        }
+
+        .event-address {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 2.6em;
+        }
+
+        .event-card h6 {
+            font-size: 14px;
+        }
+
+        .event-card p {
+            font-size: 12.5px;
+            margin-bottom: 6px;
+        }
+
+
+        .event-card i {
+            color: #1A3C8C;
+        }
+
+        /* ===== 5 CARDS PER ROW ON LARGE SCREENS ===== */
+        @media (min-width: 1400px) {
+            .col-xl-custom {
+                flex: 0 0 20%;
+                max-width: 20%;
+            }
+        }
+
+
+        hr {
+            opacity: 0.15;
         }
     </style>
 </head>
 
 <body>
 
-<!-- SAME NAVBAR AS CREATE EVENT -->
-<nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top px-3">
-    <div class="container-fluid">
-        <a class="navbar-brand fw-bold text-danger" href="/">event</a>
+    {% include "navbar.html" %}
 
-        <ul class="navbar-nav ms-auto align-items-center">
-            <li class="nav-item"><a class="nav-link fw-semibold" href="/">Home</a></li>
-            <li class="nav-item"><a class="nav-link fw-semibold active" href="/find_events">Find Events</a></li>
-            <li class="nav-item"><a class="nav-link fw-semibold" href="/create_event">Create Event</a></li>
-            <li class="nav-item"><a class="nav-link fw-semibold" href="/tickets">My Tickets</a></li>
-        </ul>
-    </div>
-</nav>
+    <div class="container my-5">
 
-<div class="container my-5">
-    <h2 class="mb-4 fw-bold">Discover Events</h2>
+        <div class="row">
 
-    <div class="row">
-        {% for event in events %}
-        <div class="col-md-4 col-sm-6 mb-4">
-            <a href="/event/{{ event.id }}" style="text-decoration: none; color: inherit;">
-                <div class="card event-card">
-                    <img src="/uploads/{{ event.image_path.split('/')[-1] }}" 
-                         class="card-img-top event-img">
+            <!-- SIDEBAR -->
+            <div class="col-md-3">
 
-                    <div class="card-body">
-                        <span class="badge category-badge mb-2">{{ event.categories }}</span>
-                        <h5 class="card-title fw-bold">{{ event.event_name }}</h5>
+                <!-- SORT -->
+                <div class="filter-box mb-4">
+                    <h5>Sort Events</h5>
+                    <hr>
 
-                        <p class="card-text mb-1">
-                            📅 {{ event.event_date }} | ⏰ {{ event.event_time }}
-                        </p>
+                    <form method="GET" action="/find_events">
 
-                        <p class="card-text">
-                            🎟 {{ event.ticket_type | capitalize }}
-                            {% if event.ticket_type == 'paid' %}
-                            - ₹{{ event.ticket_price }}
-                            {% endif %}
-                        </p>
+                        <input type="hidden" name="category" value="{{ selected_category }}">
+                        <input type="hidden" name="date" value="{{ selected_date }}">
+                        <input type="hidden" name="price" value="{{ selected_price }}">
+                        <input type="hidden" name="city" value="{{ selected_city }}">
 
-                        <button class="btn btn-outline-danger btn-sm">View Details</button>
-                    </div>
+                        <select name="sort" class="form-select" onchange="this.form.submit()">
+                            <option value="">Default</option>
+                            <option value="date" {% if selected_sort=="date" %}selected{% endif %}>Date</option>
+                            <option value="views" {% if selected_sort=="views" %}selected{% endif %}>Views</option>
+                            <option value="likes" {% if selected_sort=="likes" %}selected{% endif %}>Likes</option>
+                            <option value="purchases" {% if selected_sort=="purchases" %}selected{% endif %}>Most
+                                Purchased</option>
+                        </select>
+                    </form>
                 </div>
-            </a>
+
+                <!-- FILTER -->
+                <div class="filter-box mb-4">
+                    <h5>Filters</h5>
+                    <hr>
+
+                    <form method="GET" action="/find_events">
+                        <input type="hidden" name="sort" value="{{ selected_sort }}">
+
+                        <label>Date</label>
+                        <select name="date" class="form-select mb-2">
+                            <option value="">All Dates</option>
+                            <option value="today">Today</option>
+                            <option value="weekend">This Weekend</option>
+                            <option value="month">This Month</option>
+                        </select>
+
+                        <label>Price</label>
+                        <select name="price" class="form-select mb-2">
+                            <option value="">Any</option>
+                            <option value="free">Free</option>
+                            <option value="paid">Paid</option>
+                        </select>
+
+                        <label>City</label>
+                        <input type="text" name="city" class="form-control mb-3" placeholder="Enter city">
+
+                        <button class="btn btn-apply w-100">Apply Filters</button>
+                    </form>
+                </div>
+
+                <!-- CALENDAR -->
+                <div class="text-center mt-4">
+                    <a href="/calendar" class="btn btn-calendar w-100">
+                        <i class="bi bi-calendar3"></i> Calendar View
+                    </a>
+                </div>
+
+                <br>
+
+                <!-- TRENDING -->
+                <div class="trending-box">
+                    <h5>Trending Events</h5>
+                    <hr>
+
+                    {% for t in trending %}
+                    <p>
+                        <a href="/event/{{ t[0] }}" class="text-decoration-none" style="color:#1A3C8C;">
+                            {{ t[1] }} — {{ t[2] }}
+                        </a>
+                    </p>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+            <!-- EVENTS GRID -->
+            <div class="col-md-9">
+
+                <div class="row g-3">
+                    {% for event in events %}
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-custom">
+
+                        <!-- Entire Card Clickable -->
+                        <a href="/event/{{ event[0] }}" class="event-card">
+
+                            {% set img = event[9] if event[9] else 'default.jpg' %}
+                            <img src="{{ url_for('static', filename='uploads/' + (event[9] or 'default.jpg')) }}"
+                                class="card-img-top" alt="Event Image">
+
+                            <div class="card-content">
+                                <h6>{{ event[1] }}</h6>
+
+                                <p class="mb-1">
+                                    <i class="bi bi-calendar"></i> {{ event[2] }} · {{ event[3] }}
+                                </p>
+
+                                <p class="event-address mb-1">
+                                    <i class="bi bi-geo-alt"></i> {{ event[7] }}
+                                </p>
+
+                                <!-- 👁 VIEW COUNT ADDED HERE -->
+                                <p class="mb-1">
+                                    <i class="bi bi-eye"></i> {{ event[8] or 0 }} Views
+                                </p>
+
+                                <p class="mb-1">
+                                    <i class="bi bi-tag"></i> {{ event[5] }}
+                                    {% if event[5] == 'paid' %}
+                                    · ₹{{ event[6] }}
+                                    {% endif %}
+                                </p>
+                            </div>
+
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
         </div>
-        {% endfor %}
+
     </div>
-</div>
 
 </body>
+
 </html>
