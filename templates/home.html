@@ -12,13 +12,150 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
 
     <style>
         /* ===== GLOBAL ===== */
         body {
             font-family: 'Poppins', sans-serif;
             background: #fffbf2;
+        }
+
+        /* ========== HERO RESET ========== */
+
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 90vh;
+            max-height: 900px;
+            min-height: 720px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Background Image */
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            z-index: 1;
+        }
+
+        /* Soft Beige Overlay */
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right,
+                    rgba(248, 244, 236, 0.495),
+                    rgba(248, 244, 236, 0.215),
+                    rgba(248, 244, 236, 0));
+            z-index: 2;
+        }
+
+        /* Content */
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 1200px;
+            padding-left: 80px;
+            padding-right: 40px;
+        }
+
+        /* Headline */
+        .hero-title {
+            font-size: 3.4rem;
+            font-weight: 800;
+            line-height: 1.15;
+            color: #111827;
+            max-width: 620px;
+        }
+
+        .hero-title span {
+            color: #1A3C8C;
+            /* navy highlight */
+        }
+
+        /* Subheading */
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: #4b5563;
+            margin-top: 16px;
+            max-width: 520px;
+        }
+
+        /* CTA Buttons */
+        .hero-actions {
+            margin-top: 28px;
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn-primary {
+            background: #1A3C8C;
+            color: white;
+            padding: 12px 26px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background: #143070;
+        }
+
+        .btn-secondary {
+            border: 2px solid #1A3C8C;
+            color: #1A3C8C;
+            padding: 12px 26px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(26, 60, 140, 0.08);
+        }
+
+        /* Trust Indicators */
+        .hero-trust {
+            margin-top: 36px;
+            display: flex;
+            gap: 32px;
+            font-size: 0.95rem;
+            color: #374151;
+        }
+
+        .hero-trust div {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-trust i {
+            color: #1A3C8C;
+            font-size: 1.1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero {
+                height: auto;
+                padding: 100px 0;
+            }
+
+            .hero-content {
+                padding-left: 40px;
+            }
+
+            .hero-title {
+                font-size: 2.6rem;
+            }
         }
 
         .main-wrapper {
@@ -285,59 +422,6 @@
             padding: 35px 0 50px 0;
             /* less from top */
         }
-
-        /* ===== HERO TEXT FINAL STYLE ===== */
-
-        .hero-text {
-            margin-top: 10px;
-            /* very little top spacing */
-            margin-bottom: 25px;
-            /* space between text & slider */
-            animation: fadeUp 0.8s ease forwards;
-        }
-
-        /* Main Heading */
-        .hero-title {
-            font-size: 30px;
-            font-weight: 700;
-            color: #ffffff;
-            margin: 0;
-            letter-spacing: 0.5px;
-            text-shadow: 0 6px 25px rgba(0, 0, 0, 0.6);
-            transition: transform 0.3s ease, letter-spacing 0.3s ease;
-        }
-
-        /* Subtle hover animation */
-        .hero-title:hover {
-            transform: translateY(-3px);
-            letter-spacing: 1px;
-        }
-
-        /* Subtitle */
-        .hero-subtitle {
-            margin-top: 8px;
-            font-size: 50px;
-            color: rgba(255, 255, 255, 0.92);
-            font-weight: 400;
-            transition: opacity 0.3s ease;
-        }
-
-        .hero-subtitle:hover {
-            opacity: 1;
-        }
-
-        /* Smooth entrance animation */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
     </style>
 
 
@@ -348,6 +432,50 @@
 
 
     {% include "navbar.html" %}
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+
+        <!-- Background Image -->
+        <img src="/static/uploads/hero-event.jpg" alt="Events" class="hero-bg">
+
+        <!-- Overlay -->
+        <div class="hero-overlay"></div>
+
+        <!-- Content -->
+        <div class="hero-content">
+
+            <h1 class="hero-title">
+                Discover events that
+                <span>match your vibe</span>
+            </h1>
+
+            <p class="hero-subtitle">
+                Experiences you’ll remember. Moments worth sharing.
+            </p>
+
+            <div class="hero-actions">
+                <a href="/find-events" class="btn-primary">Explore Events</a>
+                <a href="/create-event" class="btn-secondary">Create an Event</a>
+            </div>
+
+            <div class="hero-trust">
+                <div>
+                    <i class="bi bi-star-fill"></i>
+                    <span>4.9/5 rating</span>
+                </div>
+                <div>
+                    <i class="bi bi-calendar-event"></i>
+                    <span>500+ events</span>
+                </div>
+                <div>
+                    <i class="bi bi-people-fill"></i>
+                    <span>10k+ attendees</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
 
 
 
