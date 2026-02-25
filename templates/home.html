@@ -23,6 +23,22 @@
             background: #fffbf2;
         }
 
+        /* ===== HERO-NAVBAR BLEND ===== */
+        .navbar {
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .navbar.hero-mode {
+            background: rgba(255, 255, 255, 0.65) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: none;
+        }
+
+        .navbar.scrolled {
+            background: white !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
         /* ========== HERO RESET ========== */
 
         .hero {
@@ -140,6 +156,140 @@
         .hero-trust i {
             color: #1A3C8C;
             font-size: 1.1rem;
+        }
+
+        .hero h1 {
+            animation: heroFadeUp 0.7s ease forwards;
+        }
+
+        .hero p {
+            animation: heroFadeUp 0.7s ease forwards;
+            animation-delay: 0.1s;
+        }
+
+        .hero .hero-actions {
+            animation: heroFadeUp 0.7s ease forwards;
+            animation-delay: 0.2s;
+        }
+
+        .hero .trust-item {
+            animation: heroFadeUp 0.6s ease forwards;
+        }
+
+        .hero-image {
+            animation: floatSlow 10s ease-in-out infinite;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 26px;
+            height: 42px;
+            border: 2px solid rgba(26, 60, 140, 0.35);
+            border-radius: 20px;
+        }
+
+        .scroll-indicator span {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            width: 4px;
+            height: 8px;
+            background: #1A3C8C;
+            border-radius: 4px;
+            transform: translateX(-50%);
+            animation: scrollMove 1.6s infinite;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(to bottom,
+                    rgba(251, 247, 242, 0) 0%,
+                    #fbf7f2 100%);
+            pointer-events: none;
+        }
+
+        .trust {
+            display: flex;
+            gap: 28px;
+            margin-top: 26px;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.9;
+        }
+
+        .trust-item i {
+            font-size: 18px;
+            color: #1A3C8C;
+        }
+
+        .trust-item strong {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1A3C8C;
+        }
+
+        .trust-item span {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .trust-item:hover {
+            transform: translateY(-2px);
+            transition: 0.2s ease;
+        }
+
+        @keyframes scrollMove {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, 0);
+            }
+
+            40% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%, 12px);
+            }
+        }
+
+        @keyframes floatSlow {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-6px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes heroFadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Responsive */
@@ -424,7 +574,23 @@
         }
     </style>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const navbar = document.querySelector(".navbar");
 
+            navbar.classList.add("hero-mode");
+
+            window.addEventListener("scroll", () => {
+                if (window.scrollY > 40) {
+                    navbar.classList.remove("hero-mode");
+                    navbar.classList.add("scrolled");
+                } else {
+                    navbar.classList.add("hero-mode");
+                    navbar.classList.remove("scrolled");
+                }
+            });
+        });
+    </script>
 
 </head>
 
@@ -455,25 +621,32 @@
             </p>
 
             <div class="hero-actions">
-                <a href="/find-events" class="btn-primary">Explore Events</a>
-                <a href="/create-event" class="btn-secondary">Create an Event</a>
+                <a href="/find_events" class="btn-primary">Explore Events</a>
+                <a href="/check_create_event" class="btn-secondary">Create an Event</a>
             </div>
 
-            <div class="hero-trust">
-                <div>
+            <div class="trust">
+                <div class="trust-item">
                     <i class="bi bi-star-fill"></i>
-                    <span>4.9/5 rating</span>
+                    <strong>4.9/5</strong>
+                    <span>Verified Ratings</span>
                 </div>
-                <div>
+                <div class="trust-item">
                     <i class="bi bi-calendar-event"></i>
-                    <span>500+ events</span>
+                    <strong>500+</strong>
+                    <span>Events Hosted</span>
                 </div>
-                <div>
+                <div class="trust-item">
                     <i class="bi bi-people-fill"></i>
-                    <span>10k+ attendees</span>
+                    <strong>10k+</strong>
+                    <span>Attendees</span>
                 </div>
             </div>
 
+        </div>
+
+        <div class="scroll-indicator">
+            <span></span>
         </div>
     </section>
 
