@@ -1,126 +1,202 @@
 <!-- Bootstrap Icons -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-<nav class="navbar bg-white shadow-sm sticky-top py-1.5">
-    <div class="container-fluid d-flex align-items-center justify-content-between flex-nowrap">
+<nav class="navbar bg-white shadow-sm sticky-top" id="mainNavbar">
+    <div class="container-fluid navbar-inner">
 
         <!-- BRAND -->
-        <a class="navbar-brand d-flex align-items-center m-0" href="{{ url_for('home') }}" style="padding-left:5px;">
-
-            <img src="{{ url_for('static', filename='uploads/logo.jpg') }}" alt="SocioEvent Logo"
-                style="height:42px; width:auto; margin-right:10px;">
-
-            <span style="font-size:22px; font-weight:700; color:#1A3C8C;">
-                Socio<span style="color:#6c757d;">Event</span>
-            </span>
+        <a class="navbar-brand" href="{{ url_for('home') }}">
+            <img src="{{ url_for('static', filename='uploads/logo.jpg') }}" alt="SocioEvent Logo">
+            <span class="brand-text">Socio<span class="brand-muted">Event</span></span>
         </a>
 
-        <!-- CENTER -->
-        <div class="d-flex align-items-center gap-4 flex-nowrap">
+        <!-- DESKTOP CENTER: nav links + search + auth -->
+        <div class="desktop-nav">
 
-            <!-- NAV BOX -->
+            <!-- Nav Links -->
             <div class="nav-box">
-
                 <a href="{{ url_for('home') }}" class="nav-pill">
                     <i class="bi bi-house"></i> Home
                 </a>
-
                 <a href="{{ url_for('find_events') }}" class="nav-pill">
-                    <i class="bi bi-search"></i> Find Events
+                    <i class="bi bi-calendar-event"></i> Find Events
                 </a>
-
                 {% if session.get("user") and session["user"]["role"] == "admin" %}
                 <a href="{{ url_for('create_event') }}" class="nav-pill">
                     <i class="bi bi-plus-circle"></i> Create Event
                 </a>
                 {% endif %}
-
             </div>
 
-            <!-- SEARCH -->
-            <form action="{{ url_for('search') }}" method="get">
+            <!-- Search -->
+            <form action="{{ url_for('search') }}" method="get" class="search-form">
                 <div class="search-box">
-                    <input type="text" name="q" placeholder="Search events..." value="{{ search_query or '' }}"
-                        required>
-                    <button type="submit">
-                        <i class="bi bi-search"></i>
-                    </button>
+                    <input type="text" name="q" placeholder="Search events..." value="{{ search_query or '' }}">
+                    <button type="submit" aria-label="Search"><i class="bi bi-search"></i></button>
                 </div>
             </form>
 
-            <!-- RIGHT -->
+            <!-- Auth -->
             <div class="nav-box">
-
                 {% if session.get("user") %}
-
                 <a href="{{ url_for('tickets') }}" class="nav-pill">
                     <i class="bi bi-ticket-perforated"></i> My Tickets
                 </a>
-
-                <!-- ACCOUNT DROPDOWN -->
-                <div class="dropdown position-relative">
-
+                <!-- Account Dropdown -->
+                <div class="nav-dropdown-wrap">
                     <a class="nav-pill" href="#" id="accountDropdown">
                         <i class="bi bi-person-circle"></i> Account
+                        <i class="bi bi-chevron-down" style="font-size:11px;"></i>
                     </a>
-
-                    <ul class="dropdown-menu dropdown-menu-end account-dropdown shadow" id="accountMenu"
-                        style="display:none; position:absolute; right:0; top:100%;">
-
-                        <li>
-                            <a class="dropdown-item" href="{{ url_for('profile') }}">
-                                <i class="bi bi-person"></i> Your Profile
-                            </a>
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item" href="{{ url_for('settings') }}">
-                                <i class="bi bi-gear"></i> Settings
-                            </a>
-                        </li>
-
+                    <ul class="account-dropdown" id="accountMenu">
+                        <li><a class="dropdown-item" href="{{ url_for('profile') }}"><i class="bi bi-person"></i> Your
+                                Profile</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('settings') }}"><i class="bi bi-gear"></i>
+                                Settings</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-
-                        <li>
-                            <a class="dropdown-item logout" href="{{ url_for('logout') }}">
-                                <i class="bi bi-box-arrow-right"></i> Logout
-                            </a>
-                        </li>
-
+                        <li><a class="dropdown-item logout" href="{{ url_for('logout') }}"><i
+                                    class="bi bi-box-arrow-right"></i> Logout</a></li>
                     </ul>
-
                 </div>
-
                 {% else %}
-
                 <a href="{{ url_for('login') }}" class="nav-pill">
                     <i class="bi bi-box-arrow-in-right"></i> Login
                 </a>
-
-                <a href="{{ url_for('signup') }}" class="nav-pill">
+                <a href="{{ url_for('signup') }}" class="nav-pill nav-pill-solid">
                     <i class="bi bi-person-plus"></i> Sign Up
                 </a>
-
                 {% endif %}
-
             </div>
         </div>
+
+        <!-- MOBILE: search icon + hamburger -->
+        <div class="mobile-controls">
+            <button class="icon-btn" id="mobileSearchToggle" aria-label="Toggle search">
+                <i class="bi bi-search"></i>
+            </button>
+            <button class="icon-btn" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <i class="bi bi-list" id="hamburgerIcon"></i>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- MOBILE SEARCH BAR (slides in below navbar) -->
+    <div class="mobile-search-bar" id="mobileSearchBar">
+        <form action="{{ url_for('search') }}" method="get">
+            <div class="search-box" style="width:100%;">
+                <input type="text" name="q" placeholder="Search events..." value="{{ search_query or '' }}">
+                <button type="submit" aria-label="Search"><i class="bi bi-search"></i></button>
+            </div>
+        </form>
+    </div>
+
+    <!-- MOBILE DRAWER MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+
+        <div class="mobile-section">
+            <a href="{{ url_for('home') }}" class="mobile-link nav-pill">
+                <i class="bi bi-house"></i> Home
+            </a>
+            <a href="{{ url_for('find_events') }}" class="mobile-link nav-pill">
+                <i class="bi bi-calendar-event"></i> Find Events
+            </a>
+            {% if session.get("user") and session["user"]["role"] == "admin" %}
+            <a href="{{ url_for('create_event') }}" class="mobile-link nav-pill">
+                <i class="bi bi-plus-circle"></i> Create Event
+            </a>
+            {% endif %}
+        </div>
+
+        <hr class="mobile-divider">
+
+        <div class="mobile-section">
+            {% if session.get("user") %}
+            <a href="{{ url_for('tickets') }}" class="mobile-link nav-pill">
+                <i class="bi bi-ticket-perforated"></i> My Tickets
+            </a>
+            <a href="{{ url_for('profile') }}" class="mobile-link nav-pill">
+                <i class="bi bi-person"></i> Your Profile
+            </a>
+            <a href="{{ url_for('settings') }}" class="mobile-link nav-pill">
+                <i class="bi bi-gear"></i> Settings
+            </a>
+            <a href="{{ url_for('logout') }}" class="mobile-link nav-pill logout-mobile">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+            {% else %}
+            <a href="{{ url_for('login') }}" class="mobile-link nav-pill">
+                <i class="bi bi-box-arrow-in-right"></i> Login
+            </a>
+            <a href="{{ url_for('signup') }}" class="mobile-link nav-pill nav-pill-solid">
+                <i class="bi bi-person-plus"></i> Sign Up
+            </a>
+            {% endif %}
+        </div>
+
     </div>
 </nav>
 
 <style>
+    /* ── Base ──────────────────────────────────────────────── */
+    #mainNavbar {
+        padding: 0;
+        z-index: 1040;
+    }
 
-    
+    .navbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        gap: 16px;
+    }
+
+    /* ── Brand ─────────────────────────────────────────────── */
+    .navbar-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        flex-shrink: 0;
+    }
+
+    .navbar-brand img {
+        height: 40px;
+        width: auto;
+    }
+
+    .brand-text {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1A3C8C;
+        white-space: nowrap;
+    }
+
+    .brand-muted {
+        color: #6c757d;
+    }
+
+    /* ── Desktop Nav ───────────────────────────────────────── */
+    .desktop-nav {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+        justify-content: flex-end;
+        min-width: 0;
+    }
+
     .nav-box {
         background: #ECEFF3;
         border-radius: 50px;
-        padding: 6px 10px;
+        padding: 5px 8px;
         display: flex;
         align-items: center;
-        gap: 6px;
-        white-space: nowrap;
+        gap: 4px;
+        flex-shrink: 0;
     }
 
     .nav-pill {
@@ -133,14 +209,31 @@
         border-radius: 30px;
         text-decoration: none;
         color: #1A3C8C;
-        transition: all 0.25s ease;
+        transition: background 0.2s ease, color 0.2s ease;
         white-space: nowrap;
         cursor: pointer;
     }
 
-    .nav-pill:hover {
+    .nav-pill:hover,
+    .nav-pill.active-page {
         background: #1A3C8C;
-        color: white;
+        color: white !important;
+        font-weight: 600;
+    }
+
+    .nav-pill-solid {
+        background: #1A3C8C;
+        color: white !important;
+    }
+
+    .nav-pill-solid:hover {
+        background: #143070 !important;
+    }
+
+    /* ── Search ────────────────────────────────────────────── */
+    .search-form {
+        flex-shrink: 1;
+        min-width: 0;
     }
 
     .search-box {
@@ -149,32 +242,51 @@
         background: #ECEFF3;
         border-radius: 50px;
         overflow: hidden;
-        width: 360px;
+        width: 280px;
     }
 
     .search-box input {
         border: none;
         outline: none;
-        padding: 8px 18px;
+        padding: 8px 16px;
         width: 100%;
         background: transparent;
         font-size: 14px;
+        min-width: 0;
     }
 
     .search-box button {
         background: #1A3C8C;
         border: none;
         color: white;
-        padding: 8px 20px;
+        padding: 8px 18px;
         cursor: pointer;
+        flex-shrink: 0;
+    }
+
+    /* ── Desktop Account Dropdown ──────────────────────────── */
+    .nav-dropdown-wrap {
+        position: relative;
     }
 
     .account-dropdown {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: calc(100% + 8px);
         background: #fbf7f2;
         border-radius: 14px;
         border: 1px solid #e5e7eb;
         padding: 8px;
-        min-width: 220px;
+        min-width: 210px;
+        list-style: none;
+        margin: 0;
+        z-index: 1050;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .account-dropdown.open {
+        display: block;
     }
 
     .account-dropdown .dropdown-item {
@@ -184,8 +296,10 @@
         padding: 10px 14px;
         border-radius: 10px;
         font-weight: 500;
+        font-size: 14px;
         color: #1A3C8C;
-        transition: all 0.2s ease;
+        text-decoration: none;
+        transition: background 0.2s ease, color 0.2s ease;
     }
 
     .account-dropdown .dropdown-item:hover {
@@ -193,35 +307,250 @@
         color: white;
     }
 
+    .dropdown-divider {
+        margin: 4px 8px;
+        border-color: #e5e7eb;
+    }
+
     .logout {
-        color: #b91c1c;
+        color: #b91c1c !important;
     }
 
     .logout:hover {
         background: #b91c1c !important;
         color: white !important;
     }
+
+    /* ── Mobile Controls ───────────────────────────────────── */
+    .mobile-controls {
+        display: none;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .icon-btn {
+        background: #ECEFF3;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 18px;
+        color: #1A3C8C;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s ease, color 0.2s ease;
+        flex-shrink: 0;
+    }
+
+    .icon-btn:hover {
+        background: #1A3C8C;
+        color: white;
+    }
+
+    /* ── Mobile Search Bar ─────────────────────────────────── */
+    .mobile-search-bar {
+        display: none;
+        padding: 0 16px 12px;
+    }
+
+    .mobile-search-bar.open {
+        display: block;
+    }
+
+    /* ── Mobile Drawer ─────────────────────────────────────── */
+    .mobile-menu {
+        display: none;
+        flex-direction: column;
+        padding: 8px 16px 16px;
+        border-top: 1px solid #f0f0f0;
+        background: white;
+        animation: slideDown 0.2s ease;
+    }
+
+    .mobile-menu.open {
+        display: flex;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-6px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .mobile-section {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .mobile-link {
+        justify-content: flex-start !important;
+        padding: 11px 16px !important;
+        border-radius: 12px !important;
+        font-size: 15px !important;
+        background: transparent;
+        color: #1A3C8C !important;
+        width: 100%;
+    }
+
+    .mobile-link:hover,
+    .mobile-link.active-page {
+        background: #1A3C8C !important;
+        color: white !important;
+    }
+
+    .logout-mobile {
+        color: #b91c1c !important;
+    }
+
+    .logout-mobile:hover {
+        background: #b91c1c !important;
+        color: white !important;
+    }
+
+    .mobile-divider {
+        border-color: #e5e7eb;
+        margin: 8px 0;
+    }
+
+    /* ── Breakpoints ───────────────────────────────────────── */
+
+    /* Large tablet: shrink search */
+    @media (max-width: 1100px) {
+        .search-box {
+            width: 220px;
+        }
+    }
+
+    /* Tablet: shrink further */
+    @media (max-width: 920px) {
+        .search-box {
+            width: 160px;
+        }
+
+        .nav-pill {
+            padding: 6px 10px;
+            font-size: 13px;
+        }
+
+        .desktop-nav {
+            gap: 8px;
+        }
+    }
+
+    /* Mobile: switch to hamburger */
+    @media (max-width: 768px) {
+        .desktop-nav {
+            display: none;
+        }
+
+        .mobile-controls {
+            display: flex;
+        }
+
+        .navbar-brand img {
+            height: 34px;
+        }
+
+        .brand-text {
+            font-size: 18px;
+        }
+
+        .navbar-inner {
+            padding: 10px 16px;
+        }
+    }
+
+    /* Small mobile */
+    @media (max-width: 400px) {
+        .brand-text {
+            font-size: 16px;
+        }
+
+        .navbar-brand img {
+            height: 30px;
+        }
+
+        .navbar-inner {
+            padding: 8px 12px;
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            font-size: 16px;
+        }
+    }
 </style>
 
-<!-- 🔥 Manual Dropdown Script (Works Everywhere) -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const dropdownBtn = document.getElementById("accountDropdown");
-        const dropdownMenu = document.getElementById("accountMenu");
 
-        if (dropdownBtn) {
-            dropdownBtn.addEventListener("click", function (e) {
+        /* ── Desktop Account Dropdown ──────────────────────── */
+        const accountBtn = document.getElementById("accountDropdown");
+        const accountMenu = document.getElementById("accountMenu");
+
+        if (accountBtn && accountMenu) {
+            accountBtn.addEventListener("click", function (e) {
                 e.preventDefault();
-                dropdownMenu.style.display =
-                    dropdownMenu.style.display === "block" ? "none" : "block";
+                e.stopPropagation();
+                accountMenu.classList.toggle("open");
             });
-
             document.addEventListener("click", function (e) {
-                if (!dropdownBtn.contains(e.target) &&
-                    !dropdownMenu.contains(e.target)) {
-                    dropdownMenu.style.display = "none";
+                if (!accountBtn.contains(e.target) && !accountMenu.contains(e.target)) {
+                    accountMenu.classList.remove("open");
                 }
             });
         }
+
+        /* ── Hamburger Toggle ──────────────────────────────── */
+        const hamburger = document.getElementById("hamburger");
+        const hamburgerIcon = document.getElementById("hamburgerIcon");
+        const mobileMenu = document.getElementById("mobileMenu");
+
+        if (hamburger && mobileMenu) {
+            hamburger.addEventListener("click", function () {
+                const isOpen = mobileMenu.classList.toggle("open");
+                hamburger.setAttribute("aria-expanded", String(isOpen));
+                hamburgerIcon.className = isOpen ? "bi bi-x-lg" : "bi bi-list";
+                // Close mobile search if open
+                mobileSearchBar.classList.remove("open");
+            });
+        }
+
+        /* ── Mobile Search Toggle ──────────────────────────── */
+        const searchToggle = document.getElementById("mobileSearchToggle");
+        const mobileSearchBar = document.getElementById("mobileSearchBar");
+
+        if (searchToggle && mobileSearchBar) {
+            searchToggle.addEventListener("click", function () {
+                const isOpen = mobileSearchBar.classList.toggle("open");
+                if (isOpen) {
+                    mobileSearchBar.querySelector("input").focus();
+                    // Close mobile menu if open
+                    if (mobileMenu) mobileMenu.classList.remove("open");
+                    if (hamburgerIcon) hamburgerIcon.className = "bi bi-list";
+                }
+            });
+        }
+
+        /* ── Active Nav Highlight ──────────────────────────── */
+        const currentPath = window.location.pathname;
+        document.querySelectorAll(".nav-pill, .mobile-link").forEach(link => {
+            const href = link.getAttribute("href");
+            if (!href || href === "#") return;
+            const isActive = (href === "/" && currentPath === "/") ||
+                (href !== "/" && currentPath.startsWith(href));
+            if (isActive) link.classList.add("active-page");
+        });
+
     });
 </script>
