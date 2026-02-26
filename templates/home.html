@@ -1,33 +1,46 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Discover and book amazing events near you — concerts, workshops, parties, sports and more. SocioEvent connects people through unforgettable experiences.">
+    <meta name="keywords" content="events, book events, concerts, workshops, party, sports, SocioEvent">
+    <meta name="author" content="SocioEvent">
+    <meta name="theme-color" content="#1A3C8C">
 
+    <!-- Open Graph (WhatsApp, Facebook, LinkedIn previews) -->
+    <meta property="og:title" content="SocioEvent — Discover Events Near You">
+    <meta property="og:description"
+        content="Find and book concerts, workshops, parties & more. Experiences you'll remember.">
+    <meta property="og:image" content="/static/uploads/hero-event.jpg">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="/">
 
-    <!-- Bootstrap -->
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SocioEvent — Discover Events Near You">
+    <meta name="twitter:description" content="Find and book concerts, workshops, parties & more.">
+    <meta name="twitter:image" content="/static/uploads/hero-event.jpg">
+
+    <title>SocioEvent — Discover Events Near You</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap"
         rel="stylesheet">
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap"
-        rel="stylesheet">
-
     <style>
         /* ===== GLOBAL ===== */
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             background: #fffbf2;
         }
 
-        /* ===== HERO-NAVBAR BLEND ===== */
+        /* ===== NAVBAR ===== */
         .navbar {
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
@@ -43,8 +56,7 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
         }
 
-        /* ========== HERO RESET ========== */
-
+        /* ===== HERO ===== */
         .hero {
             position: relative;
             width: 100%;
@@ -56,29 +68,22 @@
             align-items: center;
         }
 
-        /* Background Image */
         .hero-bg {
             position: absolute;
             inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center center;
             z-index: 1;
         }
 
-        /* Soft Beige Overlay */
         .hero-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to right,
-                    rgba(248, 244, 236, 0.495),
-                    rgba(248, 244, 236, 0.215),
-                    rgba(248, 244, 236, 0));
+            background: linear-gradient(to right, rgba(248, 244, 236, 0.5), rgba(248, 244, 236, 0.2), transparent);
             z-index: 2;
         }
 
-        /* Content */
         .hero-content {
             position: relative;
             z-index: 3;
@@ -87,7 +92,6 @@
             padding-right: 40px;
         }
 
-        /* Headline */
         .hero-title {
             font-size: 3.4rem;
             font-weight: 800;
@@ -98,10 +102,8 @@
 
         .hero-title span {
             color: #1A3C8C;
-            /* navy highlight */
         }
 
-        /* Subheading */
         .hero-subtitle {
             font-size: 1.15rem;
             color: #4b5563;
@@ -109,7 +111,6 @@
             max-width: 520px;
         }
 
-        /* CTA Buttons */
         .hero-actions {
             margin-top: 28px;
             display: flex;
@@ -142,46 +143,49 @@
             background: rgba(26, 60, 140, 0.08);
         }
 
-        /* Trust Indicators */
-        .hero-trust {
-            margin-top: 36px;
+        .trust {
             display: flex;
-            gap: 32px;
-            font-size: 0.95rem;
-            color: #374151;
+            gap: 28px;
+            margin-top: 26px;
         }
 
-        .hero-trust div {
+        .trust-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            opacity: 0.9;
+            transition: transform 0.2s ease;
         }
 
-        .hero-trust i {
+        .trust-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .trust-item i {
+            font-size: 18px;
             color: #1A3C8C;
-            font-size: 1.1rem;
         }
 
-        .hero h1 {
-            animation: heroFadeUp 0.7s ease forwards;
+        .trust-item strong {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1A3C8C;
         }
 
-        .hero p {
-            animation: heroFadeUp 0.7s ease forwards;
-            animation-delay: 0.1s;
+        .trust-item span {
+            font-size: 13px;
+            color: #6b7280;
         }
 
-        .hero .hero-actions {
-            animation: heroFadeUp 0.7s ease forwards;
-            animation-delay: 0.2s;
-        }
-
-        .hero .trust-item {
-            animation: heroFadeUp 0.6s ease forwards;
-        }
-
-        .hero-image {
-            animation: floatSlow 10s ease-in-out infinite;
+        .hero::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(to bottom, rgba(251, 247, 242, 0), #fbf7f2);
+            pointer-events: none;
         }
 
         .scroll-indicator {
@@ -207,135 +211,14 @@
             animation: scrollMove 1.6s infinite;
         }
 
-        .hero::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 120px;
-            background: linear-gradient(to bottom,
-                    rgba(251, 247, 242, 0) 0%,
-                    #fbf7f2 100%);
-            pointer-events: none;
-        }
-
-        .trust {
-            display: flex;
-            gap: 28px;
-            margin-top: 26px;
-        }
-
-        .trust-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            opacity: 0.9;
-        }
-
-        .trust-item i {
-            font-size: 18px;
-            color: #1A3C8C;
-        }
-
-        .trust-item strong {
-            font-size: 16px;
-            font-weight: 700;
-            color: #1A3C8C;
-        }
-
-        .trust-item span {
-            font-size: 13px;
-            color: #6b7280;
-        }
-
-        .trust-item:hover {
-            transform: translateY(-2px);
-            transition: 0.2s ease;
-        }
-
-        @keyframes scrollMove {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, 0);
-            }
-
-            40% {
-                opacity: 1;
-            }
-
-            100% {
-                opacity: 0;
-                transform: translate(-50%, 12px);
-            }
-        }
-
-        @keyframes floatSlow {
-            0% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-6px);
-            }
-
-            100% {
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes heroFadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(18px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 992px) {
-            .hero {
-                height: auto;
-                padding: 100px 0;
-            }
-
-            .hero-content {
-                padding-left: 40px;
-            }
-
-            .hero-title {
-                font-size: 2.6rem;
-            }
-        }
-
-        .main-wrapper {
-            max-width: 1200px;
-            margin: 40px auto;
-            background: #fffbf2;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
-        }
-
-
-        h2 {
-            font-weight: 700;
-        }
-
-        .section-divider {
-            height: 0px;
-            background: linear-gradient(to bottom,
-                    rgba(251, 247, 242, 0),
-                    #fbf7f2);
-        }
-
         /* ===== SHARED ===== */
         section {
             padding: 80px 0;
+            position: relative;
+        }
+
+        h2 {
+            font-weight: 700;
         }
 
         .section-title {
@@ -354,6 +237,105 @@
             color: #6c757d;
             margin-bottom: 50px;
             font-size: 16px;
+        }
+
+        /* ===== UPCOMING EVENTS ===== */
+        .upcoming-section {
+            padding: 80px 0 100px;
+            background:
+                radial-gradient(circle at top left, rgba(26, 60, 140, 0.05), transparent 40%),
+                radial-gradient(circle at bottom right, rgba(26, 60, 140, 0.06), transparent 45%),
+                #fbf7f2;
+        }
+
+        .upcoming-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .upcoming-header h2 {
+            font-family: "Playfair Display", serif;
+            font-size: 42px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .upcoming-header p {
+            font-size: 16px;
+            color: #6b7280;
+            margin-top: 10px;
+        }
+
+        .accent {
+            color: #1A3C8C;
+            font-weight: 600;
+        }
+
+        .upcoming-carousel {
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.18), inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+        }
+
+        .event-slide {
+            display: block;
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .event-slide img {
+            width: 100%;
+            height: 360px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .event-slide:hover img {
+            transform: scale(1.05);
+        }
+
+        .event-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 26px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.15), transparent);
+            animation: fadeUp 0.7s ease forwards;
+        }
+
+        .event-badge {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(6px);
+            color: #1A3C8C;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 999px;
+            width: fit-content;
+        }
+
+        .event-overlay h4 {
+            color: white;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .event-overlay p {
+            color: #e5e7eb;
+            font-size: 14px;
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: rgba(26, 60, 140, 0.85);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            background-size: 55%;
         }
 
         /* ===== HOW IT WORKS ===== */
@@ -379,6 +361,44 @@
             font-size: 36px;
             color: #1A3C8C;
             margin-bottom: 15px;
+        }
+
+        /* ===== CATEGORY ===== */
+        .category-section {
+            background: #fffbf2;
+            padding: 70px 0;
+        }
+
+        .category-card {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            height: 170px;
+            border: 5px solid #0f2f4f;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .category-overlay {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
+            color: white;
+            padding: 14px;
+            text-align: center;
+            font-weight: 600;
         }
 
         /* ===== WHY ===== */
@@ -446,201 +466,10 @@
             margin-bottom: 6px;
         }
 
-        /* ================= UPCOMING EVENTS ================= */
-
-        .upcoming-section {
-            position: relative;
-            padding: 80px 0 100px;
-            background:
-                radial-gradient(circle at top left, rgba(26, 60, 140, 0.05), transparent 40%),
-                radial-gradient(circle at bottom right, rgba(26, 60, 140, 0.06), transparent 45%),
-                #fbf7f2;
-        }
-
-        /* Header */
-        .upcoming-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .upcoming-header h2 {
-            font-family: "Playfair Display", serif;
-            font-size: 42px;
-            font-weight: 700;
-            color: #0f172a;
-            letter-spacing: -0.4px;
-        }
-
-        .upcoming-header p {
-            font-family: "Inter", sans-serif;
-            font-size: 16px;
-            color: #6b7280;
-            margin-top: 10px;
-        }
-
-        /* Navy highlight */
-        .accent {
-            color: #1A3C8C;
-            font-weight: 600;
-        }
-
-        /* Carousel wrapper */
-        .upcoming-carousel {
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow:
-                0 25px 60px rgba(0, 0, 0, 0.18),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.4);
-        }
-
-        /* Slide link */
-        .event-slide {
-            display: block;
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        /* Image */
-        .event-slide img {
-            width: 100%;
-            height: 360px;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .event-slide:hover img {
-            transform: scale(1.05);
-        }
-
-        /* Soft gradient overlay */
-        .event-overlay {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 26px;
-            background: linear-gradient(to top,
-                    rgba(0, 0, 0, 0.55),
-                    rgba(0, 0, 0, 0.15),
-                    transparent);
-        }
-
-        /* Badge */
-        .event-badge {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(6px);
-            color: #1A3C8C;
-            font-size: 12px;
-            font-weight: 600;
-            padding: 6px 14px;
-            border-radius: 999px;
-            letter-spacing: 0.3px;
-        }
-
-        .carousel-item {
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .event-overlay {
-            animation: fadeUp 0.7s ease forwards;
-        }
-
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(12px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Text */
-        .event-overlay h4 {
-            color: white;
-            font-size: 22px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .event-overlay p {
-            color: #e5e7eb;
-            font-size: 14px;
-        }
-
-        /* Controls */
-        .carousel-control-prev-icon,
-        .carousel-control-next-icon {
-            background-color: rgba(26, 60, 140, 0.85);
-            border-radius: 50%;
-            width: 44px;
-            height: 44px;
-            background-size: 55%;
-        }
-
-        /* ===== CATEGORY CARDS ===== */
-        .category-card {
-            position: relative;
-            border-radius: 16px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: 0.35s ease;
-            height: 170px;
-            background: #fffbf2;
-            border: 5px solid #0f2f4f;
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
-        }
-
-        .category-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 16px 30px rgba(0, 0, 0, 0.1);
-        }
-
-
-        section {
-            padding: 80px 0;
-            position: relative;
-        }
-
-        .category-section {
-            background: #fffbf2;
-            padding: 70px 0;
-        }
-
-
-        .category-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .category-overlay {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
-            color: white;
-            padding: 14px;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        /* ===== SECTION SPACING ===== */
-        section {
-            padding-top: 60px;
-            padding-bottom: 60px;
-        }
-
-        /* ===== FOOTER STYLE ===== */
-
+        /* ===== FOOTER ===== */
         .main-footer {
             background: #0f2f4f;
-            /* slightly darker navy */
-            color: #ffffff;
+            color: #fff;
             padding: 60px 0 20px;
             margin-top: 60px;
         }
@@ -651,7 +480,6 @@
             gap: 40px;
         }
 
-        /* Logo Section */
         .footer-logo {
             display: flex;
             align-items: center;
@@ -672,7 +500,6 @@
             margin-bottom: 20px;
         }
 
-        /* Social Icons */
         .social-links a {
             display: inline-flex;
             align-items: center;
@@ -682,17 +509,16 @@
             margin-right: 10px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
+            color: #fff;
             transition: 0.3s ease;
         }
 
         .social-links a:hover {
-            background: #ffffff;
+            background: #fff;
             color: #0f2f4f;
             transform: translateY(-3px);
         }
 
-        /* Footer Columns */
         .footer-column h5 {
             font-size: 16px;
             margin-bottom: 18px;
@@ -716,11 +542,10 @@
         }
 
         .footer-column ul li a:hover {
-            color: #ffffff;
+            color: #fff;
             padding-left: 5px;
         }
 
-        /* Bottom */
         .footer-bottom {
             text-align: center;
             margin-top: 40px;
@@ -729,59 +554,272 @@
             font-size: 13px;
             color: rgba(255, 255, 255, 0.7);
         }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes scrollMove {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, 0);
+            }
+
+            40% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%, 12px);
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== NAV ACTIVE HIGHLIGHT ===== */
+        .navbar .nav-link.active-page {
+            color: #1A3C8C !important;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .navbar .nav-link.active-page::after {
+            content: "";
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #1A3C8C;
+            border-radius: 2px;
+        }
+
+        /* Keep underline visible on both transparent and white navbar states */
+        .navbar.hero-mode .nav-link.active-page {
+            color: #1A3C8C !important;
+        }
+
+        /* ===== BACK TO TOP ===== */
+        #backToTop {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            width: 44px;
+            height: 44px;
+            background: #1A3C8C;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(26, 60, 140, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(12px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease, background 0.2s ease;
+            z-index: 999;
+        }
+
+        #backToTop.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        #backToTop:hover {
+            background: #143070;
+            transform: translateY(-3px);
+        }
+
+        /* ===== HERO FALLBACK ===== */
+        .hero {
+            background: linear-gradient(135deg, #1A3C8C 0%, #0f2f4f 100%);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        /* Tablet: 768px — the missing middle breakpoint */
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 30px;
+            }
+
+            .why-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 24px;
+            }
+
+            .upcoming-header h2 {
+                font-size: 30px;
+            }
+
+            .event-slide img {
+                height: 260px;
+            }
+
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .hero-content {
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+        }
+
+        /* Large desktop gap: 992px */
+        @media (max-width: 992px) {
+            .hero {
+                height: auto;
+                padding: 100px 0;
+            }
+
+            .hero-content {
+                padding-left: 40px;
+            }
+
+            .hero-title {
+                font-size: 2.6rem;
+            }
+
+            .why-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Mobile: 576px */
+        @media (max-width: 576px) {
+            .section-title {
+                font-size: 26px;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .why-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 14px;
+            }
+
+            .why-card {
+                padding: 18px 14px;
+            }
+
+            .trust {
+                flex-wrap: wrap;
+                gap: 14px;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .hero-actions a {
+                text-align: center;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+
+            .hero-title {
+                font-size: 1.85rem;
+            }
+
+            .hero-content {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .hero {
+                min-height: 560px;
+            }
+
+            .event-slide img {
+                height: 220px;
+            }
+
+            #backToTop {
+                bottom: 16px;
+                right: 16px;
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .category-card {
+                height: 140px;
+            }
+        }
+
+        /* Very small (360px Android) */
+        @media (max-width: 400px) {
+            .hero-title {
+                font-size: 1.6rem;
+            }
+
+            .trust-item strong {
+                font-size: 14px;
+            }
+
+            .trust-item span {
+                font-size: 11px;
+            }
+
+            .why-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const navbar = document.querySelector(".navbar");
-
-            navbar.classList.add("hero-mode");
-
-            window.addEventListener("scroll", () => {
-                if (window.scrollY > 40) {
-                    navbar.classList.remove("hero-mode");
-                    navbar.classList.add("scrolled");
-                } else {
-                    navbar.classList.add("hero-mode");
-                    navbar.classList.remove("scrolled");
-                }
-            });
-        });
-    </script>
-
 </head>
 
 <body>
-
-
     {% include "navbar.html" %}
 
-    <!-- HERO SECTION -->
+    <!-- HERO -->
     <section class="hero">
-
-        <!-- Background Image -->
         <img src="/static/uploads/hero-event.jpg" alt="Events" class="hero-bg">
-
-        <!-- Overlay -->
         <div class="hero-overlay"></div>
-
-        <!-- Content -->
         <div class="hero-content">
-
-            <h1 class="hero-title">
-                Discover events that
-                <span>match your vibe</span>
-            </h1>
-
-            <p class="hero-subtitle">
-                Experiences you’ll remember. Moments worth sharing.
-            </p>
-
+            <h1 class="hero-title">Discover events that <span>match your vibe</span></h1>
+            <p class="hero-subtitle">Experiences you'll remember. Moments worth sharing.</p>
             <div class="hero-actions">
                 <a href="/find_events" class="btn-primary">Explore Events</a>
                 <a href="/check_create_event" class="btn-secondary">Create an Event</a>
             </div>
-
             <div class="trust">
                 <div class="trust-item">
                     <i class="bi bi-star-fill"></i>
@@ -799,213 +837,122 @@
                     <span>Attendees</span>
                 </div>
             </div>
-
         </div>
-
-        <div class="scroll-indicator">
-            <span></span>
-        </div>
+        <div class="scroll-indicator"><span></span></div>
     </section>
 
-    <div class="section-divider"></div>
-
+    <!-- UPCOMING EVENTS -->
     <section class="upcoming-section">
         <div class="container">
-
-            <!-- Section Header -->
             <div class="upcoming-header">
-                <h2>
-                    Upcoming <span class="accent">Events</span>
-                </h2>
-                <p>
-                    Handpicked <span class="accent">concerts</span>,
-                    <span class="accent">workshops</span> &
-                    unforgettable <span class="accent">experiences</span> near you
-                </p>
+                <h2>Upcoming <span class="accent">Events</span></h2>
+                <p>Handpicked <span class="accent">concerts</span>, <span class="accent">workshops</span> &amp;
+                    unforgettable <span class="accent">experiences</span> near you</p>
             </div>
 
             {% if upcoming_events %}
             <div id="eventSlider" class="carousel slide upcoming-carousel" data-bs-ride="carousel">
                 <div class="carousel-inner">
-
                     {% for event in upcoming_events %}
                     <div class="carousel-item {% if loop.first %}active{% endif %}">
                         <a href="/event/{{ event[0] }}" class="event-slide">
-
-                            <img
-                                src="{{ url_for('static', filename='uploads/' ~ (event[5] if event[5] else 'default.jpg')) }}">
-
+                            <img src="{{ url_for('static', filename='uploads/' ~ (event[5] if event[5] else 'default.jpg')) }}"
+                                alt="{{ event[1] }}" loading="lazy">
                             <div class="event-overlay">
                                 <span class="event-badge">{{ event[4] }}</span>
                                 <h4>{{ event[1] }}</h4>
                                 <p>{{ event[2] }} • {{ event[3] }}</p>
                             </div>
-
                         </a>
                     </div>
                     {% endfor %}
-
                 </div>
-
                 <button class="carousel-control-prev" type="button" data-bs-target="#eventSlider" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon"></span>
                 </button>
-
                 <button class="carousel-control-next" type="button" data-bs-target="#eventSlider" data-bs-slide="next">
                     <span class="carousel-control-next-icon"></span>
                 </button>
             </div>
             {% else %}
-            <p>No upcoming events available</p>
+            <p class="text-center">No upcoming events available.</p>
             {% endif %}
-
         </div>
     </section>
 
+    <!-- HOW IT WORKS -->
     <section class="how-it-works">
         <div class="container">
-            <h2 class="section-title">
-                How <span>SocioEvent</span> Works
-            </h2>
-            <p class="section-subtitle">
-                Discover, book, and experience events — effortlessly.
-            </p>
-
+            <h2 class="section-title">How <span>SocioEvent</span> Works</h2>
+            <p class="section-subtitle">Discover, book, and experience events — effortlessly.</p>
             <div class="steps">
                 <div class="step-card">
                     <i class="bi bi-search"></i>
                     <h4>Find Events</h4>
                     <p>Explore curated events that match your interests.</p>
                 </div>
-
                 <div class="step-card">
                     <i class="bi bi-ticket-perforated"></i>
                     <h4>Book Instantly</h4>
-                    <p>Secure your spot with fast & safe ticket booking.</p>
+                    <p>Secure your spot with fast &amp; safe ticket booking.</p>
                 </div>
-
                 <div class="step-card">
                     <i class="bi bi-stars"></i>
                     <h4>Enjoy the Experience</h4>
-                    <p>Show up, connect with people & create memories.</p>
+                    <p>Show up, connect with people &amp; create memories.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- EXPLORE BY CATEGORY (2 ROWS x 4 COLUMNS) -->
+    <!-- CATEGORIES -->
     <section class="category-section">
         <div class="container">
             <h2 class="text-center fw-bold mb-2">Explore Events by Category</h2>
-            <p class="text-center text-muted mb-5">
-                Discover experiences tailored to your interests
-            </p>
-
+            <p class="text-center text-muted mb-5">Discover experiences tailored to your interests</p>
             <div class="row g-4">
-
-                <div class="col-md-3">
-                    <a href="/find_events?category=Party" class="text-decoration-none">
+                {% set categories = [
+                ('Party', 'party.jpg', 'Party'),
+                ('Music', 'music.jpg', 'Music'),
+                ('Dance', 'dance.jpg', 'Dance'),
+                ('Sports', 'sports.jpg', 'Sports'),
+                ('Conference', 'conference.jpg', 'Conference'),
+                ('Workshop', 'workshop.jpg', 'Workshop'),
+                ('Watchparty', 'watchparty.jpg', 'Watch Party'),
+                ('', 'others.jpg', 'Others')
+                ] %}
+                {% for cat, img, label in categories %}
+                <div class="col-md-3 col-6">
+                    <a href="/find_events{% if cat %}?category={{ cat }}{% endif %}" class="text-decoration-none">
                         <div class="category-card">
-                            <img src="/static/uploads/party.jpg">
-                            <div class="category-overlay">Party</div>
+                            <img src="/static/uploads/{{ img }}" alt="{{ label }}" loading="lazy">
+                            <div class="category-overlay">{{ label }}</div>
                         </div>
                     </a>
                 </div>
-
-                <div class="col-md-3">
-                    <a href="/find_events?category=Music" class="text-decoration-none">
-                        <div class="category-card">
-                            <img src="/static/uploads/music.jpg">
-                            <div class="category-overlay">Music</div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-md-3">
-                    <a href="/find_events?category=Dance" class="text-decoration-none">
-                        <div class="category-card">
-                            <img src="/static/uploads/dance.jpg">
-                            <div class="category-overlay">Dance</div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-md-3">
-                    <a href="/find_events?category=Sports" class="text-decoration-none">
-                        <div class="category-card">
-                            <img src="/static/uploads/sports.jpg">
-                            <div class="category-overlay">Sports</div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-md-3">
-                    <a href="/find_events?category=Conference" class="text-decoration-none">
-                        <div class="category-card">
-                            <img src="/static/uploads/conference.jpg">
-                            <div class="category-overlay">Conference</div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-md-3">
-                    <a href="/find_events?category=Workshop" class="text-decoration-none">
-                        <div class="category-card">
-                            <img src="/static/uploads/workshop.jpg">
-                            <div class="category-overlay">Workshop</div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-md-3">
-                    <a href="/find_events?category=Watchparty" class="text-decoration-none">
-                        <div class="category-card">
-                            <img src="/static/uploads/watchparty.jpg">
-                            <div class="category-overlay">Watch Party</div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-md-3">
-                    <a href="/find_events" class="text-decoration-none">
-                        <div class="category-card">
-                            <img src="/static/uploads/others.jpg">
-                            <div class="category-overlay">Others</div>
-                        </div>
-                    </a>
-                </div>
-
+                {% endfor %}
             </div>
         </div>
     </section>
 
+    <!-- WHY SOCIOEVENT -->
     <section class="why-socioevent">
         <div class="container">
-            <h2 class="section-title">
-                Why Choose <span>SocioEvent</span>?
-            </h2>
-
+            <h2 class="section-title">Why Choose <span>SocioEvent</span>?</h2>
             <div class="why-grid">
-                <div class="why-card">
-                    <i class="bi bi-shield-check"></i>
-                    <h4>Trusted & Secure</h4>
+                <div class="why-card"><i class="bi bi-shield-check"></i>
+                    <h4>Trusted &amp; Secure</h4>
                     <p>Your bookings and data are always protected.</p>
                 </div>
-
-                <div class="why-card">
-                    <i class="bi bi-lightning-charge"></i>
+                <div class="why-card"><i class="bi bi-lightning-charge"></i>
                     <h4>Instant Booking</h4>
                     <p>No waiting. No confusion. Book events in seconds.</p>
                 </div>
-
-                <div class="why-card">
-                    <i class="bi bi-people"></i>
+                <div class="why-card"><i class="bi bi-people"></i>
                     <h4>Community Driven</h4>
                     <p>Events created by people, for people.</p>
                 </div>
-
-                <div class="why-card">
-                    <i class="bi bi-calendar-event"></i>
+                <div class="why-card"><i class="bi bi-calendar-event"></i>
                     <h4>Curated Events</h4>
                     <p>Only quality events — no spam, no noise.</p>
                 </div>
@@ -1013,59 +960,43 @@
         </div>
     </section>
 
+    <!-- TESTIMONIALS -->
     <section class="testimonials">
         <div class="container">
-            <h2 class="section-title">
-                Loved by <span>Real People</span>
-            </h2>
-
+            <h2 class="section-title">Loved by <span>Real People</span></h2>
             <div class="testimonial-grid">
                 <div class="testimonial-card">
-                    <p>
-                        “Booked my first workshop in under 2 minutes.
-                        The experience was smooth and professional.”
-                    </p>
+                    <p>"Booked my first workshop in under 2 minutes. The experience was smooth and professional."</p>
                     <h5>— Aditi Sharma</h5>
                 </div>
-
                 <div class="testimonial-card">
-                    <p>
-                        “SocioEvent helped me discover events I didn’t even know existed.”
-                    </p>
+                    <p>"SocioEvent helped me discover events I didn't even know existed."</p>
                     <h5>— Rohan Patel</h5>
                 </div>
-
                 <div class="testimonial-card">
-                    <p>
-                        “Creating and managing my event was insanely easy.”
-                    </p>
+                    <p>"Creating and managing my event was insanely easy."</p>
                     <h5>— Event Organizer</h5>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- FAQ -->
     <section class="faq-section">
         <div class="container">
-            <h2 class="section-title">
-                Frequently Asked <span>Questions</span>
-            </h2>
-
+            <h2 class="section-title">Frequently Asked <span>Questions</span></h2>
             <div class="faq-item">
                 <h4>Is booking events secure?</h4>
                 <p>Yes. All bookings are processed securely.</p>
             </div>
-
             <div class="faq-item">
                 <h4>Do I need an account to book?</h4>
                 <p>Yes, an account helps manage tickets and updates.</p>
             </div>
-
             <div class="faq-item">
                 <h4>Can I create my own event?</h4>
                 <p>Absolutely. Organizers can create and manage events easily.</p>
             </div>
-
             <div class="faq-item">
                 <h4>Is SocioEvent free to use?</h4>
                 <p>Browsing events is free. Tickets depend on the event.</p>
@@ -1073,32 +1004,24 @@
         </div>
     </section>
 
+    <!-- FOOTER -->
     <footer class="main-footer">
         <div class="container">
             <div class="footer-grid">
-
-                <!-- Column 1: Logo + Description -->
                 <div class="footer-brand">
                     <div class="footer-logo">
                         <img src="{{ url_for('static', filename='uploads/logo.jpg') }}" alt="Logo">
                         <span>SocioEvent</span>
                     </div>
-
-                    <p class="footer-desc">
-                        Discover and create amazing events around you.
-                        Connect with people, explore experiences,
-                        and make unforgettable memories.
-                    </p>
-
+                    <p class="footer-desc">Discover and create amazing events around you. Connect with people, explore
+                        experiences, and make unforgettable memories.</p>
                     <div class="social-links">
-                        <a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a>
-                        <a href="https://x.com/"><i class="fab fa-twitter"></i></a>
-                        <a href="https://in.linkedin.com/"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.facebook.com/" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://x.com/" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="https://in.linkedin.com/" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
-
-                <!-- Column 2: Company -->
                 <div class="footer-column">
                     <h5>Company</h5>
                     <ul>
@@ -1108,8 +1031,6 @@
                         <li><a href="#">Blog</a></li>
                     </ul>
                 </div>
-
-                <!-- Column 3: Events -->
                 <div class="footer-column">
                     <h5>Events</h5>
                     <ul>
@@ -1119,8 +1040,6 @@
                         <li><a href="/community_guidelines">Community Guidelines</a></li>
                     </ul>
                 </div>
-
-                <!-- Column 4: Legal -->
                 <div class="footer-column">
                     <h5>Legal</h5>
                     <ul>
@@ -1130,18 +1049,46 @@
                         <li><a href="#">Security</a></li>
                     </ul>
                 </div>
-
             </div>
-
-            <div class="footer-bottom">
-                © 2026 SocioEvent. All rights reserved.
-            </div>
+            <div class="footer-bottom">© 2026 SocioEvent. All rights reserved.</div>
         </div>
     </footer>
 
+    <!-- BACK TO TOP BUTTON -->
+    <button id="backToTop" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <i class="bi bi-chevron-up"></i>
+    </button>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // ── Navbar scroll behaviour ──────────────────────────────
+            const navbar = document.querySelector(".navbar");
+            navbar.classList.add("hero-mode");
 
+            window.addEventListener("scroll", () => {
+                if (window.scrollY > 40) {
+                    navbar.classList.replace("hero-mode", "scrolled");
+                } else {
+                    navbar.classList.replace("scrolled", "hero-mode");
+                }
+                // Back-to-top visibility
+                backToTop.classList.toggle("visible", window.scrollY > 400);
+            }, { passive: true });
 
+            // ── Active nav highlight ─────────────────────────────────
+            // Marks the nav link whose href matches the current page path
+            const currentPath = window.location.pathname;
+            document.querySelectorAll(".navbar .nav-link").forEach(link => {
+                const href = link.getAttribute("href");
+                if (href && (href === currentPath || (currentPath === "/" && href === "/") || (href !== "/" && currentPath.startsWith(href)))) {
+                    link.classList.add("active-page");
+                }
+            });
+
+            // ── Back to top button ───────────────────────────────────
+            const backToTop = document.getElementById("backToTop");
+        });
+    </script>
 </body>
 
 </html>
