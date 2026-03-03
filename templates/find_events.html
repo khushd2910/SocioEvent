@@ -5,39 +5,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Browse and filter upcoming events near you — concerts, workshops, sports, parties and more on SocioEvent.">
+        content="Browse and discover upcoming events near you — concerts, workshops, parties, sports and more on SocioEvent.">
     <meta name="robots" content="index, follow">
     <title>Find Events — SocioEvent</title>
 
-    <!-- Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Bootstrap JS (deferred — needed for mobile offcanvas sidebar) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
 
     <style>
-        /* ─── CSS VARIABLES ──────────────────────────────────── */
+        /* ─── CSS VARIABLES ─────────────────────────────────────── */
         :root {
             --navy: #1A3C8C;
             --navy-dark: #143070;
             --navy-deep: #0f2f4f;
-            --cream: #fffcf7;
+            --cream: #fffbf2;
             --cream-alt: #fbf7f2;
             --border: #e6dccf;
-            --gray-text: #64748b;
-            --gray-light: #f8fafc;
-            --radius: 14px;
-            --shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+            --gray-text: #6b7280;
+            --shadow-sm: 0 8px 25px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 15px 35px rgba(0, 0, 0, 0.08);
+            --radius-md: 14px;
+            --radius-lg: 16px;
             --transition: 0.25s ease;
         }
 
-        /* ─── GLOBAL ─────────────────────────────────────────── */
         *,
         *::before,
         *::after {
@@ -50,171 +46,448 @@
         }
 
         body {
-            background: var(--cream);
             font-family: 'Inter', sans-serif;
-            color: #1e293b;
+            background: var(--cream);
+            color: #111827;
             margin: 0;
         }
 
-        /* ─── PAGE HEADER ────────────────────────────────────── */
+        /* ─── PAGE HEADER ────────────────────────────────────────── */
         .page-header {
-            background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 100%);
-            padding: 40px 0 32px;
-            color: white;
+            background: var(--cream-alt);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0 0;
         }
 
-        .page-header h1 {
-            font-size: 2rem;
+        .page-header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding-bottom: 16px;
+        }
+
+        .page-title {
+            font-size: 1.6rem;
             font-weight: 800;
-            margin: 0 0 6px;
-            letter-spacing: -0.3px;
-        }
-
-        .page-header p {
-            font-size: 15px;
-            color: rgba(255, 255, 255, 0.72);
+            color: var(--navy-deep);
             margin: 0;
         }
 
-        /* ─── SEARCH BAR IN HEADER ───────────────────────────── */
-        .header-search {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            max-width: 600px;
+        .page-title span {
+            color: var(--navy);
         }
 
-        .header-search .search-wrap {
-            flex: 1;
+        /* ─── SEARCH BAR ─────────────────────────────────────────── */
+        .search-bar-wrap {
             position: relative;
+            max-width: 420px;
+            flex-shrink: 0;
         }
 
-        .header-search .search-wrap i {
+        .search-bar-wrap .search-icon {
             position: absolute;
             left: 14px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--gray-text);
-            font-size: 16px;
+            font-size: 15px;
             pointer-events: none;
         }
 
-        .header-search input {
+        .search-bar-wrap input {
+            padding: 10px 80px 10px 40px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
             width: 100%;
-            padding: 11px 14px 11px 40px;
+            background: white;
+            transition: border-color var(--transition), box-shadow var(--transition);
+        }
+
+        .search-bar-wrap input:focus {
+            outline: none;
+            border-color: var(--navy);
+            box-shadow: 0 0 0 3px rgba(26, 60, 140, 0.12);
+        }
+
+        .search-bar-wrap .btn-search {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--navy);
+            color: white;
+            border: none;
+            border-radius: 7px;
+            padding: 5px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: background var(--transition);
+        }
+
+        .search-bar-wrap .btn-search:hover {
+            background: var(--navy-dark);
+        }
+
+        /* ─── MOBILE FILTER BUTTON ───────────────────────────────── */
+        .mobile-filter-btn {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            background: var(--navy);
+            color: white;
             border: none;
             border-radius: 10px;
+            padding: 9px 16px;
             font-size: 14px;
+            font-weight: 600;
             font-family: 'Inter', sans-serif;
-            outline: none;
-            background: rgba(255, 255, 255, 0.95);
-            color: #1e293b;
+            cursor: pointer;
         }
 
-        .header-search input:focus {
-            background: white;
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
-        }
-
-        .header-search button {
-            padding: 11px 22px;
+        .filter-count-badge {
             background: white;
             color: var(--navy);
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background var(--transition), color var(--transition);
-            white-space: nowrap;
+            border-radius: 999px;
+            padding: 1px 7px;
+            font-size: 11px;
+            font-weight: 800;
         }
 
-        .header-search button:hover {
-            background: var(--cream-alt);
+        @media (max-width: 767px) {
+            .mobile-filter-btn {
+                display: inline-flex;
+            }
         }
 
-        /* Active filter badges in header */
+        /* ─── ACTIVE FILTER PILLS ────────────────────────────────── */
         .active-filters {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-top: 14px;
+            padding: 10px 0 16px;
         }
 
-        .filter-badge {
+        .filter-pill {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: rgba(255, 255, 255, 0.18);
+            background: var(--navy);
             color: white;
             font-size: 12px;
             font-weight: 600;
-            padding: 4px 12px;
+            padding: 5px 12px;
             border-radius: 999px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .filter-badge a {
-            color: white;
-            opacity: 0.7;
             text-decoration: none;
-            line-height: 1;
-            margin-left: 2px;
+            transition: background var(--transition);
         }
 
-        .filter-badge a:hover {
+        .filter-pill:hover {
+            background: var(--navy-dark);
+            color: white;
+        }
+
+        .filter-pill .pill-remove {
+            opacity: 0.75;
+        }
+
+        .filter-pill:hover .pill-remove {
             opacity: 1;
         }
 
-        /* ─── LAYOUT ─────────────────────────────────────────── */
-        .main-layout {
-            display: grid;
-            grid-template-columns: 260px 1fr;
-            gap: 28px;
-            padding: 32px 0 60px;
+        .clear-all-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: transparent;
+            color: #b91c1c;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 999px;
+            border: 1px solid #fca5a5;
+            text-decoration: none;
+            transition: background var(--transition);
         }
 
-        /* ─── SIDEBAR ────────────────────────────────────────── */
-        .sidebar {
-            min-width: 0;
+        .clear-all-btn:hover {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           TOOLBAR ROW  ─  Sort By  +  Calendar View
+        ═══════════════════════════════════════════════════════════ */
+        .toolbar-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .results-count {
+            font-size: 14px;
+            color: var(--gray-text);
+            margin: 0;
+        }
+
+        .results-count strong {
+            color: #111827;
+            font-weight: 700;
+        }
+
+        .toolbar-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* ── Sort Dropdown ── */
+        .sort-dropdown-wrap {
+            position: relative;
+        }
+
+        .sort-trigger {
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px 16px;
+            min-width: 178px;
+            background: var(--navy);
+            color: white;
+            border: none;
+            border-radius: 11px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(26, 60, 140, 0.28);
+            transition: background var(--transition), box-shadow var(--transition);
+            white-space: nowrap;
+        }
+
+        .sort-trigger:hover {
+            background: var(--navy-dark);
+        }
+
+        .sort-trigger:focus-visible {
+            outline: 3px solid rgba(26, 60, 140, 0.4);
+            outline-offset: 2px;
+        }
+
+        .sort-label-inner {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sort-icon {
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        .sort-chevron {
+            font-size: 11px;
+            opacity: 0.7;
+            transition: transform var(--transition);
+        }
+
+        .sort-dropdown-wrap.open .sort-chevron {
+            transform: rotate(180deg);
+        }
+
+        /* Panel */
+        .sort-panel {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            min-width: 216px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.13);
+            overflow: hidden;
+            z-index: 300;
+            animation: panelIn 0.17s ease;
+        }
+
+        .sort-dropdown-wrap.open .sort-panel {
+            display: block;
+        }
+
+        @keyframes panelIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .sort-panel-header {
+            background: var(--navy);
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 11px 16px 9px;
+        }
+
+        .sort-option {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 11px 16px;
+            font-size: 13.5px;
+            font-weight: 500;
+            color: #374151;
+            text-decoration: none;
+            border-bottom: 1px solid #f5f3ef;
+            transition: background var(--transition), color var(--transition);
+        }
+
+        .sort-option:last-child {
+            border-bottom: none;
+        }
+
+        .sort-option:hover {
+            background: rgba(26, 60, 140, 0.055);
+            color: var(--navy);
+        }
+
+        .sort-option.active {
+            background: rgba(26, 60, 140, 0.08);
+            color: var(--navy);
+            font-weight: 700;
+        }
+
+        .opt-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(26, 60, 140, 0.07);
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background var(--transition);
+        }
+
+        .opt-icon i {
+            font-size: 14px;
+            color: var(--navy);
+            transition: color var(--transition);
+        }
+
+        .sort-option:hover .opt-icon,
+        .sort-option.active .opt-icon {
+            background: var(--navy);
+        }
+
+        .sort-option:hover .opt-icon i,
+        .sort-option.active .opt-icon i {
+            color: white;
+        }
+
+        .opt-check {
+            margin-left: auto;
+            color: var(--navy);
+            font-size: 15px;
+            opacity: 0;
+        }
+
+        .sort-option.active .opt-check {
+            opacity: 1;
+        }
+
+        /* ── Calendar View button ── */
+        .btn-calendar-top {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: white;
+            color: var(--navy);
+            border: 1.5px solid var(--navy);
+            border-radius: 11px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13.5px;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(26, 60, 140, 0.10);
+            transition: background var(--transition), color var(--transition), box-shadow var(--transition);
+        }
+
+        .btn-calendar-top:hover {
+            background: var(--navy);
+            color: white;
+            box-shadow: 0 4px 14px rgba(26, 60, 140, 0.28);
+        }
+
+        .btn-calendar-top:focus-visible {
+            outline: 3px solid rgba(26, 60, 140, 0.4);
+            outline-offset: 2px;
+        }
+
+        .btn-calendar-top i {
+            font-size: 15px;
+        }
+
+        /* ─── SIDEBAR ────────────────────────────────────────────── */
+        .sidebar-col {
+            position: sticky;
+            top: 80px;
+            align-self: flex-start;
         }
 
         .filter-box,
         .trending-box {
             background: white;
             padding: 20px;
-            border-radius: var(--radius);
+            border-radius: var(--radius-md);
             border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 18px;
         }
 
         .filter-box h5,
         .trending-box h5 {
             color: var(--navy);
             font-weight: 700;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin-bottom: 14px;
-        }
-
-        .filter-divider {
-            height: 1px;
-            background: var(--border);
+            font-size: 15px;
             margin: 0 0 14px;
-            opacity: 0.6;
         }
 
-        /* Filter labels */
         .filter-label {
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.09em;
             color: var(--gray-text);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
             margin-bottom: 6px;
+            margin-top: 4px;
             display: block;
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 14px 0;
         }
 
         .form-select,
@@ -222,63 +495,32 @@
             border-radius: 8px;
             border: 1px solid #d8d1c6;
             font-size: 13.5px;
-            padding: 8px 12px;
             font-family: 'Inter', sans-serif;
+            padding: 8px 12px;
         }
 
         .form-select:focus,
         .form-control:focus {
             border-color: var(--navy);
-            box-shadow: 0 0 0 3px rgba(26, 60, 140, 0.12);
-            outline: none;
+            box-shadow: 0 0 0 0.15rem rgba(26, 60, 140, 0.15);
         }
 
-        /* Category pills in sidebar */
-        .category-pills {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .cat-pill {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: var(--gray-light);
-            color: #475569;
-            font-size: 13px;
-            font-weight: 500;
-            text-decoration: none;
-            transition: all var(--transition);
-            cursor: pointer;
-        }
-
-        .cat-pill:hover,
-        .cat-pill.active {
-            background: var(--navy);
-            color: white;
-            border-color: var(--navy);
-        }
-
-        .cat-pill i {
-            font-size: 14px;
-        }
-
-        /* Buttons */
         .btn-apply {
             background: var(--navy);
             color: white;
-            border-radius: 8px;
+            border-radius: 9px;
             font-weight: 600;
             font-size: 13.5px;
+            font-family: 'Inter', sans-serif;
             border: 2px solid var(--navy);
-            padding: 9px 16px;
+            padding: 9px 14px;
+            transition: background var(--transition), color var(--transition);
             width: 100%;
-            transition: all var(--transition);
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
         .btn-apply:hover {
@@ -286,66 +528,19 @@
             color: var(--navy);
         }
 
-        .btn-clear {
-            background: transparent;
-            color: var(--gray-text);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            padding: 7px 14px;
-            width: 100%;
-            margin-top: 8px;
-            cursor: pointer;
-            transition: all var(--transition);
-            text-decoration: none;
-            display: block;
-            text-align: center;
-        }
-
-        .btn-clear:hover {
-            border-color: #94a3b8;
-            color: #334155;
-        }
-
-        .btn-calendar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: var(--cream-alt);
-            color: var(--navy);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 13.5px;
-            padding: 10px 16px;
-            width: 100%;
-            text-decoration: none;
-            transition: all var(--transition);
-        }
-
-        .btn-calendar:hover {
-            background: var(--navy);
-            color: white;
-            border-color: var(--navy);
-        }
-
-        /* Trending list */
+        /* Trending */
         .trending-item {
             display: flex;
             align-items: flex-start;
             gap: 10px;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border);
+            padding: 9px 0;
+            border-bottom: 1px solid #f3f0eb;
             text-decoration: none;
             color: inherit;
-            transition: color var(--transition);
         }
 
         .trending-item:last-child {
             border-bottom: none;
-            padding-bottom: 0;
         }
 
         .trending-item:hover .trending-name {
@@ -356,22 +551,17 @@
             font-size: 11px;
             font-weight: 800;
             color: var(--navy);
-            background: rgba(26, 60, 140, 0.08);
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            margin-top: 1px;
+            opacity: 0.45;
+            min-width: 18px;
+            padding-top: 2px;
         }
 
         .trending-name {
             font-size: 13px;
             font-weight: 600;
-            color: #334155;
+            color: #1e293b;
             line-height: 1.4;
+            transition: color var(--transition);
         }
 
         .trending-date {
@@ -380,103 +570,37 @@
             margin-top: 2px;
         }
 
-        /* ─── MAIN CONTENT ───────────────────────────────────── */
-        .content-area {
-            min-width: 0;
-        }
-
-        /* Toolbar row */
-        .toolbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .result-info {
-            font-size: 14px;
-            color: var(--gray-text);
-        }
-
-        .result-info strong {
-            color: #1e293b;
-        }
-
-        .sort-wrap {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .sort-wrap label {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--gray-text);
-            white-space: nowrap;
-        }
-
-        .sort-wrap .form-select {
-            width: auto;
-            min-width: 150px;
-            font-size: 13px;
-            padding: 7px 32px 7px 12px;
-        }
-
-        /* Mobile filter toggle */
-        .btn-mobile-filter {
-            display: none;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
-            background: var(--navy);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        /* ─── EVENT CARDS ────────────────────────────────────── */
-        .events-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-        }
-
+        /* ─── EVENT CARDS ────────────────────────────────────────── */
         .event-card {
             background: white;
-            border-radius: 16px;
+            border-radius: var(--radius-lg);
             overflow: hidden;
             border: 1px solid var(--border);
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-sm);
             transition: transform var(--transition), box-shadow var(--transition);
             text-decoration: none;
             color: inherit;
             display: flex;
             flex-direction: column;
+            height: 100%;
         }
 
         .event-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.10);
+            box-shadow: var(--shadow-md);
             color: inherit;
         }
 
         .event-card:focus-visible {
             outline: 3px solid var(--navy);
-            outline-offset: 2px;
+            outline-offset: 3px;
         }
 
-        /* Image wrapper */
         .card-img-wrap {
             position: relative;
             overflow: hidden;
-            height: 170px;
+            aspect-ratio: 16/9;
             background: var(--cream-alt);
-            flex-shrink: 0;
         }
 
         .card-img-wrap img {
@@ -491,50 +615,53 @@
             transform: scale(1.05);
         }
 
-        /* Category badge on image */
-        .card-category {
+        .badge-category {
             position: absolute;
             top: 10px;
             left: 10px;
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.93);
             backdrop-filter: blur(6px);
             color: var(--navy);
             font-size: 11px;
             font-weight: 700;
             padding: 4px 10px;
             border-radius: 999px;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
+            letter-spacing: 0.3px;
         }
 
-        /* Price badge on image */
-        .card-price {
+        .badge-ticket {
             position: absolute;
             top: 10px;
             right: 10px;
-            background: var(--navy);
-            color: white;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             padding: 4px 10px;
             border-radius: 999px;
         }
 
-        /* Card body */
-        .card-body-inner {
+        .badge-ticket.free {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-ticket.paid {
+            background: var(--navy);
+            color: white;
+        }
+
+        .card-body-custom {
             padding: 14px 16px 16px;
             display: flex;
             flex-direction: column;
             flex: 1;
         }
 
-        .card-title {
+        .card-event-title {
             font-size: 14px;
             font-weight: 700;
-            color: var(--navy);
+            color: #0f172a;
             margin: 0 0 10px;
-            line-height: 1.4;
-            /* Clamp to 2 lines */
+            line-height: 1.45;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -548,83 +675,96 @@
             margin-top: auto;
         }
 
-        .card-meta-row {
+        .meta-row {
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 12.5px;
-            color: #475569;
+            font-size: 12px;
+            color: var(--gray-text);
         }
 
-        .card-meta-row i {
+        .meta-row i {
             color: var(--navy);
             font-size: 13px;
             flex-shrink: 0;
         }
 
-        .card-meta-row span {
-            /* clamp long addresses */
-            white-space: nowrap;
+        .meta-row span {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
             overflow: hidden;
-            text-overflow: ellipsis;
         }
 
-        /* Views pill */
-        .views-pill {
-            display: inline-flex;
+        .card-footer-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid #f3f0eb;
+        }
+
+        .card-price {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .card-price.free-price {
+            color: #166534;
+        }
+
+        .card-views {
+            display: flex;
             align-items: center;
             gap: 4px;
-            font-size: 11px;
+            font-size: 11.5px;
             color: var(--gray-text);
-            background: var(--gray-light);
-            padding: 3px 8px;
-            border-radius: 999px;
-            margin-top: 8px;
-            width: fit-content;
         }
 
-        /* ─── EMPTY STATE ────────────────────────────────────── */
+        /* ─── EMPTY STATE ────────────────────────────────────────── */
         .empty-state {
-            grid-column: 1 / -1;
             text-align: center;
-            padding: 60px 20px;
+            padding: 64px 24px;
             background: white;
-            border-radius: 20px;
-            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            border: 1px dashed var(--border);
         }
 
         .empty-icon {
             width: 72px;
             height: 72px;
-            background: rgba(26, 60, 140, 0.08);
+            background: var(--cream-alt);
             border-radius: 50%;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 18px;
             font-size: 30px;
             color: var(--navy);
+            margin-bottom: 18px;
         }
 
         .empty-state h5 {
             font-weight: 700;
-            color: #1e293b;
+            color: #0f172a;
             margin-bottom: 8px;
         }
 
         .empty-state p {
             color: var(--gray-text);
             font-size: 14px;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
+            line-height: 1.6;
         }
 
-        .btn-clear-all {
+        .btn-empty-clear {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 10px 24px;
             background: var(--navy);
             color: white;
+            padding: 10px 22px;
             border-radius: 10px;
             font-weight: 600;
             font-size: 14px;
@@ -632,136 +772,105 @@
             transition: background var(--transition);
         }
 
-        .btn-clear-all:hover {
+        .btn-empty-clear:hover {
             background: var(--navy-dark);
             color: white;
         }
 
-        /* ─── PAGINATION ─────────────────────────────────────── */
-        .pagination-wrap {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            margin-top: 36px;
-            flex-wrap: wrap;
-        }
-
-        .page-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 38px;
-            height: 38px;
-            padding: 0 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: white;
-            color: #475569;
-            font-size: 13px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all var(--transition);
-        }
-
-        .page-btn:hover {
-            border-color: var(--navy);
-            color: var(--navy);
-        }
-
-        .page-btn.active {
+        /* ─── OFFCANVAS (mobile) ─────────────────────────────────── */
+        .offcanvas-filter .offcanvas-header {
             background: var(--navy);
             color: white;
-            border-color: var(--navy);
+            padding: 16px 20px;
         }
 
-        .page-btn.disabled {
-            opacity: 0.4;
-            pointer-events: none;
-        }
-
-        /* ─── RESPONSIVE ─────────────────────────────────────── */
-        /* ≤ 1200px: 2 cards per row */
-        @media (max-width: 1200px) {
-            .events-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* ≤ 992px: collapse to single column layout */
-        @media (max-width: 992px) {
-            .main-layout {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .sidebar {
-                display: none;
-            }
-
-            .sidebar.show {
-                display: block;
-            }
-
-            .btn-mobile-filter {
-                display: inline-flex;
-            }
-
-            .events-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* ≤ 576px: 1 card per row */
-        @media (max-width: 576px) {
-            .events-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .page-header h1 {
-                font-size: 1.6rem;
-            }
-
-            .header-search {
-                flex-direction: column;
-            }
-
-            .header-search button {
-                width: 100%;
-            }
-
-            .toolbar {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-
-        /* ─── OFFCANVAS SIDEBAR (mobile) ─────────────────────── */
-        .offcanvas-header {
-            background: var(--navy);
-            color: white;
-        }
-
-        .offcanvas-header .btn-close {
-            filter: invert(1);
-        }
-
-        .offcanvas-title {
+        .offcanvas-filter .offcanvas-title {
             font-weight: 700;
             font-size: 16px;
         }
 
-        .offcanvas-body {
+        .offcanvas-filter .btn-close {
+            filter: brightness(0) invert(1);
+        }
+
+        .offcanvas-filter .offcanvas-body {
             background: var(--cream);
-            overflow-y: auto;
+            padding: 20px;
         }
 
-        .offcanvas-body .filter-box,
-        .offcanvas-body .trending-box {
-            box-shadow: none;
+        .btn-apply-outline {
+            background: white;
+            color: var(--navy);
+            border: 2px solid var(--navy);
+            border-radius: 9px;
+            font-weight: 600;
+            font-size: 13.5px;
+            font-family: 'Inter', sans-serif;
+            padding: 9px 14px;
+            width: 100%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-decoration: none;
+            transition: background var(--transition), color var(--transition);
+            margin-top: 8px;
         }
 
-        /* ─── MISC ───────────────────────────────────────────── */
+        .btn-apply-outline:hover {
+            background: var(--navy);
+            color: white;
+        }
+
+        /* ─── RESPONSIVE ─────────────────────────────────────────── */
+        @media (max-width: 767px) {
+            .sidebar-col {
+                display: none;
+            }
+
+            .page-header-inner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .search-bar-wrap {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .toolbar-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .toolbar-controls {
+                width: 100%;
+            }
+
+            .sort-trigger {
+                flex: 1;
+                min-width: unset;
+            }
+
+            .btn-calendar-top {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .page-title {
+                font-size: 1.3rem;
+            }
+
+            .sort-panel {
+                right: unset;
+                left: 0;
+            }
+        }
+
         @media (prefers-reduced-motion: reduce) {
 
             *,
@@ -778,185 +887,150 @@
 
     {% include "navbar.html" %}
 
-    <!-- ═══ PAGE HEADER ══════════════════════════════════════════ -->
+    <!-- ════════════════════════════════════════════════════════════
+     PAGE HEADER
+════════════════════════════════════════════════════════════ -->
     <div class="page-header">
         <div class="container">
-            <h1>
-                {% if search_query %}
-                Results for "<span style="color:rgba(255,255,255,0.85);">{{ search_query }}</span>"
-                {% elif selected_category %}
-                {{ selected_category }} Events
-                {% else %}
-                Find Events
-                {% endif %}
-            </h1>
-            <p>
-                {% if events is defined %}
-                {{ events|length }} event{{ 's' if events|length != 1 else '' }} available
-                {% else %}
-                Discover concerts, workshops, sports, parties &amp; more near you
-                {% endif %}
-            </p>
+            <div class="page-header-inner">
 
-            <!-- Search bar -->
-            <form method="GET" action="/find_events" class="header-search">
-                <div class="search-wrap">
-                    <i class="bi bi-search"></i>
-                    <input type="text" name="q" placeholder="Search events, categories, cities…"
-                        value="{{ search_query }}" aria-label="Search events">
-                    <!-- Preserve active filters when searching -->
-                    {% if selected_category %}<input type="hidden" name="category" value="{{ selected_category }}">{%
-                    endif %}
-                    {% if selected_sort %}<input type="hidden" name="sort" value="{{ selected_sort }}">{% endif %}
+                <div class="d-flex align-items-center gap-3 flex-wrap">
+                    <h1 class="page-title">Find <span>Events</span></h1>
+                    {% set active_count = (1 if selected_category else 0)
+                    + (1 if selected_date else 0)
+                    + (1 if selected_price else 0)
+                    + (1 if selected_city else 0) %}
+                    <button class="mobile-filter-btn" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">
+                        <i class="bi bi-sliders" aria-hidden="true"></i> Filters
+                        {% if active_count > 0 %}<span class="filter-count-badge">{{ active_count }}</span>{% endif %}
+                    </button>
                 </div>
-                <button type="submit">
-                    <i class="bi bi-search me-1"></i> Search
-                </button>
-            </form>
 
-            <!-- Active filter badges -->
+                <form method="GET" action="/find_events" class="search-bar-wrap">
+                    <input type="hidden" name="category" value="{{ selected_category }}">
+                    <input type="hidden" name="date" value="{{ selected_date }}">
+                    <input type="hidden" name="price" value="{{ selected_price }}">
+                    <input type="hidden" name="city" value="{{ selected_city }}">
+                    <input type="hidden" name="sort" value="{{ selected_sort }}">
+                    <i class="bi bi-search search-icon" aria-hidden="true"></i>
+                    <input type="text" name="q" value="{{ search_query }}"
+                        placeholder="Search events, categories, venues…" aria-label="Search events">
+                    <button type="submit" class="btn-search">Go</button>
+                </form>
+            </div>
+
+            <!-- Active filter pills -->
             {% set has_filters = search_query or selected_category or selected_date or selected_price or selected_city
-            %}
+            or selected_sort %}
             {% if has_filters %}
-            <div class="active-filters" role="list" aria-label="Active filters">
+            <div class="active-filters" aria-label="Active filters">
                 {% if search_query %}
-                <span class="filter-badge" role="listitem">
-                    <i class="bi bi-search"></i> {{ search_query }}
-                    <a href="/find_events?{% if selected_category %}category={{ selected_category }}&{% endif %}{% if selected_date %}date={{ selected_date }}&{% endif %}{% if selected_price %}price={{ selected_price }}&{% endif %}{% if selected_city %}city={{ selected_city }}{% endif %}"
-                        aria-label="Remove search filter">✕</a>
-                </span>
+                <a href="/find_events?category={{ selected_category }}&date={{ selected_date }}&price={{ selected_price }}&city={{ selected_city }}&sort={{ selected_sort }}"
+                    class="filter-pill">
+                    <i class="bi bi-search" aria-hidden="true"></i> "{{ search_query }}" <span
+                        class="pill-remove">×</span>
+                </a>
                 {% endif %}
                 {% if selected_category %}
-                <span class="filter-badge" role="listitem">
-                    <i class="bi bi-grid"></i> {{ selected_category }}
-                    <a href="/find_events?{% if search_query %}q={{ search_query }}&{% endif %}{% if selected_date %}date={{ selected_date }}&{% endif %}{% if selected_price %}price={{ selected_price }}&{% endif %}{% if selected_city %}city={{ selected_city }}{% endif %}"
-                        aria-label="Remove category filter">✕</a>
-                </span>
+                <a href="/find_events?q={{ search_query }}&date={{ selected_date }}&price={{ selected_price }}&city={{ selected_city }}&sort={{ selected_sort }}"
+                    class="filter-pill">
+                    <i class="bi bi-tag" aria-hidden="true"></i> {{ selected_category }} <span
+                        class="pill-remove">×</span>
+                </a>
                 {% endif %}
                 {% if selected_date %}
-                <span class="filter-badge" role="listitem">
-                    <i class="bi bi-calendar"></i>
-                    {% if selected_date == 'today' %}Today
-                    {% elif selected_date == 'weekend' %}This Weekend
-                    {% elif selected_date == 'month' %}This Month
-                    {% endif %}
-                    <a href="/find_events?{% if search_query %}q={{ search_query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}{% if selected_price %}price={{ selected_price }}&{% endif %}{% if selected_city %}city={{ selected_city }}{% endif %}"
-                        aria-label="Remove date filter">✕</a>
-                </span>
+                <a href="/find_events?q={{ search_query }}&category={{ selected_category }}&price={{ selected_price }}&city={{ selected_city }}&sort={{ selected_sort }}"
+                    class="filter-pill">
+                    <i class="bi bi-calendar" aria-hidden="true"></i>
+                    {% if selected_date=='today' %}Today{% elif selected_date=='weekend' %}This Weekend{% elif
+                    selected_date=='month' %}This Month{% endif %}
+                    <span class="pill-remove">×</span>
+                </a>
                 {% endif %}
                 {% if selected_price %}
-                <span class="filter-badge" role="listitem">
-                    <i class="bi bi-tag"></i>
-                    {% if selected_price == 'free' %}Free
-                    {% elif selected_price == 'paid' %}Paid
-                    {% elif selected_price == 'under500' %}Under ₹500
-                    {% elif selected_price == '500-2000' %}₹500–₹2000
-                    {% elif selected_price == '2000plus' %}₹2000+
-                    {% endif %}
-                    <a href="/find_events?{% if search_query %}q={{ search_query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}{% if selected_date %}date={{ selected_date }}&{% endif %}{% if selected_city %}city={{ selected_city }}{% endif %}"
-                        aria-label="Remove price filter">✕</a>
-                </span>
+                <a href="/find_events?q={{ search_query }}&category={{ selected_category }}&date={{ selected_date }}&city={{ selected_city }}&sort={{ selected_sort }}"
+                    class="filter-pill">
+                    <i class="bi bi-currency-rupee" aria-hidden="true"></i>
+                    {% if selected_price=='free' %}Free{% elif selected_price=='paid' %}Paid{% elif
+                    selected_price=='under500' %}Under ₹500{% elif selected_price=='500-2000' %}₹500–₹2,000{% elif
+                    selected_price=='2000plus' %}₹2,000+{% endif %}
+                    <span class="pill-remove">×</span>
+                </a>
                 {% endif %}
                 {% if selected_city %}
-                <span class="filter-badge" role="listitem">
-                    <i class="bi bi-geo-alt"></i> {{ selected_city }}
-                    <a href="/find_events?{% if search_query %}q={{ search_query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}{% if selected_date %}date={{ selected_date }}&{% endif %}{% if selected_price %}price={{ selected_price }}{% endif %}"
-                        aria-label="Remove city filter">✕</a>
-                </span>
+                <a href="/find_events?q={{ search_query }}&category={{ selected_category }}&date={{ selected_date }}&price={{ selected_price }}&sort={{ selected_sort }}"
+                    class="filter-pill">
+                    <i class="bi bi-geo-alt" aria-hidden="true"></i> {{ selected_city }} <span
+                        class="pill-remove">×</span>
+                </a>
                 {% endif %}
-                <a href="/find_events" class="filter-badge"
-                    style="background:rgba(255,255,255,0.1); text-decoration:none;" aria-label="Clear all filters">
-                    <i class="bi bi-x-circle"></i> Clear all
+                {% if selected_sort %}
+                <a href="/find_events?q={{ search_query }}&category={{ selected_category }}&date={{ selected_date }}&price={{ selected_price }}&city={{ selected_city }}"
+                    class="filter-pill">
+                    <i class="bi bi-sort-down" aria-hidden="true"></i>
+                    {% if selected_sort=='date' %}By Date{% elif selected_sort=='views' %}Most Viewed{% elif
+                    selected_sort=='likes' %}Most Liked{% elif selected_sort=='purchases' %}Most Popular{% endif %}
+                    <span class="pill-remove">×</span>
+                </a>
+                {% endif %}
+                <a href="/find_events" class="clear-all-btn">
+                    <i class="bi bi-x-circle" aria-hidden="true"></i> Clear all
                 </a>
             </div>
             {% endif %}
         </div>
     </div>
 
-    <!-- ═══ MAIN CONTENT ══════════════════════════════════════════ -->
-    <div class="container">
-        <div class="main-layout">
 
-            <!-- ── SIDEBAR ──────────────────────────────────────── -->
-            <aside class="sidebar" aria-label="Event filters">
-                {% include "sidebar_filters.html" ignore missing %}
+    <!-- ════════════════════════════════════════════════════════════
+     MAIN LAYOUT
+════════════════════════════════════════════════════════════ -->
+    <div class="container my-4">
+        <div class="row g-4">
 
-                <!-- SORT -->
-                <div class="filter-box">
-                    <h5><i class="bi bi-sort-down me-2" aria-hidden="true"></i>Sort By</h5>
-                    <div class="filter-divider"></div>
-                    <form method="GET" action="/find_events" id="sortForm">
-                        <input type="hidden" name="q" value="{{ search_query }}">
-                        <input type="hidden" name="category" value="{{ selected_category }}">
-                        <input type="hidden" name="date" value="{{ selected_date }}">
-                        <input type="hidden" name="price" value="{{ selected_price }}">
-                        <input type="hidden" name="city" value="{{ selected_city }}">
-                        <select name="sort" class="form-select" onchange="this.form.submit()"
-                            aria-label="Sort events by">
-                            <option value="" {% if not selected_sort %}selected{% endif %}>Default</option>
-                            <option value="date" {% if selected_sort=="date" %}selected{% endif %}>📅 Date (Soonest)
-                            </option>
-                            <option value="views" {% if selected_sort=="views" %}selected{% endif %}>👁 Most Viewed
-                            </option>
-                            <option value="likes" {% if selected_sort=="likes" %}selected{% endif %}>❤️ Most Liked
-                            </option>
-                            <option value="purchases" {% if selected_sort=="purchases" %}selected{% endif %}>🔥 Most
-                                Popular</option>
-                        </select>
-                    </form>
-                </div>
+            <!-- ── SIDEBAR — Filters + Trending only ────────────────── -->
+            <div class="col-md-3 sidebar-col">
 
-                <!-- CATEGORY -->
-                <div class="filter-box">
-                    <h5><i class="bi bi-grid me-2" aria-hidden="true"></i>Category</h5>
-                    <div class="filter-divider"></div>
-                    <div class="category-pills" role="list">
-                        <a href="/find_events?{% if search_query %}q={{ search_query }}&{% endif %}{% if selected_sort %}sort={{ selected_sort }}&{% endif %}{% if selected_date %}date={{ selected_date }}&{% endif %}{% if selected_price %}price={{ selected_price }}&{% endif %}{% if selected_city %}city={{ selected_city }}{% endif %}"
-                            class="cat-pill {% if not selected_category %}active{% endif %}" role="listitem">
-                            <i class="bi bi-collection" aria-hidden="true"></i> All Events
-                        </a>
-                        {% for cat, icon in [
-                        ('Music', 'bi-music-note-beamed'),
-                        ('Party', 'bi-balloon'),
-                        ('Dance', 'bi-person-arms-up'),
-                        ('Sports', 'bi-trophy'),
-                        ('Workshop', 'bi-tools'),
-                        ('Conference', 'bi-people'),
-                        ('Watchparty', 'bi-tv'),
-                        ('Others', 'bi-three-dots')
-                        ] %}
-                        <a href="/find_events?category={{ cat }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_sort %}&sort={{ selected_sort }}{% endif %}{% if selected_date %}&date={{ selected_date }}{% endif %}{% if selected_price %}&price={{ selected_price }}{% endif %}{% if selected_city %}&city={{ selected_city }}{% endif %}"
-                            class="cat-pill {% if selected_category == cat %}active{% endif %}" role="listitem">
-                            <i class="bi {{ icon }}" aria-hidden="true"></i> {{ cat }}
-                        </a>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <!-- FILTERS -->
                 <div class="filter-box">
                     <h5><i class="bi bi-funnel me-2" aria-hidden="true"></i>Filters</h5>
-                    <div class="filter-divider"></div>
-
-                    <form method="GET" action="/find_events" id="filterForm">
+                    <form method="GET" action="/find_events">
                         <input type="hidden" name="q" value="{{ search_query }}">
                         <input type="hidden" name="sort" value="{{ selected_sort }}">
-                        <input type="hidden" name="category" value="{{ selected_category }}">
 
-                        <!-- Date -->
-                        <span class="filter-label">Date</span>
-                        <select name="date" class="form-select mb-3" aria-label="Filter by date">
-                            <option value="" {% if not selected_date %}selected{% endif %}>All Dates</option>
+                        <label class="filter-label" for="cat-select">Category</label>
+                        <select name="category" id="cat-select" class="form-select mb-3">
+                            <option value="">All Categories</option>
+                            <option value="Music" {% if selected_category=="Music" %}selected{% endif %}>🎵 Music
+                            </option>
+                            <option value="Party" {% if selected_category=="Party" %}selected{% endif %}>🎉 Party
+                            </option>
+                            <option value="Dance" {% if selected_category=="Dance" %}selected{% endif %}>💃 Dance
+                            </option>
+                            <option value="Sports" {% if selected_category=="Sports" %}selected{% endif %}>⚽ Sports
+                            </option>
+                            <option value="Conference" {% if selected_category=="Conference" %}selected{% endif %}>💼
+                                Conference</option>
+                            <option value="Workshop" {% if selected_category=="Workshop" %}selected{% endif %}>🛠
+                                Workshop</option>
+                            <option value="Watchparty" {% if selected_category=="Watchparty" %}selected{% endif %}>🎬
+                                Watch Party</option>
+                            <option value="Others" {% if selected_category=="Others" %}selected{% endif %}>✨ Others
+                            </option>
+                        </select>
+
+                        <label class="filter-label" for="date-select">Date</label>
+                        <select name="date" id="date-select" class="form-select mb-3">
+                            <option value="">All Dates</option>
                             <option value="today" {% if selected_date=="today" %}selected{% endif %}>Today</option>
                             <option value="weekend" {% if selected_date=="weekend" %}selected{% endif %}>This Weekend
                             </option>
                             <option value="month" {% if selected_date=="month" %}selected{% endif %}>This Month</option>
                         </select>
 
-                        <!-- Price -->
-                        <span class="filter-label">Price</span>
-                        <select name="price" class="form-select mb-3" aria-label="Filter by price">
-                            <option value="" {% if not selected_price %}selected{% endif %}>Any Price</option>
+                        <label class="filter-label" for="price-select">Price</label>
+                        <select name="price" id="price-select" class="form-select mb-3">
+                            <option value="">Any Price</option>
                             <option value="free" {% if selected_price=="free" %}selected{% endif %}>Free</option>
                             <option value="paid" {% if selected_price=="paid" %}selected{% endif %}>Paid</option>
                             <option value="under500" {% if selected_price=="under500" %}selected{% endif %}>Under ₹500
@@ -967,311 +1041,318 @@
                             </option>
                         </select>
 
-                        <!-- City -->
-                        <span class="filter-label">City</span>
-                        <input type="text" name="city" class="form-control mb-3" placeholder="e.g. Mumbai, Delhi…"
-                            value="{{ selected_city }}" aria-label="Filter by city">
+                        <label class="filter-label" for="city-input">City</label>
+                        <input type="text" name="city" id="city-input" class="form-control mb-3"
+                            placeholder="e.g. Mumbai, Delhi…" value="{{ selected_city }}">
 
                         <button type="submit" class="btn-apply">
-                            <i class="bi bi-check2 me-1"></i> Apply Filters
+                            <i class="bi bi-check2" aria-hidden="true"></i> Apply Filters
                         </button>
                     </form>
-
-                    <a href="/find_events" class="btn-clear">
-                        <i class="bi bi-x me-1"></i> Clear All Filters
-                    </a>
                 </div>
 
-                <!-- CALENDAR VIEW -->
-                <a href="/calendar" class="btn-calendar mb-4">
-                    <i class="bi bi-calendar3" aria-hidden="true"></i>
-                    Calendar View
-                </a>
-
-                <!-- TRENDING -->
                 <div class="trending-box">
-                    <h5><i class="bi bi-fire me-2" aria-hidden="true"></i>Trending Now</h5>
-                    <div class="filter-divider"></div>
+                    <h5><i class="bi bi-fire me-2" aria-hidden="true"></i>Trending</h5>
                     {% if trending %}
                     {% for t in trending %}
                     <a href="/event/{{ t[0] }}" class="trending-item">
-                        <span class="trending-rank" aria-hidden="true">{{ loop.index }}</span>
+                        <span class="trending-rank" aria-hidden="true">#{{ loop.index }}</span>
                         <div>
                             <div class="trending-name">{{ t[1] }}</div>
                             <div class="trending-date">
-                                <i class="bi bi-calendar2" aria-hidden="true"></i>
+                                <i class="bi bi-calendar2 me-1" aria-hidden="true"></i>
                                 {{ t[2].strftime('%d %b %Y') if t[2] else '' }}
                             </div>
                         </div>
                     </a>
                     {% endfor %}
                     {% else %}
-                    <p class="text-muted" style="font-size:13px;">No trending events right now.</p>
+                    <p class="text-muted mb-0" style="font-size:13px;">No trending events right now.</p>
                     {% endif %}
                 </div>
-            </aside>
 
-            <!-- ── CONTENT AREA ──────────────────────────────────── -->
-            <section class="content-area" aria-label="Events listing">
+            </div>
+            <!-- /sidebar -->
 
-                <!-- Toolbar -->
-                <div class="toolbar">
-                    <div class="d-flex align-items-center gap-3 flex-wrap">
-                        <!-- Mobile filter toggle -->
-                        <button class="btn-mobile-filter" type="button" data-bs-toggle="offcanvas"
-                            data-bs-target="#mobileFilters" aria-controls="mobileFilters">
-                            <i class="bi bi-funnel" aria-hidden="true"></i>
-                            Filters
-                            {% if has_filters %}<span class="badge bg-white text-navy"
-                                style="color:var(--navy);">●</span>{% endif %}
-                        </button>
 
-                        <p class="result-info mb-0">
-                            {% if events %}
-                            Showing <strong>{{ events|length }}</strong>
-                            event{{ 's' if events|length != 1 else '' }}
-                            {% if search_query %}for "<strong>{{ search_query }}</strong>"{% endif %}
-                            {% else %}
-                            No events found
-                            {% endif %}
-                        </p>
-                    </div>
+            <!-- ── MAIN CONTENT ──────────────────────────────────────── -->
+            <div class="col-md-9">
 
-                    <!-- Sort (desktop) -->
-                    <div class="sort-wrap d-none d-md-flex">
-                        <label for="sortSelectTop">Sort:</label>
-                        <form method="GET" action="/find_events" id="sortFormTop">
-                            <input type="hidden" name="q" value="{{ search_query }}">
-                            <input type="hidden" name="category" value="{{ selected_category }}">
-                            <input type="hidden" name="date" value="{{ selected_date }}">
-                            <input type="hidden" name="price" value="{{ selected_price }}">
-                            <input type="hidden" name="city" value="{{ selected_city }}">
-                            <select id="sortSelectTop" name="sort" class="form-select" onchange="this.form.submit()"
-                                aria-label="Sort events">
-                                <option value="" {% if not selected_sort %}selected{% endif %}>Default</option>
-                                <option value="date" {% if selected_sort=="date" %}selected{% endif %}>Date</option>
-                                <option value="views" {% if selected_sort=="views" %}selected{% endif %}>Most Viewed
-                                </option>
-                                <option value="likes" {% if selected_sort=="likes" %}selected{% endif %}>Most Liked
-                                </option>
-                                <option value="purchases" {% if selected_sort=="purchases" %}selected{% endif %}>Most
-                                    Popular</option>
-                            </select>
-                        </form>
+                <!-- ══ TOOLBAR — result count | Sort By + Calendar View ══ -->
+                <div class="toolbar-row">
+
+                    <!-- Result count -->
+                    <p class="results-count" aria-live="polite">
+                        {% if events %}
+                        <strong>{{ events|length }}</strong> event{{ 's' if events|length != 1 else '' }} found
+                        {% if search_query %} for "<em>{{ search_query }}</em>"{% endif %}
+                        {% else %}No events found{% endif %}
+                    </p>
+
+                    <!-- Controls -->
+                    <div class="toolbar-controls">
+
+                        <!-- ▸ Custom Sort dropdown -->
+                        <div class="sort-dropdown-wrap" id="sortDropdown">
+
+                            <button class="sort-trigger" type="button" id="sortTriggerBtn" onclick="toggleSort(event)"
+                                aria-haspopup="listbox" aria-expanded="false" aria-label="Sort events">
+                                <span class="sort-label-inner">
+                                    <i class="bi bi-sort-down sort-icon" aria-hidden="true"></i>
+                                    <span id="sortLabel">
+                                        {% if selected_sort=='date' %}By Date
+                                        {% elif selected_sort=='views' %}Most Viewed
+                                        {% elif selected_sort=='likes' %}Most Liked
+                                        {% elif selected_sort=='purchases' %}Most Popular
+                                        {% else %}Sort By{% endif %}
+                                    </span>
+                                </span>
+                                <i class="bi bi-chevron-down sort-chevron" aria-hidden="true"></i>
+                            </button>
+
+                            <div class="sort-panel" role="listbox" aria-label="Sort options">
+
+                                <div class="sort-panel-header">Sort Events By</div>
+
+                                <a href="/find_events?q={{ search_query }}&category={{ selected_category }}&date={{ selected_date }}&price={{ selected_price }}&city={{ selected_city }}"
+                                    class="sort-option {% if not selected_sort %}active{% endif %}" role="option">
+                                    <span class="opt-icon"><i class="bi bi-grid-3x3-gap"></i></span>
+                                    Default
+                                    <i class="bi bi-check2 opt-check" aria-hidden="true"></i>
+                                </a>
+
+                                <a href="/find_events?q={{ search_query }}&category={{ selected_category }}&date={{ selected_date }}&price={{ selected_price }}&city={{ selected_city }}&sort=date"
+                                    class="sort-option {% if selected_sort=='date' %}active{% endif %}" role="option">
+                                    <span class="opt-icon"><i class="bi bi-calendar-event"></i></span>
+                                    By Date
+                                    <i class="bi bi-check2 opt-check" aria-hidden="true"></i>
+                                </a>
+
+                                <a href="/find_events?q={{ search_query }}&category={{ selected_category }}&date={{ selected_date }}&price={{ selected_price }}&city={{ selected_city }}&sort=views"
+                                    class="sort-option {% if selected_sort=='views' %}active{% endif %}" role="option">
+                                    <span class="opt-icon"><i class="bi bi-eye"></i></span>
+                                    Most Viewed
+                                    <i class="bi bi-check2 opt-check" aria-hidden="true"></i>
+                                </a>
+
+                                <a href="/find_events?q={{ search_query }}&category={{ selected_category }}&date={{ selected_date }}&price={{ selected_price }}&city={{ selected_city }}&sort=likes"
+                                    class="sort-option {% if selected_sort=='likes' %}active{% endif %}" role="option">
+                                    <span class="opt-icon"><i class="bi bi-heart"></i></span>
+                                    Most Liked
+                                    <i class="bi bi-check2 opt-check" aria-hidden="true"></i>
+                                </a>
+
+                                <a href="/find_events?q={{ search_query }}&category={{ selected_category }}&date={{ selected_date }}&price={{ selected_price }}&city={{ selected_city }}&sort=purchases"
+                                    class="sort-option {% if selected_sort=='purchases' %}active{% endif %}"
+                                    role="option">
+                                    <span class="opt-icon"><i class="bi bi-fire"></i></span>
+                                    Most Popular
+                                    <i class="bi bi-check2 opt-check" aria-hidden="true"></i>
+                                </a>
+
+                            </div>
+                        </div>
+                        <!-- /sort dropdown -->
+
+                        <!-- ▸ Calendar View -->
+                        <a href="/calendar" class="btn-calendar-top">
+                            <i class="bi bi-calendar3" aria-hidden="true"></i>
+                            Calendar View
+                        </a>
+
                     </div>
                 </div>
+                <!-- /toolbar-row -->
 
-                <!-- Events Grid -->
-                <div class="events-grid" role="list" aria-label="Event cards">
 
-                    {% if events %}
+                <!-- Events grid -->
+                {% if events %}
+                <div class="row g-3">
                     {% for event in events %}
-                    <a href="/event/{{ event[0] }}" class="event-card" role="listitem"
-                        aria-label="{{ event[1] }}, {{ event[2] }}">
+                    <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                        <a href="/event/{{ event[0] }}" class="event-card" aria-label="{{ event[1] }}">
 
-                        <!-- Image -->
-                        <div class="card-img-wrap">
-                            <img src="{{ url_for('static', filename='uploads/' + (event[9] or 'default.jpg')) }}"
-                                alt="{{ event[1] }}" loading="{{ 'eager' if loop.index <= 4 else 'lazy' }}" width="400"
-                                height="170">
-
-                            <!-- Category badge -->
-                            {% if event[4] %}
-                            <span class="card-category">{{ event[4] }}</span>
-                            {% endif %}
-
-                            <!-- Price badge -->
-                            <span class="card-price">
-                                {% if event[5] == 'free' %}
-                                Free
-                                {% else %}
-                                ₹{{ event[6] }}
-                                {% endif %}
-                            </span>
-                        </div>
-
-                        <!-- Body -->
-                        <div class="card-body-inner">
-                            <h6 class="card-title">{{ event[1] }}</h6>
-
-                            <div class="card-meta">
-                                <div class="card-meta-row">
-                                    <i class="bi bi-calendar-event" aria-hidden="true"></i>
-                                    <span>{{ event[2].strftime('%d %b %Y') if event[2] else event[2] }} &middot; {{
-                                        event[3].strftime('%I:%M %p') if event[3] else event[3] }}</span>
-                                </div>
-                                <div class="card-meta-row">
-                                    <i class="bi bi-geo-alt" aria-hidden="true"></i>
-                                    <span>{{ event[7] }}</span>
-                                </div>
+                            <div class="card-img-wrap">
+                                <img src="{{ url_for('static', filename='uploads/' + (event[9] or 'default.jpg')) }}"
+                                    alt="{{ event[1] }}" loading="{{ 'eager' if loop.index <= 4 else 'lazy' }}"
+                                    width="400" height="225">
+                                {% if event[4] %}<span class="badge-category">{{ event[4] }}</span>{% endif %}
+                                <span class="badge-ticket {{ 'free' if event[5]=='free' else 'paid' }}">
+                                    {% if event[5]=='free' %}Free{% else %}₹{{ event[6] }}{% endif %}
+                                </span>
                             </div>
 
-                            <div class="views-pill">
-                                <i class="bi bi-eye" aria-hidden="true"></i>
-                                {{ event[8] or 0 }} views
+                            <div class="card-body-custom">
+                                <h6 class="card-event-title">{{ event[1] }}</h6>
+                                <div class="card-meta">
+                                    <div class="meta-row">
+                                        <i class="bi bi-calendar-event" aria-hidden="true"></i>
+                                        <span>{{ event[2] }} · {{ event[3] }}</span>
+                                    </div>
+                                    <div class="meta-row">
+                                        <i class="bi bi-geo-alt" aria-hidden="true"></i>
+                                        <span>{{ event[7] }}</span>
+                                    </div>
+                                </div>
+                                <div class="card-footer-row">
+                                    <span class="card-price {{ 'free-price' if event[5]=='free' else '' }}">
+                                        {% if event[5]=='free' %}Free{% else %}₹{{ event[6] }}{% endif %}
+                                    </span>
+                                    <span class="card-views">
+                                        <i class="bi bi-eye" aria-hidden="true"></i> {{ event[8] or 0 }}
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-
-                    </a>
-                    {% endfor %}
-
-                    {% else %}
-                    <!-- Empty State -->
-                    <div class="empty-state" role="status">
-                        <div class="empty-icon" aria-hidden="true">
-                            <i class="bi bi-calendar-x"></i>
-                        </div>
-                        <h5>No events found</h5>
-                        <p>
-                            {% if search_query %}
-                            No results for "{{ search_query }}". Try a different keyword.
-                            {% elif has_filters %}
-                            No events match your current filters. Try adjusting them.
-                            {% else %}
-                            No upcoming events available right now. Check back soon!
-                            {% endif %}
-                        </p>
-                        <a href="/find_events" class="btn-clear-all">
-                            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
-                            Clear Filters &amp; Browse All
                         </a>
                     </div>
-                    {% endif %}
-
+                    {% endfor %}
                 </div>
 
-                <!-- Pagination -->
-                {% if events and events|length >= 20 %}
-                {% set current_page = request.args.get('page', 1) | int %}
-                <nav class="pagination-wrap" aria-label="Pagination">
-                    <a href="?{% if search_query %}q={{ search_query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}{% if selected_date %}date={{ selected_date }}&{% endif %}{% if selected_price %}price={{ selected_price }}&{% endif %}{% if selected_city %}city={{ selected_city }}&{% endif %}{% if selected_sort %}sort={{ selected_sort }}&{% endif %}page={{ current_page - 1 }}"
-                        class="page-btn {% if current_page <= 1 %}disabled{% endif %}" aria-label="Previous page">
-                        <i class="bi bi-chevron-left"></i>
+                {% else %}
+                <div class="empty-state" role="status" aria-live="polite">
+                    <div class="empty-icon" aria-hidden="true"><i class="bi bi-calendar-x"></i></div>
+                    <h5>No events found</h5>
+                    <p>
+                        {% if search_query %}We couldn't find any events matching "<strong>{{ search_query
+                            }}</strong>".<br>{% endif %}
+                        Try adjusting your filters or search terms.
+                    </p>
+                    <a href="/find_events" class="btn-empty-clear">
+                        <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> Clear all filters
                     </a>
-
-                    {% for p in range(1, (events|length // 20) + 3) %}
-                    {% if loop.index <= 5 %} <a
-                        href="?{% if search_query %}q={{ search_query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}{% if selected_date %}date={{ selected_date }}&{% endif %}{% if selected_price %}price={{ selected_price }}&{% endif %}{% if selected_city %}city={{ selected_city }}&{% endif %}{% if selected_sort %}sort={{ selected_sort }}&{% endif %}page={{ p }}"
-                        class="page-btn {% if current_page == p %}active{% endif %}" aria-label="Page {{ p }}" {% if
-                        current_page==p %}aria-current="page" {% endif %}>
-                        {{ p }}
-                        </a>
-                        {% endif %}
-                        {% endfor %}
-
-                        <a href="?{% if search_query %}q={{ search_query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}{% if selected_date %}date={{ selected_date }}&{% endif %}{% if selected_price %}price={{ selected_price }}&{% endif %}{% if selected_city %}city={{ selected_city }}&{% endif %}{% if selected_sort %}sort={{ selected_sort }}&{% endif %}page={{ current_page + 1 }}"
-                            class="page-btn" aria-label="Next page">
-                            <i class="bi bi-chevron-right"></i>
-                        </a>
-                </nav>
+                </div>
                 {% endif %}
 
-            </section>
+            </div>
+            <!-- /main content -->
+
         </div>
     </div>
 
-    <!-- ═══ MOBILE OFFCANVAS SIDEBAR ══════════════════════════════ -->
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileFilters" aria-labelledby="mobileFiltersLabel">
+
+    <!-- ════════════════════════════════════════════════════════════
+     MOBILE OFFCANVAS — Filters + Sort
+════════════════════════════════════════════════════════════ -->
+    <div class="offcanvas offcanvas-start offcanvas-filter" tabindex="-1" id="filterOffcanvas"
+        aria-labelledby="filterOffcanvasLabel">
 
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="mobileFiltersLabel">
-                <i class="bi bi-funnel me-2"></i>Filters & Sort
+            <h5 class="offcanvas-title" id="filterOffcanvasLabel">
+                <i class="bi bi-funnel me-2" aria-hidden="true"></i>Filters &amp; Sort
             </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close filters"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
 
         <div class="offcanvas-body">
 
-            <!-- Sort -->
-            <div class="filter-box">
-                <h5>Sort By</h5>
-                <div class="filter-divider"></div>
-                <form method="GET" action="/find_events">
-                    <input type="hidden" name="q" value="{{ search_query }}">
-                    <input type="hidden" name="category" value="{{ selected_category }}">
-                    <input type="hidden" name="date" value="{{ selected_date }}">
-                    <input type="hidden" name="price" value="{{ selected_price }}">
-                    <input type="hidden" name="city" value="{{ selected_city }}">
-                    <select name="sort" class="form-select mb-3" onchange="this.form.submit()">
-                        <option value="" {% if not selected_sort %}selected{% endif %}>Default</option>
-                        <option value="date" {% if selected_sort=="date" %}selected{% endif %}>Date (Soonest)</option>
-                        <option value="views" {% if selected_sort=="views" %}selected{% endif %}>Most Viewed</option>
-                        <option value="likes" {% if selected_sort=="likes" %}selected{% endif %}>Most Liked</option>
-                        <option value="purchases" {% if selected_sort=="purchases" %}selected{% endif %}>Most Popular
-                        </option>
-                    </select>
-                </form>
-            </div>
+            <span class="filter-label">Sort By</span>
+            <form method="GET" action="/find_events" class="mb-3">
+                <input type="hidden" name="q" value="{{ search_query }}">
+                <input type="hidden" name="category" value="{{ selected_category }}">
+                <input type="hidden" name="date" value="{{ selected_date }}">
+                <input type="hidden" name="price" value="{{ selected_price }}">
+                <input type="hidden" name="city" value="{{ selected_city }}">
+                <select name="sort" class="form-select" onchange="this.form.submit()">
+                    <option value="">Default</option>
+                    <option value="date" {% if selected_sort=="date" %}selected{% endif %}>📅 By Date</option>
+                    <option value="views" {% if selected_sort=="views" %}selected{% endif %}>👁 Most Viewed</option>
+                    <option value="likes" {% if selected_sort=="likes" %}selected{% endif %}>❤️ Most Liked</option>
+                    <option value="purchases" {% if selected_sort=="purchases" %}selected{% endif %}>🔥 Most Popular
+                    </option>
+                </select>
+            </form>
 
-            <!-- Category -->
-            <div class="filter-box">
-                <h5>Category</h5>
-                <div class="filter-divider"></div>
-                <div class="category-pills">
-                    <a href="/find_events?{% if search_query %}q={{ search_query }}&{% endif %}{% if selected_sort %}sort={{ selected_sort }}{% endif %}"
-                        class="cat-pill {% if not selected_category %}active{% endif %}">
-                        <i class="bi bi-collection"></i> All Events
-                    </a>
-                    {% for cat, icon in [
-                    ('Music','bi-music-note-beamed'),('Party','bi-balloon'),
-                    ('Dance','bi-person-arms-up'),('Sports','bi-trophy'),
-                    ('Workshop','bi-tools'),('Conference','bi-people'),
-                    ('Watchparty','bi-tv'),('Others','bi-three-dots')
-                    ] %}
-                    <a href="/find_events?category={{ cat }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_sort %}&sort={{ selected_sort }}{% endif %}"
-                        class="cat-pill {% if selected_category == cat %}active{% endif %}">
-                        <i class="bi {{ icon }}"></i> {{ cat }}
-                    </a>
-                    {% endfor %}
-                </div>
-            </div>
+            <div class="sidebar-divider"></div>
 
-            <!-- Filters -->
-            <div class="filter-box">
-                <h5>Filters</h5>
-                <div class="filter-divider"></div>
-                <form method="GET" action="/find_events">
-                    <input type="hidden" name="q" value="{{ search_query }}">
-                    <input type="hidden" name="sort" value="{{ selected_sort }}">
-                    <input type="hidden" name="category" value="{{ selected_category }}">
+            <form method="GET" action="/find_events">
+                <input type="hidden" name="q" value="{{ search_query }}">
+                <input type="hidden" name="sort" value="{{ selected_sort }}">
 
-                    <span class="filter-label">Date</span>
-                    <select name="date" class="form-select mb-3">
-                        <option value="" {% if not selected_date %}selected{% endif %}>All Dates</option>
-                        <option value="today" {% if selected_date=="today" %}selected{% endif %}>Today</option>
-                        <option value="weekend" {% if selected_date=="weekend" %}selected{% endif %}>This Weekend
-                        </option>
-                        <option value="month" {% if selected_date=="month" %}selected{% endif %}>This Month</option>
-                    </select>
+                <label class="filter-label" for="mob-cat">Category</label>
+                <select name="category" id="mob-cat" class="form-select mb-3">
+                    <option value="">All Categories</option>
+                    <option value="Music" {% if selected_category=="Music" %}selected{% endif %}>🎵 Music</option>
+                    <option value="Party" {% if selected_category=="Party" %}selected{% endif %}>🎉 Party</option>
+                    <option value="Dance" {% if selected_category=="Dance" %}selected{% endif %}>💃 Dance</option>
+                    <option value="Sports" {% if selected_category=="Sports" %}selected{% endif %}>⚽ Sports</option>
+                    <option value="Conference" {% if selected_category=="Conference" %}selected{% endif %}>💼 Conference
+                    </option>
+                    <option value="Workshop" {% if selected_category=="Workshop" %}selected{% endif %}>🛠 Workshop
+                    </option>
+                    <option value="Watchparty" {% if selected_category=="Watchparty" %}selected{% endif %}>🎬 Watch
+                        Party</option>
+                    <option value="Others" {% if selected_category=="Others" %}selected{% endif %}>✨ Others</option>
+                </select>
 
-                    <span class="filter-label">Price</span>
-                    <select name="price" class="form-select mb-3">
-                        <option value="" {% if not selected_price %}selected{% endif %}>Any Price</option>
-                        <option value="free" {% if selected_price=="free" %}selected{% endif %}>Free</option>
-                        <option value="paid" {% if selected_price=="paid" %}selected{% endif %}>Paid</option>
-                        <option value="under500" {% if selected_price=="under500" %}selected{% endif %}>Under ₹500
-                        </option>
-                        <option value="500-2000" {% if selected_price=="500-2000" %}selected{% endif %}>₹500 – ₹2,000
-                        </option>
-                        <option value="2000plus" {% if selected_price=="2000plus" %}selected{% endif %}>₹2,000+</option>
-                    </select>
+                <label class="filter-label" for="mob-date">Date</label>
+                <select name="date" id="mob-date" class="form-select mb-3">
+                    <option value="">All Dates</option>
+                    <option value="today" {% if selected_date=="today" %}selected{% endif %}>Today</option>
+                    <option value="weekend" {% if selected_date=="weekend" %}selected{% endif %}>This Weekend</option>
+                    <option value="month" {% if selected_date=="month" %}selected{% endif %}>This Month</option>
+                </select>
 
-                    <span class="filter-label">City</span>
-                    <input type="text" name="city" class="form-control mb-3" placeholder="e.g. Mumbai, Delhi…"
-                        value="{{ selected_city }}">
+                <label class="filter-label" for="mob-price">Price</label>
+                <select name="price" id="mob-price" class="form-select mb-3">
+                    <option value="">Any Price</option>
+                    <option value="free" {% if selected_price=="free" %}selected{% endif %}>Free</option>
+                    <option value="paid" {% if selected_price=="paid" %}selected{% endif %}>Paid</option>
+                    <option value="under500" {% if selected_price=="under500" %}selected{% endif %}>Under ₹500</option>
+                    <option value="500-2000" {% if selected_price=="500-2000" %}selected{% endif %}>₹500 – ₹2,000
+                    </option>
+                    <option value="2000plus" {% if selected_price=="2000plus" %}selected{% endif %}>₹2,000+</option>
+                </select>
 
-                    <button type="submit" class="btn-apply">Apply Filters</button>
-                </form>
-                <a href="/find_events" class="btn-clear">Clear All Filters</a>
-            </div>
+                <label class="filter-label" for="mob-city">City</label>
+                <input type="text" name="city" id="mob-city" class="form-control mb-4" placeholder="e.g. Mumbai, Delhi…"
+                    value="{{ selected_city }}">
 
-            <!-- Calendar -->
-            <a href="/calendar" class="btn-calendar mb-3">
-                <i class="bi bi-calendar3"></i> Calendar View
+                <button type="submit" class="btn-apply mb-2">
+                    <i class="bi bi-check2" aria-hidden="true"></i> Apply Filters
+                </button>
+            </form>
+
+            <a href="/calendar" class="btn-apply-outline mb-3">
+                <i class="bi bi-calendar3" aria-hidden="true"></i> Calendar View
             </a>
+
+            {% if has_filters %}
+            <a href="/find_events" class="clear-all-btn d-flex justify-content-center mt-2">
+                <i class="bi bi-x-circle" aria-hidden="true"></i> Clear all filters
+            </a>
+            {% endif %}
 
         </div>
     </div>
+
+
+    <script>
+        /* ── Sort Dropdown Toggle ─────────────────────────────────── */
+        function toggleSort(e) {
+            e.stopPropagation();
+            const wrap = document.getElementById('sortDropdown');
+            const btn = document.getElementById('sortTriggerBtn');
+            const open = wrap.classList.toggle('open');
+            btn.setAttribute('aria-expanded', open);
+        }
+        /* Close on outside click */
+        document.addEventListener('click', () => {
+            const wrap = document.getElementById('sortDropdown');
+            const btn = document.getElementById('sortTriggerBtn');
+            if (wrap && wrap.classList.contains('open')) {
+                wrap.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+        });
+        /* Close on Escape */
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                const wrap = document.getElementById('sortDropdown');
+                const btn = document.getElementById('sortTriggerBtn');
+                if (wrap) { wrap.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
+            }
+        });
+    </script>
 
 </body>
 
