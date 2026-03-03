@@ -841,7 +841,7 @@
                     <div class="carousel-item {% if loop.first %}active{% endif %}">
                         <a href="/event/{{ event[0] }}" class="event-slide">
                             <img src="{{ url_for('static', filename='uploads/' ~ (event[5] if event[5] else 'default.jpg')) }}"
-                                alt="{{ event[1] }}" loading="lazy">
+                                alt="{{ event[1] }}" loading="eager">
                             <div class="event-overlay">
                                 <span class="event-badge">{{ event[4] }}</span>
                                 <h4>{{ event[1] }}</h4>
