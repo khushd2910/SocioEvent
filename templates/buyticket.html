@@ -2,95 +2,884 @@
 <html lang="en">
 
 <head>
-  <title>Buy Ticket</title>
   <meta charset="UTF-8">
+  <title>Buy Ticket</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <style>
-    body {
-      background-color: #F5F1EB;
+    :root {
+      --navy: #1A3C8C;
+      --navy-dark: #0f2660;
+      --beige: #fbf7f2;
+      --border: #e5e7eb;
+      --muted: #6b7280;
+      --green: #16a34a;
+      --red: #dc2626;
     }
 
-    .ticket-card {
-      border-radius: 14px;
-      border: none;
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--beige);
+      font-family: 'Segoe UI', sans-serif;
+      color: #0f172a;
+      padding-bottom: 60px;
+    }
+
+    .page-header {
+      background: var(--navy);
+      color: #fff;
+      padding: 24px 0 20px;
+    }
+
+    .page-header h2 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .page-header p {
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    .event-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+
+    .steps-bar {
+      display: flex;
+      align-items: center;
+      max-width: 520px;
+      margin: 24px auto 8px;
+      padding: 0 20px;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      flex: 1;
+    }
+
+    .step-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #e5e7eb;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      border: 2px solid #e5e7eb;
+      transition: 0.3s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      text-align: center;
+      transition: 0.3s;
+    }
+
+    .step-line {
+      flex: 1;
+      height: 2px;
+      background: #e5e7eb;
+      margin-top: -22px;
+      transition: 0.3s;
+    }
+
+    .step.active .step-circle {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: #fff;
+    }
+
+    .step.active .step-label {
+      color: var(--navy);
+    }
+
+    .step.done .step-circle {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
+    }
+
+    .step.done .step-label {
+      color: var(--green);
+    }
+
+    .step-line.done {
+      background: var(--green);
+    }
+
+    .checkout-wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 20px;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 820px) {
+      .checkout-wrap {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .section-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      margin-bottom: 20px;
+      display: none;
+      overflow: hidden;
+    }
+
+    .section-card.visible {
+      display: block;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px 26px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #f1f5fd;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 13px;
+      flex-shrink: 0;
     }
 
     .section-title {
-      font-size: 0.85rem;
-      letter-spacing: 0.08em;
-      color: #64748B;
+      font-weight: 700;
+      font-size: 15px;
     }
 
-    .event-title {
-      color: #0F172A;
-      font-weight: 600;
+    .section-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
     }
 
-    .price-text {
-      font-size: 1.4rem;
-      font-weight: 600;
-      color: #0F172A;
+    .section-body {
+      padding: 26px;
     }
 
-    .payment-option {
-      border: 1px solid #E5E7EB;
+    .form-lbl {
+      font-size: 12px;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .req {
+      color: var(--red);
+      margin-left: 2px;
+    }
+
+    .form-control,
+    .form-select {
+      border: 1.5px solid var(--border);
       border-radius: 10px;
-      padding: 12px;
-      cursor: pointer;
-      transition: all 0.2s ease;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+      background: #fff;
+      width: 100%;
     }
 
-    .payment-option:hover {
-      border-color: #0F172A;
-      background-color: #FAFAFA;
+    .form-control:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(26, 60, 140, 0.08);
     }
 
-    /* ===== PREMIUM BUTTON (USED FOR BOTH) ===== */
-    .action-btn {
-      background-color: #0F172A;
-      /* Navy */
-      border: 2px solid #000000;
-      /* Black border */
-      border-radius: 12px;
-      padding: 12px;
-      font-weight: 500;
-      color: #ffffff !important;
-      transition: all 0.25s ease;
+    .form-control.err-field {
+      border-color: var(--red) !important;
     }
 
-    .action-btn:hover {
-      background-color: #ffffff !important;
-      color: #000000 !important;
-      border-color: #000000;
+    .form-control.ok-field {
+      border-color: var(--green) !important;
     }
 
-    .action-btn:disabled {
-      background-color: #334155;
-      border-color: #334155;
-      color: #ffffff !important;
+    .icon-wrap {
+      position: relative;
+    }
+
+    .icon-wrap .fi {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 15px;
+      pointer-events: none;
+    }
+
+    .icon-wrap .form-control {
+      padding-left: 38px;
+    }
+
+    .fmsg {
+      font-size: 11px;
+      margin-top: 4px;
+      min-height: 16px;
+    }
+
+    .fmsg.fe {
+      color: var(--red);
+    }
+
+    .fmsg.fo {
+      color: var(--green);
+    }
+
+    .fmsg.fh {
+      color: var(--muted);
+    }
+
+    .row2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    @media (max-width: 520px) {
+      .row2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .mb14 {
+      margin-bottom: 14px;
+    }
+
+    .mb20 {
+      margin-bottom: 20px;
     }
 
     .trust-box {
-      background-color: #F8FAFC;
-      border-radius: 10px;
-      padding: 12px;
-      font-size: 0.85rem;
-      color: #475569;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-top: 18px;
     }
 
-    .ticket-note {
-      font-size: 0.85rem;
-      color: #475569;
-      background-color: #F8FAFC;
+    .trust-box i {
+      color: var(--green);
+      font-size: 18px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .trust-box p {
+      font-size: 12px;
+      color: #166534;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .nav-btns {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-navy {
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      border-radius: 11px;
+      padding: 12px 26px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-navy:hover {
+      background: var(--navy-dark);
+    }
+
+    .btn-navy:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--navy);
+      border: 2px solid var(--border);
+      border-radius: 11px;
+      padding: 11px 22px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--navy);
+      background: #f1f5fd;
+      color: var(--navy);
+    }
+
+    .ticket-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .counter {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid var(--border);
       border-radius: 10px;
-      padding: 12px;
+      overflow: hidden;
+    }
+
+    .counter-btn {
+      width: 42px;
+      height: 42px;
+      background: #f8fafc;
+      border: none;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--navy);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .counter-btn:hover {
+      background: #e8eef9;
+    }
+
+    .counter-val {
+      width: 52px;
+      text-align: center;
+      font-size: 17px;
+      font-weight: 800;
+      border-left: 1.5px solid var(--border);
+      border-right: 1.5px solid var(--border);
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .price-table {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .prow {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .prow:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .prow .pl {
+      color: var(--muted);
+    }
+
+    .prow .pv {
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    .prow.pdisc .pl,
+    .prow.pdisc .pv {
+      color: var(--green);
+    }
+
+    .prow.ptotal {
+      border-top: 2px solid var(--border);
+      border-bottom: none;
+      margin-top: 4px;
+      padding-top: 12px;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .prow.ptotal .pl,
+    .prow.ptotal .pv {
+      color: var(--navy);
+    }
+
+    .voucher-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .voucher-row .form-control {
+      flex: 1;
+    }
+
+    .btn-apply {
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+
+    .btn-apply:hover {
+      background: var(--navy-dark);
+    }
+
+    .pay-tabs {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    @media (max-width: 560px) {
+      .pay-tabs {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .pay-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      padding: 12px 6px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      transition: 0.2s;
+      user-select: none;
+    }
+
+    .pay-tab i {
+      font-size: 20px;
+    }
+
+    .pay-tab:hover,
+    .pay-tab.active {
+      border-color: var(--navy);
+      color: var(--navy);
+      background: #f1f5fd;
+    }
+
+    .pay-panel {
+      display: none;
+    }
+
+    .pay-panel.active {
+      display: block;
+    }
+
+    .upi-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .upi-tab {
+      padding: 7px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background: none;
+      color: var(--muted);
+      transition: 0.2s;
+    }
+
+    .upi-tab:hover,
+    .upi-tab.active {
+      border-color: var(--navy);
+      color: var(--navy);
+      background: #f1f5fd;
+    }
+
+    .upi-sub {
+      display: none;
+    }
+
+    .upi-sub.active {
+      display: block;
+    }
+
+    .qr-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px;
+      background: #f8fafc;
+      border-radius: 12px;
+      border: 1.5px dashed var(--border);
+    }
+
+    .qr-box img {
+      width: 150px;
+      height: 150px;
+      margin-bottom: 10px;
+    }
+
+    .qr-box p {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      margin: 0;
+    }
+
+    .card-preview {
+      background: linear-gradient(135deg, #1A3C8C, #2d5fc4);
+      border-radius: 14px;
+      padding: 22px;
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      margin-bottom: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-preview::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .card-preview::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: -20px;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .card-chip {
+      width: 36px;
+      height: 28px;
+      background: linear-gradient(135deg, #e0c97a, #c8a830);
+      border-radius: 5px;
+      margin-bottom: 18px;
+    }
+
+    .card-num-d {
+      font-size: 16px;
+      letter-spacing: 3px;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .card-row-d {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      opacity: 0.75;
+    }
+
+    .card-brand {
+      position: absolute;
+      bottom: 18px;
+      right: 20px;
+      font-size: 20px;
+      opacity: 0.85;
+    }
+
+    .card-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    @media (max-width: 500px) {
+      .card-fields {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .wallet-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .wallet-opt {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 13px;
+      border: 2px solid var(--border);
+      border-radius: 11px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .wallet-opt:hover,
+    .wallet-opt.selected {
+      border-color: var(--navy);
+      background: #f1f5fd;
+    }
+
+    .wallet-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .wallet-name {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .wallet-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .bank-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      margin-bottom: 14px;
+    }
+
+    .bank-opt {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 6px;
+      border: 2px solid var(--border);
+      border-radius: 11px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      transition: 0.2s;
+      text-align: center;
+    }
+
+    .bank-opt:hover,
+    .bank-opt.selected {
+      border-color: var(--navy);
+      color: var(--navy);
+      background: #f1f5fd;
+    }
+
+    .bank-opt i {
+      font-size: 20px;
+    }
+
+    .pay-trust {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .pay-trust span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .order-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+      position: sticky;
+      top: 20px;
+    }
+
+    .order-head {
+      background: var(--navy);
+      color: #fff;
+      padding: 16px 20px;
+      font-weight: 700;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .order-body {
+      padding: 18px 20px;
+    }
+
+    .order-name {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .order-meta {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 7px;
+    }
+
+    .order-meta i {
+      color: var(--navy);
+      font-size: 12px;
+    }
+
+    .odiv {
+      height: 1px;
+      background: var(--border);
+      margin: 14px 0;
+    }
+
+    .orow {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .orow .ol {
+      color: var(--muted);
+    }
+
+    .orow .ov {
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    .orow.odisc .ol,
+    .orow.odisc .ov {
+      color: var(--green);
+    }
+
+    .orow.ototl .ol,
+    .orow.ototl .ov {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .trust-strips {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .ts {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .ts i {
+      color: var(--navy);
+      font-size: 13px;
     }
   </style>
 </head>
@@ -99,99 +888,716 @@
 
   {% include "navbar.html" %}
 
-  <div class="container my-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
+  <div class="page-header">
+    <div class="container">
+      <div class="event-pill"><i class="bi bi-ticket-perforated-fill"></i> Ticket Checkout</div>
+      <h2>{{ event.name }}</h2>
+      <p><i class="bi bi-calendar-event me-1"></i>{{ event.date }}</p>
+    </div>
+  </div>
 
-        <div class="card ticket-card shadow-sm bg-white">
-
-          <!-- Event Header -->
-          <div class="card-body border-bottom">
-            <p class="section-title mb-1">EVENT DETAILS</p>
-            <h5 class="event-title mb-2">{{ event.name }}</h5>
-
-            <div class="d-flex justify-content-between text-muted small">
-              <span>
-                <i class="bi bi-calendar-event me-1"></i>{{ event.date }}
-              </span>
-              <span class="price-text">₹{{ event.price }}</span>
-            </div>
-          </div>
-
-          <!-- Payment Section -->
-          <div class="card-body">
-
-            <p class="section-title mb-3">PAYMENT METHOD</p>
-
-            <form id="paymentForm" action="{{ url_for('confirm_ticket', event_id=event.id) }}" method="POST">
-
-              <label class="payment-option d-flex align-items-center mb-3">
-                <input class="form-check-input me-3" type="radio" name="payment" value="UPI" required>
-                <i class="bi bi-phone fs-5 me-2"></i>
-                <span>UPI (Google Pay / PhonePe)</span>
-              </label>
-
-              <label class="payment-option d-flex align-items-center mb-3">
-                <input class="form-check-input me-3" type="radio" name="payment" value="Card">
-                <i class="bi bi-credit-card fs-5 me-2"></i>
-                <span>Credit / Debit Card</span>
-              </label>
-
-              <label class="payment-option d-flex align-items-center mb-4">
-                <input class="form-check-input me-3" type="radio" name="payment" value="Net Banking">
-                <i class="bi bi-bank fs-5 me-2"></i>
-                <span>Net Banking</span>
-              </label>
-
-              <!-- Ticket Info -->
-              <div class="ticket-note mb-4">
-                <i class="bi bi-ticket-perforated me-2"></i>
-                Your ticket will be sent to your registered email immediately after successful payment.
-              </div>
-
-              <!-- Confirm Button -->
-              <button id="payButton" type="submit" class="btn action-btn w-100 mb-3">
-                <span id="btnText">
-                  <i class="bi bi-lock-fill me-2"></i>Confirm & Pay
-                </span>
-                <span id="btnLoader" class="d-none">
-                  <span class="spinner-border spinner-border-sm me-2"></span>
-                  Processing...
-                </span>
-              </button>
-
-            </form>
-
-            <!-- Trust Indicator -->
-            <div class="trust-box text-center mb-3">
-              <i class="bi bi-shield-lock-fill me-2"></i>
-              100% Secure Payment · Your data is encrypted and protected
-            </div>
-
-            <!-- Go Back Button -->
-            <a href="{{ back or url_for('find_events') }}" class="btn action-btn w-100 text-center">
-              <i class="bi bi-arrow-left me-2"></i>Go Back
-            </a>
-
-          </div>
-        </div>
-
+  <div class="container">
+    <div class="steps-bar">
+      <div class="step active" id="si1">
+        <div class="step-circle" id="sc1">1</div>
+        <div class="step-label">Your Info</div>
+      </div>
+      <div class="step-line" id="sl12"></div>
+      <div class="step" id="si2">
+        <div class="step-circle" id="sc2">2</div>
+        <div class="step-label">Tickets</div>
+      </div>
+      <div class="step-line" id="sl23"></div>
+      <div class="step" id="si3">
+        <div class="step-circle" id="sc3">3</div>
+        <div class="step-label">Payment</div>
       </div>
     </div>
   </div>
 
-  <!-- Loading State Script -->
-  <script>
-    const form = document.getElementById("paymentForm");
-    const button = document.getElementById("payButton");
-    const btnText = document.getElementById("btnText");
-    const btnLoader = document.getElementById("btnLoader");
+  <div class="checkout-wrap">
+    <div>
 
-    form.addEventListener("submit", () => {
-      button.disabled = true;
-      btnText.classList.add("d-none");
-      btnLoader.classList.remove("d-none");
-    });
+      <!-- ===== STEP 1 ===== -->
+      <div class="section-card visible" id="sec1">
+        <div class="section-header">
+          <div class="section-num">1</div>
+          <div>
+            <div class="section-title">Personal Details</div>
+            <div class="section-subtitle">All fields are required for ticket delivery and entry verification</div>
+          </div>
+        </div>
+        <div class="section-body">
+
+          <div class="row2">
+            <div>
+              <label class="form-lbl">Full Name <span class="req">*</span></label>
+              <div class="icon-wrap">
+                <i class="bi bi-person fi"></i>
+                <input type="text" class="form-control" id="f-name" placeholder="e.g. Riya Sharma" required>
+              </div>
+              <div class="fmsg" id="m-name"></div>
+            </div>
+            <div>
+              <label class="form-lbl">Age <span class="req">*</span></label>
+              <div class="icon-wrap">
+                <i class="bi bi-calendar3 fi"></i>
+                <input type="number" class="form-control" id="f-age" placeholder="e.g. 24" min="1" max="120" required>
+              </div>
+              <div class="fmsg" id="m-age"></div>
+            </div>
+          </div>
+
+          <div class="row2">
+            <div>
+              <label class="form-lbl">Email Address <span class="req">*</span></label>
+              <div class="icon-wrap">
+                <i class="bi bi-envelope fi"></i>
+                <input type="email" class="form-control" id="f-email" placeholder="you@example.com" required>
+              </div>
+              <div class="fmsg fh" id="m-email">Ticket confirmation will be sent here</div>
+            </div>
+            <div>
+              <label class="form-lbl">Mobile Number <span class="req">*</span></label>
+              <div class="icon-wrap">
+                <i class="bi bi-phone fi"></i>
+                <input type="tel" class="form-control" id="f-phone" placeholder="98765 43210" maxlength="13" required>
+              </div>
+              <div class="fmsg fh" id="m-phone">10-digit Indian mobile number</div>
+            </div>
+          </div>
+
+          <div class="mb20">
+            <label class="form-lbl">Residential Address <span class="req">*</span></label>
+            <textarea class="form-control" id="f-addr" rows="2" placeholder="Flat / House No, Street, City, State, PIN"
+              required></textarea>
+            <div class="fmsg fh" id="m-addr">Used for physical ticket delivery if selected</div>
+          </div>
+
+          <div class="trust-box">
+            <i class="bi bi-shield-lock-fill"></i>
+            <p><strong>Your data is safe with us.</strong> We never store, sell, or share your personal information with
+              third parties. All details are used solely for ticket delivery and entry verification. Data is 256-bit SSL
+              encrypted end-to-end.</p>
+          </div>
+
+          <div class="nav-btns">
+            <a href="{{ back or url_for('find_events') }}" class="btn-outline"><i class="bi bi-arrow-left"></i> Back</a>
+            <button class="btn-navy" type="button" onclick="validateStep1()">Continue <i
+                class="bi bi-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STEP 2 ===== -->
+      <div class="section-card" id="sec2">
+        <div class="section-header">
+          <div class="section-num">2</div>
+          <div>
+            <div class="section-title">Tickets &amp; Pricing</div>
+            <div class="section-subtitle">Select quantity and apply any offers</div>
+          </div>
+        </div>
+        <div class="section-body">
+
+          <div class="ticket-row">
+            <div>
+              <div style="font-weight:700;font-size:15px;margin-bottom:4px;">Standard Ticket</div>
+              <div style="font-size:13px;color:var(--muted);">
+                General admission &nbsp;&bull;&nbsp;
+                {% if event.ticket_type == 'free' %}
+                <span
+                  style="background:#dcfce7;color:#166534;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;">Free</span>
+                {% else %}
+                <span
+                  style="background:#eff6ff;color:var(--navy);font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;">Rs.{{
+                  event.price }} / ticket</span>
+                {% endif %}
+              </div>
+            </div>
+            <div class="counter">
+              <button class="counter-btn" type="button" onclick="changeQty(-1)">&#8722;</button>
+              <div class="counter-val" id="qtyDisplay">1</div>
+              <button class="counter-btn" type="button" onclick="changeQty(1)">+</button>
+            </div>
+          </div>
+
+          <div class="price-table">
+            <div class="prow"><span class="pl">Ticket price</span><span class="pv" id="pBase">{% if event.ticket_type ==
+                'free' %}Free{% else %}Rs.{{ event.price }}{% endif %}</span></div>
+            <div class="prow"><span class="pl">Quantity</span><span class="pv" id="pQty">x 1</span></div>
+            <div class="prow"><span class="pl">Subtotal</span><span class="pv" id="pSub">{% if event.ticket_type ==
+                'free' %}Free{% else %}Rs.{{ event.price }}{% endif %}</span></div>
+            <div class="prow"><span class="pl">GST (18%)</span><span class="pv" id="pGST">Rs.0</span></div>
+            <div class="prow pdisc"><span class="pl">Discount</span><span class="pv" id="pDisc">- Rs.0</span></div>
+            <div class="prow ptotal"><span class="pl">Total Payable</span><span class="pv" id="pTotal">{% if
+                event.ticket_type == 'free' %}Free{% else %}Rs.{{ event.price }}{% endif %}</span></div>
+          </div>
+
+          <div style="margin-top:20px;">
+            <div style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;margin-bottom:4px;">
+              <i class="bi bi-tags-fill" style="color:var(--navy);"></i> Offers &amp; Discounts
+              <span
+                style="font-size:11px;background:#fff7ed;color:#c2410c;border:1px solid #fed7aa;padding:2px 9px;border-radius:999px;font-weight:600;">Coming
+                Soon</span>
+            </div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Bank deals, early-bird and seasonal
+              offers will appear here.</div>
+            <label class="form-lbl">Promo / Voucher Code</label>
+            <div class="voucher-row">
+              <input type="text" class="form-control" id="voucherInput" placeholder="e.g. FIRST10">
+              <button class="btn-apply" type="button" onclick="applyVoucher()">Apply</button>
+            </div>
+            <div class="fmsg fh" id="voucherMsg" style="margin-top:6px;">Demo codes: FIRST10, SAVE50, WELCOME20</div>
+          </div>
+
+          <div class="nav-btns">
+            <button class="btn-outline" type="button" onclick="goToStep(1)"><i class="bi bi-arrow-left"></i>
+              Back</button>
+            <button class="btn-navy" type="button" onclick="goToStep(3)">Continue to Payment <i
+                class="bi bi-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STEP 3 ===== -->
+      <div class="section-card" id="sec3">
+        <div class="section-header">
+          <div class="section-num">3</div>
+          <div>
+            <div class="section-title">Payment</div>
+            <div class="section-subtitle">Choose your preferred payment method</div>
+          </div>
+        </div>
+        <div class="section-body">
+
+          <div class="pay-tabs">
+            <div class="pay-tab active" id="tab-upi" onclick="selPay('upi')"> <i class="bi bi-phone-fill"
+                style="color:#6366f1;"></i> UPI</div>
+            <div class="pay-tab" id="tab-card" onclick="selPay('card')"> <i class="bi bi-credit-card-2-front-fill"
+                style="color:#0ea5e9;"></i> Card</div>
+            <div class="pay-tab" id="tab-wallet" onclick="selPay('wallet')"> <i class="bi bi-wallet2"
+                style="color:#f59e0b;"></i> Wallets</div>
+            <div class="pay-tab" id="tab-net" onclick="selPay('net')"> <i class="bi bi-bank2"
+                style="color:#10b981;"></i> Net Banking</div>
+            <div class="pay-tab" id="tab-gate" onclick="selPay('gate')"> <i class="bi bi-cash-coin"
+                style="color:#ef4444;"></i> Pay at Gate</div>
+          </div>
+
+          <!-- UPI -->
+          <div class="pay-panel active" id="panel-upi">
+            <div class="upi-tabs">
+              <button class="upi-tab active" type="button" onclick="switchUpi('uid',this)">UPI ID</button>
+              <button class="upi-tab" type="button" onclick="switchUpi('qr', this)">Scan QR</button>
+            </div>
+            <div class="upi-sub active" id="upi-uid">
+              <label class="form-lbl">Enter UPI ID <span class="req">*</span></label>
+              <div class="icon-wrap mb14">
+                <i class="bi bi-at fi"></i>
+                <input type="text" class="form-control" id="upiId" placeholder="yourname@upi  (e.g. 9876543210@okaxis)">
+              </div>
+              <div class="fmsg fh" id="m-upi">Supported: GPay &bull; PhonePe &bull; Paytm &bull; BHIM &bull; Amazon Pay
+              </div>
+              <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;">
+                <span style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px;"><i
+                    class="bi bi-check-circle-fill" style="color:var(--green);"></i> GPay</span>
+                <span style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px;"><i
+                    class="bi bi-check-circle-fill" style="color:var(--green);"></i> PhonePe</span>
+                <span style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px;"><i
+                    class="bi bi-check-circle-fill" style="color:var(--green);"></i> Paytm</span>
+                <span style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px;"><i
+                    class="bi bi-check-circle-fill" style="color:var(--green);"></i> BHIM</span>
+              </div>
+            </div>
+            <div class="upi-sub" id="upi-qr">
+              <div class="qr-box">
+                <img
+                  src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=events@ybl&pn=EventApp&cu=INR"
+                  alt="UPI QR Code">
+                <p><strong>Scan with any UPI app</strong><br>UPI ID: events@ybl<br><span
+                    style="font-size:11px;margin-top:6px;display:block;">QR valid for 10 min. Do not refresh this
+                    page.</span></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD -->
+          <div class="pay-panel" id="panel-card">
+            <div class="card-preview">
+              <div class="card-chip"></div>
+              <div class="card-num-d" id="cn-disp">.... .... .... ....</div>
+              <div class="card-row-d">
+                <div><span style="font-size:9px;opacity:0.6;display:block;">Card Holder</span><span id="cn-name">YOUR
+                    NAME</span></div>
+                <div><span style="font-size:9px;opacity:0.6;display:block;">Expires</span><span id="cn-exp">MM/YY</span>
+                </div>
+              </div>
+              <div class="card-brand"><i class="bi bi-credit-card-2-back-fill"></i></div>
+            </div>
+            <div class="card-fields">
+              <div style="grid-column:span 2;">
+                <label class="form-lbl">Card Number <span class="req">*</span></label>
+                <div class="icon-wrap">
+                  <i class="bi bi-credit-card fi"></i>
+                  <input type="text" class="form-control" id="cardNum" maxlength="19" placeholder="1234 5678 9012 3456"
+                    oninput="fmtCard(this);updateCardPreview()">
+                </div>
+                <div class="fmsg" id="m-cnum"></div>
+              </div>
+              <div style="grid-column:span 2;">
+                <label class="form-lbl">Cardholder Name <span class="req">*</span></label>
+                <div class="icon-wrap">
+                  <i class="bi bi-person fi"></i>
+                  <input type="text" class="form-control" id="cardName" placeholder="Name as on card"
+                    oninput="updateCardPreview()">
+                </div>
+                <div class="fmsg" id="m-cname"></div>
+              </div>
+              <div>
+                <label class="form-lbl">Expiry Date <span class="req">*</span></label>
+                <input type="text" class="form-control" id="cardExp" placeholder="MM/YY" maxlength="5"
+                  oninput="fmtExp(this);updateCardPreview()">
+                <div class="fmsg" id="m-cexp"></div>
+              </div>
+              <div>
+                <label class="form-lbl">CVV <span class="req">*</span></label>
+                <div class="icon-wrap">
+                  <i class="bi bi-lock fi"></i>
+                  <input type="password" class="form-control" id="cardCVV" placeholder="3 digits" maxlength="4">
+                </div>
+                <div class="fmsg fh">Last 3 digits on back of card</div>
+              </div>
+            </div>
+            <div style="margin-top:4px;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+              <input type="checkbox" id="saveCard" style="width:15px;height:15px;cursor:pointer;">
+              <label for="saveCard" style="font-size:13px;cursor:pointer;margin:0;">Save card securely for future
+                payments</label>
+            </div>
+            <div style="display:flex;gap:14px;flex-wrap:wrap;">
+              <span style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px;"><i
+                  class="bi bi-check-circle-fill" style="color:var(--green);"></i> Visa</span>
+              <span style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px;"><i
+                  class="bi bi-check-circle-fill" style="color:var(--green);"></i> Mastercard</span>
+              <span style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px;"><i
+                  class="bi bi-check-circle-fill" style="color:var(--green);"></i> RuPay</span>
+              <span style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px;"><i
+                  class="bi bi-check-circle-fill" style="color:var(--green);"></i> Amex</span>
+            </div>
+          </div>
+
+          <!-- WALLETS -->
+          <div class="pay-panel" id="panel-wallet">
+            <div class="wallet-grid">
+              <div class="wallet-opt" onclick="selWallet(this)">
+                <div class="wallet-icon" style="background:#e8f4f0;"><i class="bi bi-phone" style="color:#1a73e8;"></i>
+                </div>
+                <div>
+                  <div class="wallet-name">Google Pay</div>
+                  <div class="wallet-sub">GPay wallet balance</div>
+                </div>
+              </div>
+              <div class="wallet-opt" onclick="selWallet(this)">
+                <div class="wallet-icon" style="background:#f0e8ff;"><i class="bi bi-phone" style="color:#5f259f;"></i>
+                </div>
+                <div>
+                  <div class="wallet-name">PhonePe</div>
+                  <div class="wallet-sub">PhonePe wallet</div>
+                </div>
+              </div>
+              <div class="wallet-opt" onclick="selWallet(this)">
+                <div class="wallet-icon" style="background:#fff0e0;"><i class="bi bi-wallet" style="color:#002970;"></i>
+                </div>
+                <div>
+                  <div class="wallet-name">Paytm</div>
+                  <div class="wallet-sub">Paytm wallet balance</div>
+                </div>
+              </div>
+              <div class="wallet-opt" onclick="selWallet(this)">
+                <div class="wallet-icon" style="background:#fef0e8;"><i class="bi bi-bag" style="color:#f90;"></i></div>
+                <div>
+                  <div class="wallet-name">Amazon Pay</div>
+                  <div class="wallet-sub">Amazon Pay balance</div>
+                </div>
+              </div>
+              <div class="wallet-opt" onclick="selWallet(this)">
+                <div class="wallet-icon" style="background:#e8ffe8;"><i class="bi bi-currency-rupee"
+                    style="color:#0b7c46;"></i></div>
+                <div>
+                  <div class="wallet-name">Mobikwik</div>
+                  <div class="wallet-sub">Zip wallet</div>
+                </div>
+              </div>
+              <div class="wallet-opt" onclick="selWallet(this)">
+                <div class="wallet-icon" style="background:#e8f2ff;"><i class="bi bi-phone" style="color:#0057a8;"></i>
+                </div>
+                <div>
+                  <div class="wallet-name">Freecharge</div>
+                  <div class="wallet-sub">Freecharge wallet</div>
+                </div>
+              </div>
+            </div>
+            <div class="fmsg fh" style="margin-top:10px;"><i class="bi bi-info-circle me-1"></i>You will be redirected
+              to complete payment in the wallet app</div>
+          </div>
+
+          <!-- NET BANKING -->
+          <div class="pay-panel" id="panel-net">
+            <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:#374151;">Popular Banks</div>
+            <div class="bank-grid">
+              <div class="bank-opt" onclick="selBank(this)"><i class="bi bi-bank" style="color:#004c97;"></i> SBI</div>
+              <div class="bank-opt" onclick="selBank(this)"><i class="bi bi-bank" style="color:#d3002d;"></i> HDFC</div>
+              <div class="bank-opt" onclick="selBank(this)"><i class="bi bi-bank" style="color:#f7901e;"></i> ICICI
+              </div>
+              <div class="bank-opt" onclick="selBank(this)"><i class="bi bi-bank" style="color:#2d8653;"></i> Axis</div>
+              <div class="bank-opt" onclick="selBank(this)"><i class="bi bi-bank" style="color:#0039a6;"></i> Kotak
+              </div>
+              <div class="bank-opt" onclick="selBank(this)"><i class="bi bi-bank" style="color:#002244;"></i> Yes Bank
+              </div>
+            </div>
+            <label class="form-lbl">Other Banks</label>
+            <select class="form-select mb14" id="otherBank">
+              <option value="">Select your bank...</option>
+              <option>Bank of Baroda</option>
+              <option>Punjab National Bank</option>
+              <option>Canara Bank</option>
+              <option>Union Bank of India</option>
+              <option>IndusInd Bank</option>
+              <option>IDFC First Bank</option>
+              <option>Federal Bank</option>
+              <option>RBL Bank</option>
+            </select>
+            <div class="fmsg fh"><i class="bi bi-info-circle me-1"></i>You will be redirected to your bank's secure
+              portal</div>
+          </div>
+
+          <!-- PAY AT GATE -->
+          <div class="pay-panel" id="panel-gate">
+            <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:22px;text-align:center;">
+              <i class="bi bi-cash-coin" style="font-size:34px;color:#d97706;display:block;margin-bottom:10px;"></i>
+              <div style="font-weight:700;font-size:14px;margin-bottom:8px;">Pay at the Gate</div>
+              <div style="font-size:13px;color:var(--muted);line-height:1.6;">Reserve your seat now, pay cash at the
+                entrance. A QR confirmation will be emailed to you. Please arrive at least 30 minutes early to avoid
+                delays.</div>
+              <div style="font-size:12px;color:#92400e;margin-top:10px;font-weight:600;"><i
+                  class="bi bi-exclamation-triangle me-1"></i>Seat is not guaranteed until on-site payment is completed.
+              </div>
+            </div>
+          </div>
+
+          <!-- Trust strip -->
+          <div class="pay-trust">
+            <span><i class="bi bi-shield-lock-fill" style="color:var(--navy);"></i> 256-bit SSL</span>
+            <span><i class="bi bi-patch-check-fill" style="color:var(--green);"></i> PCI DSS Compliant</span>
+            <span><i class="bi bi-arrow-counterclockwise" style="color:#f59e0b;"></i> Refund Protected</span>
+            <span><i class="bi bi-eye-slash-fill" style="color:#6366f1;"></i> Card data never stored</span>
+          </div>
+
+          <!-- THE FORM — hidden fields carry all data, submit is triggered by JS only after validation -->
+          <form id="payForm" action="{{ url_for('confirm_ticket', event_id=event.id) }}" method="POST">
+            <input type="hidden" name="payment" id="hidPayment" value="UPI">
+            <input type="hidden" name="qty" id="hidQty" value="1">
+            <input type="hidden" name="buyer_name" id="hidName" value="">
+            <input type="hidden" name="buyer_email" id="hidEmail" value="">
+            <input type="hidden" name="buyer_phone" id="hidPhone" value="">
+
+            <div class="nav-btns">
+              <button type="button" class="btn-outline" onclick="goToStep(2)"><i class="bi bi-arrow-left"></i>
+                Back</button>
+              <button type="button" class="btn-navy" id="payBtn" onclick="doSubmit()">
+                <span id="btnTxt"><i class="bi bi-lock-fill"></i> Confirm &amp; Pay</span>
+                <span id="btnLoad" style="display:none;"><span class="spinner-border spinner-border-sm me-1"
+                    role="status"></span> Processing...</span>
+              </button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+    </div><!-- /left col -->
+
+    <!-- SIDEBAR -->
+    <div>
+      <div class="order-card">
+        <div class="order-head"><i class="bi bi-receipt"></i> Order Summary</div>
+        <div class="order-body">
+          <div class="order-name">{{ event.name }}</div>
+          <div class="order-meta"><i class="bi bi-calendar-event"></i> {{ event.date }}</div>
+          <div class="order-meta"><i class="bi bi-ticket-perforated"></i>
+            {% if event.ticket_type == 'free' %}Free Entry{% else %}Rs.{{ event.price }} / ticket{% endif %}
+          </div>
+          <div class="odiv"></div>
+          <div class="orow"><span class="ol">Ticket x <span id="sQty">1</span></span><span class="ov" id="sSub">{% if
+              event.ticket_type == 'free' %}Free{% else %}Rs.{{ event.price }}{% endif %}</span></div>
+          <div class="orow"><span class="ol">GST (18%)</span><span class="ov" id="sGST">Rs.0</span></div>
+          <div class="orow odisc"><span class="ol">Discount</span><span class="ov" id="sDisc">- Rs.0</span></div>
+          <div class="odiv"></div>
+          <div class="orow ototl"><span class="ol">Total</span><span class="ov" id="sTotal">{% if event.ticket_type ==
+              'free' %}Free{% else %}Rs.{{ event.price }}{% endif %}</span></div>
+          <div class="trust-strips">
+            <div class="ts"><i class="bi bi-shield-fill-check"></i> Secure checkout</div>
+            <div class="ts"><i class="bi bi-envelope-check-fill"></i> Instant ticket on email</div>
+            <div class="ts"><i class="bi bi-arrow-repeat"></i> Easy cancellation</div>
+            <div class="ts"><i class="bi bi-headset"></i> 24/7 support</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /checkout-wrap -->
+
+  <script>
+    /* ── CONSTANTS ── */
+    var PRICE = parseFloat("{{ event.price | default(0) }}") || 0;
+    var IS_FREE = {{ 'true' if event.ticket_type == 'free' else 'false' }};
+    var GST_R = 0.18;
+    var qty = 1;
+    var discount = 0;
+    var activePay = 'upi';
+
+    /* ── STEP NAV ── */
+    function goToStep(n) {
+      for (var s = 1; s <= 3; s++) {
+        document.getElementById('sec' + s).classList.remove('visible');
+        document.getElementById('si' + s).classList.remove('active', 'done');
+        document.getElementById('sc' + s).innerHTML = String(s);
+      }
+      document.getElementById('sl12').classList.remove('done');
+      document.getElementById('sl23').classList.remove('done');
+      for (var d = 1; d < n; d++) {
+        document.getElementById('si' + d).classList.add('done');
+        document.getElementById('sc' + d).innerHTML = '<i class="bi bi-check-lg"></i>';
+      }
+      if (n >= 2) { document.getElementById('sl12').classList.add('done'); }
+      if (n >= 3) { document.getElementById('sl23').classList.add('done'); }
+      document.getElementById('si' + n).classList.add('active');
+      document.getElementById('sec' + n).classList.add('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* ── FIELD HELPER ── */
+    function setField(inputId, msgId, isValid, errMsg, okMsg) {
+      var el = document.getElementById(inputId);
+      var me = msgId ? document.getElementById(msgId) : null;
+      el.classList.toggle('err-field', !isValid);
+      el.classList.toggle('ok-field', isValid);
+      if (me) {
+        me.textContent = isValid ? (okMsg || '') : errMsg;
+        me.className = 'fmsg ' + (isValid ? 'fo' : 'fe');
+      }
+      return isValid;
+    }
+
+    /* ── STEP 1 VALIDATION ── */
+    function validateStep1() {
+      var ok = true;
+      var name = document.getElementById('f-name').value.trim();
+      var age = parseInt(document.getElementById('f-age').value, 10);
+      var email = document.getElementById('f-email').value.trim();
+      var rawP = document.getElementById('f-phone').value.replace(/\D/g, '');
+      var addr = document.getElementById('f-addr').value.trim();
+
+      if (!setField('f-name', 'm-name', name.length >= 2,
+        'Name must be at least 2 characters', '')) { ok = false; }
+
+      if (!setField('f-age', 'm-age', !isNaN(age) && age >= 1 && age <= 120,
+        'Enter a valid age between 1 and 120', '')) { ok = false; }
+
+      var eOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      if (!setField('f-email', 'm-email', eOk,
+        'Enter a valid email address', 'Confirmation will be sent here')) { ok = false; }
+
+      var pOk = rawP.length === 10 && /^[6-9]/.test(rawP);
+      if (!setField('f-phone', 'm-phone', pOk,
+        'Enter a valid 10-digit Indian mobile number (starts 6-9)', 'Verified')) { ok = false; }
+
+      if (!setField('f-addr', 'm-addr', addr.length >= 10,
+        'Please enter your full address (min 10 characters)', '')) { ok = false; }
+
+      if (ok) { goToStep(2); }
+    }
+
+    /* ── QUANTITY ── */
+    function changeQty(d) {
+      qty = Math.min(10, Math.max(1, qty + d));
+      document.getElementById('qtyDisplay').textContent = qty;
+      updatePricing();
+    }
+
+    function fmt(n) {
+      if (IS_FREE) { return 'Free'; }
+      return 'Rs.' + Math.round(n).toLocaleString('en-IN');
+    }
+
+    function updatePricing() {
+      var sub = PRICE * qty;
+      var gst = IS_FREE ? 0 : Math.round(sub * GST_R);
+      var total = sub + gst - discount;
+
+      document.getElementById('pQty').textContent = 'x ' + qty;
+      document.getElementById('pSub').textContent = fmt(sub);
+      document.getElementById('pGST').textContent = IS_FREE ? 'Rs.0' : 'Rs.' + gst;
+      document.getElementById('pDisc').textContent = '- Rs.' + discount;
+      document.getElementById('pTotal').textContent = fmt(total);
+
+      document.getElementById('sQty').textContent = qty;
+      document.getElementById('sSub').textContent = fmt(sub);
+      document.getElementById('sGST').textContent = IS_FREE ? 'Rs.0' : 'Rs.' + gst;
+      document.getElementById('sDisc').textContent = '- Rs.' + discount;
+      document.getElementById('sTotal').textContent = fmt(total);
+
+      document.getElementById('hidQty').value = qty;
+    }
+
+    /* ── VOUCHER ── */
+    var VOUCHERS = { 'FIRST10': 10, 'SAVE50': 50, 'WELCOME20': 20 };
+    function applyVoucher() {
+      var code = document.getElementById('voucherInput').value.trim().toUpperCase();
+      var msg = document.getElementById('voucherMsg');
+      if (!code) {
+        msg.textContent = 'Please enter a voucher code.';
+        msg.className = 'fmsg fh';
+        return;
+      }
+      if (VOUCHERS[code] !== undefined) {
+        discount = VOUCHERS[code];
+        msg.textContent = 'Voucher applied! You save Rs.' + discount;
+        msg.className = 'fmsg fo';
+      } else {
+        discount = 0;
+        msg.textContent = 'Invalid or expired voucher code.';
+        msg.className = 'fmsg fe';
+      }
+      updatePricing();
+    }
+
+    /* ── PAYMENT TABS ── */
+    function selPay(m) {
+      activePay = m;
+      document.querySelectorAll('.pay-tab').forEach(function (t) { t.classList.remove('active'); });
+      document.querySelectorAll('.pay-panel').forEach(function (p) { p.classList.remove('active'); });
+      document.getElementById('tab-' + m).classList.add('active');
+      document.getElementById('panel-' + m).classList.add('active');
+      document.getElementById('hidPayment').value = m;
+    }
+
+    /* ── UPI SUB-TABS ── */
+    function switchUpi(tab, btn) {
+      document.querySelectorAll('.upi-tab').forEach(function (t) { t.classList.remove('active'); });
+      document.querySelectorAll('.upi-sub').forEach(function (p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('upi-' + tab).classList.add('active');
+    }
+
+    /* ── WALLET SELECT ── */
+    function selWallet(el) {
+      document.querySelectorAll('.wallet-opt').forEach(function (w) { w.classList.remove('selected'); });
+      el.classList.add('selected');
+    }
+
+    /* ── BANK SELECT ── */
+    function selBank(el) {
+      document.querySelectorAll('.bank-opt').forEach(function (b) { b.classList.remove('selected'); });
+      el.classList.add('selected');
+      document.getElementById('otherBank').value = '';
+    }
+
+    /* ── CARD FORMAT & PREVIEW ── */
+    function fmtCard(el) {
+      var v = el.value.replace(/\D/g, '').substring(0, 16);
+      el.value = v.replace(/(.{4})/g, '$1 ').trim();
+    }
+    function fmtExp(el) {
+      var v = el.value.replace(/\D/g, '');
+      if (v.length >= 3) { v = v.substring(0, 2) + '/' + v.substring(2, 4); }
+      el.value = v;
+    }
+    function updateCardPreview() {
+      var num = document.getElementById('cardNum').value || '.... .... .... ....';
+      var name = document.getElementById('cardName').value.toUpperCase() || 'YOUR NAME';
+      var exp = document.getElementById('cardExp').value || 'MM/YY';
+      document.getElementById('cn-disp').textContent = num;
+      document.getElementById('cn-name').textContent = name;
+      document.getElementById('cn-exp').textContent = exp;
+    }
+
+    /* ── VALIDATE PAYMENT FIELDS ── */
+    function validatePayment() {
+      if (activePay === 'upi') {
+        var isIdTab = document.getElementById('upi-uid').classList.contains('active');
+        if (isIdTab) {
+          var uid = document.getElementById('upiId').value.trim();
+          var m = document.getElementById('m-upi');
+          if (!uid || !uid.includes('@')) {
+            m.textContent = 'Please enter a valid UPI ID (e.g. name@upi)';
+            m.className = 'fmsg fe';
+            document.getElementById('upiId').classList.add('err-field');
+            return false;
+          }
+          m.textContent = '';
+          document.getElementById('upiId').classList.remove('err-field');
+          document.getElementById('upiId').classList.add('ok-field');
+        }
+      }
+
+      if (activePay === 'card') {
+        var allOk = true;
+        var num = document.getElementById('cardNum').value.replace(/\s/g, '');
+        var name = document.getElementById('cardName').value.trim();
+        var exp = document.getElementById('cardExp').value.trim();
+        var cvv = document.getElementById('cardCVV').value.trim();
+        if (!setField('cardNum', 'm-cnum', num.length === 16, 'Enter a valid 16-digit card number', '')) { allOk = false; }
+        if (!setField('cardName', 'm-cname', name.length >= 3, 'Enter the cardholder name', '')) { allOk = false; }
+        if (!setField('cardExp', 'm-cexp', /^\d{2}\/\d{2}$/.test(exp), 'Format must be MM/YY', '')) { allOk = false; }
+        if (cvv.length < 3) {
+          document.getElementById('cardCVV').classList.add('err-field');
+          allOk = false;
+        } else {
+          document.getElementById('cardCVV').classList.remove('err-field');
+          document.getElementById('cardCVV').classList.add('ok-field');
+        }
+        return allOk;
+      }
+
+      if (activePay === 'wallet') {
+        if (!document.querySelector('.wallet-opt.selected')) {
+          alert('Please select a wallet to continue.');
+          return false;
+        }
+      }
+
+      if (activePay === 'net') {
+        var hasTile = document.querySelector('.bank-opt.selected');
+        var hasOther = document.getElementById('otherBank').value;
+        if (!hasTile && !hasOther) {
+          alert('Please select a bank to continue.');
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    /* ── FINAL SUBMIT — called by button click, NOT form onsubmit ── */
+    function doSubmit() {
+      if (!validatePayment()) { return; }
+
+      /* copy step-1 data into hidden fields */
+      document.getElementById('hidName').value = document.getElementById('f-name').value.trim();
+      document.getElementById('hidEmail').value = document.getElementById('f-email').value.trim();
+      document.getElementById('hidPhone').value = document.getElementById('f-phone').value.trim();
+
+      /* show loading state */
+      document.getElementById('btnTxt').style.display = 'none';
+      document.getElementById('btnLoad').style.display = 'inline-flex';
+      document.getElementById('payBtn').disabled = true;
+
+      /* actually POST the form */
+      document.getElementById('payForm').submit();
+    }
+
+    /* init */
+    updatePricing();
   </script>
 
 </body>
