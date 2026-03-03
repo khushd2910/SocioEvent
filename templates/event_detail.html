@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ event.event_name }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -12,155 +13,432 @@
     <style>
         :root {
             --navy: #1A3C8C;
+            --navy-dark: #0f2660;
             --beige: #fbf7f2;
+            --border: #eaeaea;
+            --text-muted: #6b7280;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
             background: var(--beige);
             font-family: 'Segoe UI', sans-serif;
+            color: #0f172a;
+            padding-bottom: 120px;
         }
 
-        .detail-card {
+        /* ─── HERO ─── */
+        .hero-wrap {
+            position: relative;
+            width: 100%;
+            height: 420px;
+            overflow: hidden;
+            background: #0f172a;
+        }
+
+        .hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.75;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 40%, transparent 100%);
+            display: flex;
+            align-items: flex-end;
+            padding: 36px 40px;
+        }
+
+        .hero-overlay h1 {
+            font-size: clamp(1.6rem, 4vw, 2.4rem);
+            font-weight: 800;
+            color: #fff;
+            margin: 0 0 10px;
+            line-height: 1.2;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            padding: 5px 14px;
+            border-radius: 999px;
+            margin-bottom: 10px;
+            backdrop-filter: blur(6px);
+        }
+
+        /* ─── CONTENT GRID ─── */
+        .content-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 36px 20px 0;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 28px;
+        }
+
+        @media (max-width: 900px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ─── CARDS ─── */
+        .card-block {
             background: #fff;
             border-radius: 18px;
             padding: 28px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
         }
 
-        /* ===== NAVY BUTTON SYSTEM ===== */
-        .btn-navy {
-            background: var(--navy);
-            color: #fff;
-            border: 2px solid var(--navy);
-            font-weight: 600;
-            border-radius: 50px;
-            transition: all .3s ease;
+        .card-block h5 {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+            text-transform: uppercase;
         }
 
-        .btn-navy:hover {
-            background: #fff;
-            color: var(--navy);
-            border: 2px solid var(--navy);
+        /* ─── META GRID ─── */
+        .meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
         }
 
-        /* ===== LIKE & SHARE ===== */
-        .action-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: 2px solid var(--navy);
-            background: #fff;
-            color: var(--navy);
+        .meta-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .meta-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #f1f5fd;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all .3s ease;
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
+            color: var(--navy);
+            font-size: 15px;
+            flex-shrink: 0;
         }
 
-        /* Keep icon centered */
-        .action-btn i {
-            font-size: 18px;
+        .meta-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-bottom: 2px;
         }
 
-        /* Hide label initially */
-        .action-btn .label,
-        .action-btn span:not(.label) {
-            display: none;
-        }
-
-        /* On hover expand */
-        .action-btn:hover {
-            width: 140px;
-            border-radius: 50px;
-            background: var(--navy);
-            color: #fff;
-            justify-content: flex-start;
-            padding-left: 18px;
-            gap: 10px;
-        }
-
-        /* Show text on hover */
-        .action-btn:hover .label,
-        .action-btn:hover span:not(.label) {
-            display: inline;
-        }
-
-
-        /* permanent liked */
-        .liked {
-            background: var(--navy);
-            color: #fff;
-        }
-
-        /* ===== META ===== */
-        .event-meta li {
+        .meta-value {
             font-size: 14px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-weight: 600;
+            color: #0f172a;
         }
 
-        .event-meta i {
+        /* ─── GALLERY ─── */
+        .gallery-strip {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .gallery-thumb {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.25s;
+            border: 2px solid transparent;
+        }
+
+        .gallery-thumb:hover,
+        .gallery-thumb.active {
+            border-color: var(--navy);
+            transform: scale(1.04);
+        }
+
+        /* ─── DESCRIPTION ─── */
+        .desc-text {
+            font-size: 15px;
+            line-height: 1.75;
+            color: #374151;
+        }
+
+        /* ─── SIDEBAR ─── */
+        .ticket-sidebar {
+            position: sticky;
+            top: 80px;
+        }
+
+        .price-display {
+            font-size: 2rem;
+            font-weight: 800;
             color: var(--navy);
         }
 
-        /* ===== GALLERY ===== */
-        .gallery-img {
-            height: 90px;
-            width: 100%;
-            object-fit: cover;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all .3s ease;
+        .price-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
         }
 
-        .gallery-img:hover {
-            transform: scale(1.05);
-        }
-
-        /* ===== COMMENTS ===== */
-        .comment-card {
-            background: var(--beige);
-            padding: 14px 18px;
-            border-radius: 14px;
-            font-size: 14px;
-        }
-
-        textarea {
-            font-size: 14px;
-        }
-
-        /* ===== SHARE MODAL STYLE ===== */
-        .share-option {
+        .btn-buy {
+            background: var(--navy);
+            color: #fff;
+            border: 2px solid var(--navy);
             border-radius: 12px;
-            padding: 12px;
-            transition: 0.2s;
+            padding: 14px;
+            font-weight: 700;
+            font-size: 15px;
+            width: 100%;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+
+        .btn-buy:hover {
+            background: var(--navy-dark);
+            color: #fff;
+            border-color: var(--navy-dark);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--navy);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 11px;
+            font-weight: 600;
+            font-size: 14px;
+            width: 100%;
+            transition: all 0.25s ease;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .share-option:hover {
-            background: #f1f1f1;
+        .btn-ghost:hover {
+            border-color: var(--navy);
+            background: #f1f5fd;
         }
 
-        /* ===== STICKY BOTTOM BAR ===== */
-        .sticky-action-bar {
+        /* ─── LIKE BUTTON ─── */
+        .like-btn {
+            background: none;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #374151;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .like-btn:hover,
+        .like-btn.liked {
+            background: #fff1f2;
+            border-color: #fb7185;
+            color: #e11d48;
+        }
+
+        .like-btn i {
+            font-size: 16px;
+        }
+
+        /* ─── CAPACITY BAR ─── */
+        .capacity-bar {
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+
+        .capacity-fill {
+            height: 100%;
+            background: var(--navy);
+            border-radius: 999px;
+            width: 60%;
+            /* dynamic via inline style if needed */
+        }
+
+        /* ─── COMMENTS ─── */
+        .comment-item {
+            display: flex;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comment-item:last-child {
+            border-bottom: none;
+        }
+
+        .comment-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f1f5fd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--navy);
+            flex-shrink: 0;
+        }
+
+        .comment-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .comment-time {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-left: 8px;
+        }
+
+        .comment-text {
+            font-size: 14px;
+            color: #374151;
+            margin-top: 4px;
+        }
+
+        .comment-input {
+            width: 100%;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 14px;
+            resize: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+
+        .comment-input:focus {
+            outline: none;
+            border-color: var(--navy);
+        }
+
+        .btn-comment {
+            background: var(--navy);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 22px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-comment:hover {
+            background: var(--navy-dark);
+        }
+
+        /* ─── STICKY BOTTOM BAR (mobile) ─── */
+        .sticky-bar {
+            display: none;
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
             background: #fff;
-            padding: 14px 0;
-            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.08);
+            padding: 14px 20px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
             z-index: 1000;
+            gap: 12px;
         }
 
-        /* prevent content hiding behind bar */
-        body {
-            padding-bottom: 100px;
+        @media (max-width: 900px) {
+            .sticky-bar {
+                display: flex;
+            }
+
+            .ticket-sidebar {
+                display: none;
+            }
+        }
+
+        /* ─── SHARE MODAL ─── */
+        .share-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .share-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 14px 8px;
+            border-radius: 14px;
+            border: 1.5px solid var(--border);
+            cursor: pointer;
+            background: none;
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+            transition: 0.2s;
+        }
+
+        .share-btn:hover {
+            background: #f8fafc;
+            border-color: var(--navy);
+        }
+
+        .share-btn i {
+            font-size: 22px;
+        }
+
+        .toast-notice {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0f172a;
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 9999;
+        }
+
+        .toast-notice.show {
+            opacity: 1;
         }
     </style>
 </head>
@@ -169,169 +447,277 @@
 
     {% include "navbar.html" %}
 
-    <div class="container my-5">
-        <div class="detail-card">
-
-            <div class="row g-4">
-
-                <!-- LEFT SIDE -->
-                <div class="col-md-6">
-
-                    {% set main_img = event.images[0] if event.images else 'default.jpg' %}
-                    <img src="{{ url_for('static', filename='uploads/' + main_img) }}"
-                        class="img-fluid rounded shadow mb-3" style="height:330px;object-fit:cover;width:100%;">
-
-                    <!-- MULTIPLE IMAGES GALLERY -->
-                    <div class="row g-2 mb-3">
-                        {% for img in event.images[1:] %}
-                        <div class="col-3">
-                            <img src="{{ url_for('static', filename='uploads/' + img) }}" class="gallery-img">
-                        </div>
-                        {% endfor %}
-                    </div>
-
-                    <!-- LIKE & SHARE -->
-                    <div class="d-flex gap-3">
-
-                        <form action="{{ url_for('like_event', event_id=event.id) }}" method="POST">
-                            <button type="submit" class="action-btn {% if user_liked %}liked{% endif %}">
-                                <i class="bi bi-heart-fill"></i>
-                                <span>{{ event.like_count }}</span>
-                                <span class="label">
-                                    {% if user_liked %}Unlike{% else %}Like{% endif %}
-                                </span>
-                            </button>
-                        </form>
-
-                        <button class="action-btn" data-bs-toggle="modal" data-bs-target="#shareModal">
-                            <i class="bi bi-share-fill"></i>
-                            <span class="label">Share</span>
+    <!-- ─── HERO ─── -->
+    <div class="hero-wrap">
+        {% set main_img = event.images[0] if event.images else 'default.jpg' %}
+        <img id="heroImg" src="{{ url_for('static', filename='uploads/' + main_img) }}" class="hero-img"
+            alt="{{ event.event_name }}">
+        <div class="hero-overlay">
+            <div>
+                <div class="hero-badge">{{ event.categories }}</div>
+                <h1>{{ event.event_name }}</h1>
+                <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                    <form action="{{ url_for('like_event', event_id=event.id) }}" method="POST">
+                        <button type="submit" class="like-btn {% if user_liked %}liked{% endif %}">
+                            <i class="bi bi-heart-fill"></i>
+                            {{ event.like_count }} Likes
                         </button>
-
-                    </div>
-
+                    </form>
+                    <button class="btn-ghost" style="width:auto; padding:10px 18px;" data-bs-toggle="modal"
+                        data-bs-target="#shareModal">
+                        <i class="bi bi-share"></i> Share
+                    </button>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <!-- RIGHT SIDE DETAILS -->
-                <div class="col-md-6">
-                    <h3 class="fw-semibold">{{ event.event_name }}</h3>
-                    <span class="badge bg-dark mt-2">{{ event.categories }}</span>
+    <!-- ─── MAIN CONTENT ─── -->
+    <div class="content-grid">
 
-                    <ul class="list-unstyled mt-3 event-meta">
-                        <li><i class="bi bi-calendar-event"></i><strong>Date:</strong> {{ event.event_date }}</li>
-                        <li><i class="bi bi-clock"></i><strong>Time:</strong> {{ event.event_time }}</li>
-                        <li><i class="bi bi-geo-alt"></i><strong>Location:</strong> {{ event.event_address }}</li>
-                        <li><i class="bi bi-people"></i><strong>Capacity:</strong> {{ event.event_capacity }}</li>
-                        <li><i class="bi bi-shield-check"></i><strong>Age Limit:</strong> {{ event.age_limit }}</li>
-                        <li><i class="bi bi-translate"></i><strong>Language:</strong> {{ event.event_language }}</li>
-                        <li><i class="bi bi-ticket-perforated"></i><strong>Ticket:</strong> {{ event.ticket_type }} -
-                            ₹{{ event.ticket_price }}</li>
-                        <li><i class="bi bi-mic"></i><strong>Guests:</strong> {{ event.guest_speaker }}</li>
-                    </ul>
+        <!-- LEFT COLUMN -->
+        <div>
+
+            <!-- Gallery -->
+            {% if event.images|length > 1 %}
+            <div class="card-block" style="padding-bottom:20px;">
+                <h5>Gallery</h5>
+                <div class="gallery-strip">
+                    {% for img in event.images %}
+                    <img src="{{ url_for('static', filename='uploads/' + img) }}"
+                        class="gallery-thumb {% if loop.first %}active{% endif %}"
+                        onclick="setHero(this, '{{ url_for('static', filename='uploads/' + img) }}')" alt="Event image">
+                    {% endfor %}
                 </div>
-
             </div>
-
-            <!-- DESCRIPTION -->
-            <div class="mt-4">
-                <h5>Event Description</h5>
-                <p style="font-size:14px;line-height:1.7;">
-                    {{ event.event_description }}
-                </p>
-            </div>
-
-            <hr class="my-5">
-
-            <!-- COMMENTS -->
-            <h5 class="fw-semibold mb-3">Comments</h5>
-
-            {% if session.get("user") %}
-            <form action="{{ url_for('add_comment', event_id=event.id) }}" method="POST">
-                <textarea name="comment" rows="2" class="form-control mb-3" placeholder="Write your comment..."
-                    required></textarea>
-
-                <button type="submit" class="btn btn-navy px-4">
-                    <i class="bi bi-chat-dots"></i> Post Comment
-                </button>
-            </form>
             {% endif %}
 
-            <div class="mt-4">
-                {% for c in comments %}
-                <div class="comment-card mb-3">
-                    <div class="d-flex justify-content-between mb-1">
-                        <strong>{{ c[2] }}</strong>
-                        <small class="text-muted">
-                            {{ c[1] | time_ago }}
-                        </small>
+            <!-- Event Details -->
+            <div class="card-block">
+                <h5>Event Details</h5>
+                <div class="meta-grid">
+                    <div class="meta-item">
+                        <div class="meta-icon"><i class="bi bi-calendar-event"></i></div>
+                        <div>
+                            <div class="meta-label">Date</div>
+                            <div class="meta-value">{{ event.event_date }}</div>
+                        </div>
                     </div>
-                    <p class="mb-0">{{ c[0] }}</p>
+                    <div class="meta-item">
+                        <div class="meta-icon"><i class="bi bi-clock"></i></div>
+                        <div>
+                            <div class="meta-label">Time</div>
+                            <div class="meta-value">{{ event.event_time }}</div>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-icon"><i class="bi bi-geo-alt"></i></div>
+                        <div>
+                            <div class="meta-label">Location</div>
+                            <div class="meta-value">{{ event.event_address }}</div>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-icon"><i class="bi bi-people"></i></div>
+                        <div>
+                            <div class="meta-label">Capacity</div>
+                            <div class="meta-value">{{ event.event_capacity }} seats</div>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-icon"><i class="bi bi-shield-check"></i></div>
+                        <div>
+                            <div class="meta-label">Age Limit</div>
+                            <div class="meta-value">{{ event.age_limit }}</div>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-icon"><i class="bi bi-translate"></i></div>
+                        <div>
+                            <div class="meta-label">Language</div>
+                            <div class="meta-value">{{ event.event_language }}</div>
+                        </div>
+                    </div>
+                    {% if event.guest_speaker %}
+                    <div class="meta-item" style="grid-column: span 2;">
+                        <div class="meta-icon"><i class="bi bi-mic"></i></div>
+                        <div>
+                            <div class="meta-label">Guest / Speaker</div>
+                            <div class="meta-value">{{ event.guest_speaker }}</div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Description -->
+            {% if event.event_description %}
+            <div class="card-block">
+                <h5>About This Event</h5>
+                <p class="desc-text">{{ event.event_description }}</p>
+            </div>
+            {% endif %}
+
+            <!-- Comments -->
+            <div class="card-block">
+                <h5>Comments</h5>
+
+                {% if session.get("user") %}
+                <form action="{{ url_for('add_comment', event_id=event.id) }}" method="POST">
+                    <textarea name="comment" class="comment-input" rows="3"
+                        placeholder="Share your thoughts about this event..." required></textarea>
+                    <button type="submit" class="btn-comment">
+                        <i class="bi bi-chat-dots me-1"></i>Post Comment
+                    </button>
+                </form>
+                <hr style="margin: 20px 0; border-color: var(--border);">
+                {% endif %}
+
+                {% if comments %}
+                {% for c in comments %}
+                <div class="comment-item">
+                    <div class="comment-avatar">{{ c[2][0] | upper }}</div>
+                    <div>
+                        <div>
+                            <span class="comment-name">{{ c[2] }}</span>
+                            <span class="comment-time">{{ c[1] | time_ago }}</span>
+                        </div>
+                        <p class="comment-text mb-0">{{ c[0] }}</p>
+                    </div>
                 </div>
                 {% endfor %}
+                {% else %}
+                <p style="color: var(--text-muted); font-size:14px;">No comments yet. Be the first to share your
+                    thoughts!</p>
+                {% endif %}
             </div>
 
+        </div>
 
-            <!-- BUY & BACK -->
-            <!-- STICKY BOTTOM ACTION BAR -->
-            <div class="sticky-action-bar">
-                <div class="container">
-                    <div class="d-flex gap-3">
-                        <a href="{{ url_for('buy_ticket', event_id=event.id) }}" class="btn btn-navy w-100 py-2">
-                            <i class="bi bi-ticket-perforated"></i> Buy Ticket
-                        </a>
+        <!-- RIGHT SIDEBAR -->
+        <div class="ticket-sidebar">
+            <div class="card-block">
+                <h5>Tickets</h5>
+                <div class="mb-3">
+                    <div class="price-display">
+                        {% if event.ticket_type == 'free' %}Free
+                        {% else %}₹{{ event.ticket_price }}{% endif %}
+                    </div>
+                    <div class="price-label">{{ event.ticket_type | capitalize }} entry</div>
+                </div>
 
-                        <a href="{{ url_for('find_events') }}" class="btn btn-navy w-100 py-2">
-                            <i class="bi bi-arrow-left"></i> Go Back
-                        </a>
+                <!-- Capacity progress -->
+                <div style="margin-bottom: 18px;">
+                    <div
+                        style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted); margin-bottom:6px;">
+                        <span>Availability</span>
+                        <span>{{ event.event_capacity }} total seats</span>
+                    </div>
+                    <div class="capacity-bar">
+                        <div class="capacity-fill"></div>
+                    </div>
+                </div>
+
+                <a href="{{ url_for('buy_ticket', event_id=event.id) }}" class="btn-buy mb-3">
+                    <i class="bi bi-ticket-perforated me-2"></i>Get Ticket
+                </a>
+
+                <div
+                    style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-muted); justify-content:center; padding-top:4px;">
+                    <i class="bi bi-shield-lock-fill" style="color:var(--navy);"></i>
+                    Secure & encrypted checkout
+                </div>
+            </div>
+
+            <div class="card-block" style="padding: 20px 24px;">
+                <h5>Organizer</h5>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <div
+                        style="width:42px; height:42px; border-radius:50%; background:#f1f5fd; display:flex; align-items:center; justify-content:center; color:var(--navy); font-weight:700; font-size:16px;">
+                        E
+                    </div>
+                    <div>
+                        <div style="font-weight:700; font-size:14px;">Event Organizer</div>
+                        <div style="font-size:12px; color:var(--text-muted);">Verified Host</div>
                     </div>
                 </div>
             </div>
 
-
+            <div class="card-block" style="padding: 20px 24px;">
+                <h5>Share Event</h5>
+                <div style="display:flex; gap:10px;">
+                    <a href="https://wa.me/?text={{ request.url }}" target="_blank" class="btn-ghost"
+                        style="width:auto; flex:1;">
+                        <i class="bi bi-whatsapp"></i>
+                    </a>
+                    <a href="https://twitter.com/intent/tweet?url={{ request.url }}" target="_blank" class="btn-ghost"
+                        style="width:auto; flex:1;">
+                        <i class="bi bi-twitter-x"></i>
+                    </a>
+                    <button onclick="copyLink()" class="btn-ghost" style="width:auto; flex:1;">
+                        <i class="bi bi-link-45deg"></i>
+                    </button>
+                </div>
+            </div>
         </div>
+
     </div>
 
-    <!-- YOUTUBE STYLE SHARE MODAL -->
+    <!-- ─── STICKY MOBILE BAR ─── -->
+    <div class="sticky-bar">
+        <a href="{{ url_for('find_events') }}" class="btn-ghost" style="width:auto; padding: 12px 18px;">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+        <a href="{{ url_for('buy_ticket', event_id=event.id) }}" class="btn-buy" style="flex:1;">
+            <i class="bi bi-ticket-perforated me-2"></i>
+            {% if event.ticket_type == 'free' %}Get Free Ticket{% else %}Buy · ₹{{ event.ticket_price }}{% endif %}
+        </a>
+    </div>
+
+    <!-- ─── SHARE MODAL ─── -->
     <div class="modal fade" id="shareModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content p-4">
-
-                <h5 class="mb-3">Share</h5>
-
-                <div class="d-flex flex-wrap gap-3">
-
-                    <div class="share-option" onclick="copyLink()">
-                        <i class="bi bi-link-45deg fs-4"></i>
-                        <p class="mb-0 small">Copy Link</p>
-                    </div>
-
-                    <a class="share-option text-dark" href="https://wa.me/?text={{ request.url }}" target="_blank">
-                        <i class="bi bi-whatsapp fs-4"></i>
-                        <p class="mb-0 small">WhatsApp</p>
-                    </a>
-
-                    <a class="share-option text-dark" href="https://twitter.com/intent/tweet?url={{ request.url }}"
-                        target="_blank">
-                        <i class="bi bi-twitter fs-4"></i>
-                        <p class="mb-0 small">Twitter</p>
-                    </a>
-
-                    <a class="share-option text-dark"
-                        href="https://www.facebook.com/sharer/sharer.php?u={{ request.url }}" target="_blank">
-                        <i class="bi bi-facebook fs-4"></i>
-                        <p class="mb-0 small">Facebook</p>
-                    </a>
-
+            <div class="modal-content" style="border-radius:20px; padding:28px; border:none;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <h5 style="font-weight:700; margin:0;">Share Event</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-
+                <div class="share-grid">
+                    <button class="share-btn" onclick="copyLink()">
+                        <i class="bi bi-link-45deg text-dark"></i> Copy Link
+                    </button>
+                    <a class="share-btn" href="https://wa.me/?text={{ request.url }}" target="_blank">
+                        <i class="bi bi-whatsapp" style="color:#25D366;"></i> WhatsApp
+                    </a>
+                    <a class="share-btn" href="https://twitter.com/intent/tweet?url={{ request.url }}" target="_blank">
+                        <i class="bi bi-twitter-x text-dark"></i> Twitter
+                    </a>
+                    <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u={{ request.url }}"
+                        target="_blank">
+                        <i class="bi bi-facebook" style="color:#1877F2;"></i> Facebook
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- ─── TOAST ─── -->
+    <div class="toast-notice" id="toast">Link copied!</div>
+
     <script>
+        function setHero(el, src) {
+            document.getElementById('heroImg').src = src;
+            document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+        }
+
         function copyLink() {
             navigator.clipboard.writeText(window.location.href);
-            alert("Link copied!");
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+            const modal = bootstrap.Modal.getInstance(document.getElementById('shareModal'));
+            if (modal) modal.hide();
         }
     </script>
 
