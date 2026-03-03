@@ -5,101 +5,916 @@
     <meta charset="UTF-8">
     <title>Create Event</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <style>
+        :root {
+            --navy: #1A3C8C;
+            --navy-dark: #0f2660;
+            --navy-lite: #f1f5fd;
+            --beige: #f7f3ee;
+            --white: #ffffff;
+            --border: #e5e7eb;
+            --muted: #6b7280;
+            --green: #16a34a;
+            --amber: #d97706;
+            --red: #dc2626;
+            --radius: 16px;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            background-color: #F5F1EB;
+            background: var(--beige);
+            font-family: 'DM Sans', sans-serif;
+            color: #0f172a;
+            min-height: 100vh;
+            padding-bottom: 80px;
         }
 
-        .form-wrapper {
-            max-width: 1100px;
-            margin: auto;
+        /* ── PAGE HEADER ── */
+        .page-header {
+            background: var(--navy);
+            padding: 32px 0 28px;
+            color: #fff;
         }
 
-        .form-card {
-            background: #ffffff;
-            border-radius: 18px;
-            padding: 36px;
-            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.08);
+        .page-header h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 4px;
+            letter-spacing: -0.01em;
         }
 
-        .page-title {
-            color: #0F172A;
+        .page-header p {
+            font-size: 14px;
+            opacity: 0.65;
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255, 255, 255, 0.13);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            color: #fff;
+            font-size: 12px;
             font-weight: 600;
+            padding: 5px 14px;
+            border-radius: 999px;
+            margin-bottom: 14px;
         }
 
-        .section-label {
-            font-size: 0.75rem;
-            letter-spacing: 0.12em;
-            color: #64748B;
-            margin-bottom: 14px;
+        /* ── PROGRESS BAR ── */
+        .progress-strip {
+            background: var(--navy-dark);
+            padding: 0 0 0;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .prog-seg {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.18);
+            flex: 1;
+            transition: background 0.4s;
+        }
+
+        .prog-seg.filled {
+            background: #60a5fa;
+        }
+
+        /* ── LAYOUT ── */
+        .create-wrap {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 36px 20px;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 28px;
+            align-items: start;
+        }
+
+        @media (max-width: 860px) {
+            .create-wrap {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ── SECTION CARDS ── */
+        .scard {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 22px;
+            overflow: hidden;
+        }
+
+        .scard-head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 18px 26px;
+            border-bottom: 1px solid var(--border);
+            background: #fafafa;
+        }
+
+        .scard-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--navy-lite);
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .scard-title {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .scard-sub {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 1px;
+        }
+
+        .scard-body {
+            padding: 26px;
+        }
+
+        /* ── FORM ELEMENTS ── */
+        .form-lbl {
+            font-size: 12px;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 6px;
+            display: block;
+            letter-spacing: 0.025em;
+        }
+
+        .req {
+            color: var(--red);
+            margin-left: 2px;
         }
 
         .form-control,
         .form-select {
-            border-radius: 10px;
-            padding: 10px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 11px;
+            padding: 11px 14px;
+            font-size: 14px;
+            font-family: 'DM Sans', sans-serif;
+            color: #0f172a;
+            background: #fff;
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .form-control:focus,
         .form-select:focus {
-            border-color: #0F172A;
-            box-shadow: none;
+            outline: none;
+            border-color: var(--navy);
+            box-shadow: 0 0 0 3px rgba(26, 60, 140, 0.09);
         }
 
-        .divider {
-            height: 1px;
-            background-color: #E5E7EB;
-            margin: 34px 0;
+        .form-control.err-f {
+            border-color: var(--red) !important;
         }
 
-        .action-btn {
-            background-color: #0F172A;
-            border: 2px solid #000;
+        .form-control.ok-f {
+            border-color: var(--green) !important;
+        }
+
+        .icon-field {
+            position: relative;
+        }
+
+        .icon-field .fi {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            font-size: 15px;
+            pointer-events: none;
+        }
+
+        .icon-field .form-control {
+            padding-left: 38px;
+        }
+
+        .fhint {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        .ferr {
+            font-size: 11px;
+            color: var(--red);
+            margin-top: 4px;
+            display: none;
+        }
+
+        .g2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .g3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 14px;
+        }
+
+        @media (max-width: 600px) {
+
+            .g2,
+            .g3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .mb16 {
+            margin-bottom: 16px;
+        }
+
+        .mb20 {
+            margin-bottom: 20px;
+        }
+
+        /* ── CATEGORY PILLS ── */
+        .cat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        @media (max-width: 560px) {
+            .cat-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .cat-pill {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 14px 8px;
+            border: 2px solid var(--border);
+            border-radius: 13px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+            transition: 0.2s;
+            user-select: none;
+            text-align: center;
+        }
+
+        .cat-pill i {
+            font-size: 22px;
+        }
+
+        .cat-pill:hover {
+            border-color: var(--navy);
+            color: var(--navy);
+            background: var(--navy-lite);
+        }
+
+        .cat-pill.active {
+            border-color: var(--navy);
+            background: var(--navy-lite);
+            color: var(--navy);
+        }
+
+        /* hidden real select synced by JS */
+        #categories {
+            display: none;
+        }
+
+        /* ── ONLINE TOGGLE ── */
+        .toggle-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f8fafc;
+            border-radius: 11px;
+            padding: 13px 16px;
+            border: 1.5px solid var(--border);
+            margin-bottom: 16px;
+            cursor: pointer;
+        }
+
+        .toggle-label {
+            font-size: 13px;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .toggle-sub {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .tog {
+            width: 42px;
+            height: 24px;
+            background: #d1d5db;
+            border-radius: 999px;
+            position: relative;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+
+        .tog::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #fff;
+            transition: 0.2s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .tog.on {
+            background: var(--navy);
+        }
+
+        .tog.on::after {
+            left: 21px;
+        }
+
+        /* ── TICKET TOGGLE ── */
+        .ticket-type-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .tt-opt {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 16px;
+            border: 2px solid var(--border);
             border-radius: 12px;
-            padding: 12px 32px;
-            color: #fff !important;
-            font-weight: 500;
-            transition: all 0.25s ease;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--muted);
         }
 
-        .action-btn:hover {
-            background-color: #ffffff;
-            color: #000 !important;
-            border: 2px solid #000;
+        .tt-opt i {
+            font-size: 20px;
         }
 
-        .hint-text {
-            font-size: 0.85rem;
-            color: #64748B;
+        .tt-opt:hover {
+            border-color: var(--navy);
+            color: var(--navy);
         }
 
-        .info-box {
-            background: #F8FAFC;
+        .tt-opt.active {
+            border-color: var(--navy);
+            background: var(--navy-lite);
+            color: var(--navy);
+        }
+
+        #ticket_type {
+            display: none;
+        }
+
+        /* ── FEATURES / TAG INPUT ── */
+        .tag-input-box {
+            min-height: 52px;
+            border: 1.5px solid var(--border);
+            border-radius: 11px;
+            padding: 8px 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            align-items: center;
+            cursor: text;
+            transition: border-color 0.2s;
+            background: #fff;
+        }
+
+        .tag-input-box:focus-within {
+            border-color: var(--navy);
+            box-shadow: 0 0 0 3px rgba(26, 60, 140, 0.09);
+        }
+
+        .tag-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--navy-lite);
+            color: var(--navy);
+            border: 1px solid rgba(26, 60, 140, 0.18);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
+        .tag-chip .rm {
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1;
+            opacity: 0.6;
+            transition: opacity 0.15s;
+        }
+
+        .tag-chip .rm:hover {
+            opacity: 1;
+        }
+
+        .tag-inp {
+            border: none;
+            outline: none;
+            font-size: 13px;
+            font-family: 'DM Sans', sans-serif;
+            background: transparent;
+            min-width: 120px;
+            flex: 1;
+        }
+
+        .tag-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: 10px;
+        }
+
+        .tag-sug {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--muted);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 3px 10px;
+            cursor: pointer;
+            background: #fff;
+            transition: 0.2s;
+        }
+
+        .tag-sug:hover {
+            border-color: var(--navy);
+            color: var(--navy);
+            background: var(--navy-lite);
+        }
+
+        #event_features {
+            display: none;
+        }
+
+        /* ── DRAG & DROP IMAGE UPLOAD ── */
+        .drop-zone {
+            border: 2px dashed var(--border);
             border-radius: 14px;
-            padding: 20px;
-            border: 1px solid #E5E7EB;
+            padding: 32px 20px;
+            text-align: center;
+            background: #fafafa;
+            cursor: pointer;
+            transition: 0.2s;
+            position: relative;
         }
 
-        .info-box i {
-            color: #0F172A;
+        .drop-zone.dragover {
+            border-color: var(--navy);
+            background: var(--navy-lite);
         }
 
-        .trust-badge {
-            font-size: 0.85rem;
-            color: #475569;
+        .drop-zone i {
+            font-size: 36px;
+            color: #d1d5db;
+            margin-bottom: 10px;
+            display: block;
         }
 
+        .drop-zone p {
+            font-size: 13px;
+            color: var(--muted);
+            margin: 0;
+        }
+
+        .drop-zone strong {
+            color: var(--navy);
+        }
+
+        .drop-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .img-previews {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .img-thumb {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            background: #e5e7eb;
+        }
+
+        .img-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .img-thumb .rm-img {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.55);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s;
+        }
+
+        .img-thumb .rm-img:hover {
+            background: var(--red);
+        }
+
+        .img-thumb.primary::after {
+            content: 'Cover';
+            position: absolute;
+            bottom: 4px;
+            left: 4px;
+            background: var(--navy);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 999px;
+        }
+
+        /* ── DESCRIPTION WITH CHAR COUNTER ── */
+        .desc-wrap {
+            position: relative;
+        }
+
+        .desc-wrap textarea {
+            resize: vertical;
+            min-height: 110px;
+            padding-right: 60px;
+        }
+
+        .char-count {
+            position: absolute;
+            bottom: 10px;
+            right: 12px;
+            font-size: 11px;
+            color: var(--muted);
+            pointer-events: none;
+        }
+
+        .char-count.warn {
+            color: var(--amber);
+        }
+
+        .char-count.over {
+            color: var(--red);
+        }
+
+        /* ── NOTE BOX ── */
         .note-box {
-            background: #FFF7ED;
-            border-left: 4px solid #F59E0B;
-            padding: 14px;
-            border-radius: 8px;
-            font-size: 0.85rem;
+            background: #fff7ed;
+            border-left: 3px solid var(--amber);
+            border-radius: 9px;
+            padding: 12px 16px;
+            font-size: 12px;
+            color: #92400e;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .note-box i {
+            font-size: 15px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* ── SUBMIT BUTTON ── */
+        .btn-publish {
+            background: var(--navy);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 32px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .btn-publish:hover {
+            background: var(--navy-dark);
+        }
+
+        .btn-publish:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .btn-cancel {
+            background: transparent;
+            color: #374151;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 13px 24px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .btn-cancel:hover {
+            border-color: #9ca3af;
+            background: #f9fafb;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar-sticky {
+            position: sticky;
+            top: 24px;
+        }
+
+        /* LIVE PREVIEW CARD */
+        .preview-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .preview-head {
+            background: var(--navy);
+            color: #fff;
+            padding: 14px 18px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .preview-head span {
+            font-size: 11px;
+            font-weight: 400;
+            opacity: 0.65;
+            margin-left: auto;
+        }
+
+        .preview-img-wrap {
+            height: 140px;
+            background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .preview-img-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: #9ca3af;
+        }
+
+        .preview-img-placeholder i {
+            font-size: 28px;
+        }
+
+        .preview-img-placeholder p {
+            font-size: 11px;
+            margin: 0;
+        }
+
+        .preview-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--navy);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 999px;
+        }
+
+        .preview-body {
+            padding: 16px 18px;
+        }
+
+        .prev-title {
+            font-weight: 800;
+            font-size: 15px;
+            color: #0f172a;
+            margin-bottom: 10px;
+            min-height: 20px;
+            line-height: 1.3;
+        }
+
+        .prev-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .prev-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .prev-meta-row i {
+            color: var(--navy);
+            font-size: 13px;
+            width: 14px;
+        }
+
+        .prev-price {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 999px;
+            margin-top: 12px;
+            background: var(--navy-lite);
+            color: var(--navy);
+        }
+
+        .prev-price.free {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        /* CHECKLIST */
+        .checklist-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .checklist-head {
+            background: #fafafa;
+            padding: 14px 18px;
+            font-size: 13px;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checklist-body {
+            padding: 16px 18px;
+        }
+
+        .cl-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            padding: 7px 0;
+            border-bottom: 1px solid #f3f4f6;
+            color: var(--muted);
+            transition: color 0.2s;
+        }
+
+        .cl-item:last-child {
+            border-bottom: none;
+        }
+
+        .cl-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            transition: 0.2s;
+        }
+
+        .cl-item.done .cl-dot {
+            background: var(--green);
+            border-color: var(--green);
+            color: #fff;
+        }
+
+        .cl-item.done {
+            color: #374151;
+        }
+
+        /* TIPS CARD */
+        .tips-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .tips-head {
+            background: #fafafa;
+            padding: 14px 18px;
+            font-size: 13px;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tips-body {
+            padding: 16px 18px;
+        }
+
+        .tip-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .tip-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .tip-row i {
+            color: var(--navy);
+            font-size: 14px;
+            flex-shrink: 0;
+            margin-top: 1px;
         }
     </style>
 </head>
@@ -108,179 +923,903 @@
 
     {% include "navbar.html" %}
 
-    <div class="container my-5">
-        <div class="form-wrapper">
-            <div class="row g-4">
-
-                <!-- MAIN FORM -->
-                <div class="col-lg-8">
-                    <div class="form-card">
-
-                        <div class="mb-4">
-                            <h2 class="page-title mb-1">
-                                <i class="bi bi-calendar-plus me-2"></i>Create Event
-                            </h2>
-                            <p class="text-muted">Fill in the details below to publish your event</p>
-                        </div>
-
-                        <form action="/create_event" method="POST" enctype="multipart/form-data">
-
-                            <!-- BASIC DETAILS -->
-                            <div class="section-label">BASIC DETAILS</div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Event Name</label>
-                                <input type="text" name="event_name" class="form-control"
-                                    placeholder="Eg. Sunburn After Party" required>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">Event Date</label>
-                                    <input type="date" name="event_date" class="form-control" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Event Time</label>
-                                    <input type="time" name="event_time" class="form-control" required>
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Category</label>
-                                <select class="form-select" name="categories" required>
-                                    <option value="">Select category</option>
-                                    <option>Music</option>
-                                    <option>dance</option>
-                                    <option>Sports</option>
-                                    <option>Comedy</option>
-                                    <option>Workshop</option>
-                                    <option>Conference</option>
-                                    <option>Others</option>
-                                </select>
-                            </div>
-
-                            <div class="divider"></div>
-
-                            <!-- LOCATION -->
-                            <div class="section-label">LOCATION & RULES</div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Event Location</label>
-                                <input type="text" name="event_address" class="form-control"
-                                    placeholder="Venue name & address" required>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">Age Limit</label>
-                                    <select name="age_limit" class="form-select">
-                                        <option>All Ages</option>
-                                        <option>18+</option>
-                                        <option>21+</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Event Language</label>
-                                    <select name="event_language" class="form-select">
-                                        <option>English</option>
-                                        <option>Hindi</option>
-                                        <option>Bilingual</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">Event Capacity</label>
-                                    <input type="number" name="event_capacity" class="form-control"
-                                        placeholder="Total seats available" required>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label">Guest / Speaker</label>
-                                    <input type="text" name="guest_speaker" class="form-control"
-                                        placeholder="Eg. DJ Snake, Vir Das">
-                                </div>
-                            </div>
-
-
-                            <div class="divider"></div>
-
-                            <!-- TICKETS -->
-                            <div class="section-label">TICKETS</div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">Ticket Type</label>
-                                    <select class="form-select" name="ticket_type">
-                                        <option value="free">Free</option>
-                                        <option value="paid">Paid</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Ticket Price (₹)</label>
-                                    <input type="number" name="ticket_price" class="form-control"
-                                        placeholder="Enter amount">
-                                </div>
-                            </div>
-
-                            <div class="note-box mb-4">
-                                <i class="bi bi-info-circle me-2"></i>
-                                Platform fee & GST will be calculated automatically at checkout.
-                            </div>
-
-                            <div class="divider"></div>
-
-                            <!-- MEDIA -->
-                            <div class="section-label">MEDIA & DESCRIPTION</div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Event Images</label>
-                                <input type="file" name="event_images" class="form-control" multiple accept="image/*"
-                                    required>
-
-                                <div class="hint-text mt-1">Recommended: 1200×600px, JPG or PNG</div>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="form-label">Event Description</label>
-                                <textarea name="event_description" class="form-control" rows="4"
-                                    placeholder="Describe what attendees can expect"></textarea>
-                            </div>
-
-                            <div class="text-end">
-                                <button type="submit" class="btn action-btn">
-                                    <i class="bi bi-upload me-2"></i>Publish Event
-                                </button>
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-
-                <!-- SIDEBAR -->
-                <div class="col-lg-4">
-                    <div class="info-box mb-3">
-                        <h6 class="mb-3"><i class="bi bi-shield-check me-2"></i>Why publish with us?</h6>
-                        <div class="trust-badge mb-2">✔ Secure payments</div>
-                        <div class="trust-badge mb-2">✔ Verified attendees</div>
-                        <div class="trust-badge mb-2">✔ Zero spam policy</div>
-                        <div class="trust-badge">✔ 24/7 support</div>
-                    </div>
-
-                    <div class="info-box">
-                        <h6 class="mb-3"><i class="bi bi-check2-circle me-2"></i>Before publishing</h6>
-                        <ul class="small mb-0">
-                            <li>Double-check date & location</li>
-                            <li>Upload clear event images</li>
-                            <li>Set correct ticket pricing</li>
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+        <div class="container">
+            <div class="header-badge"><i class="bi bi-calendar-plus"></i> Event Creator</div>
+            <h1>Create Your Event</h1>
+            <p>Fill in the details below to publish your event to thousands of attendees</p>
         </div>
     </div>
+    <!-- Progress strip -->
+    <div class="progress-strip" id="progressStrip">
+        <div class="prog-seg" id="ps1"></div>
+        <div class="prog-seg" id="ps2"></div>
+        <div class="prog-seg" id="ps3"></div>
+        <div class="prog-seg" id="ps4"></div>
+        <div class="prog-seg" id="ps5"></div>
+    </div>
+
+    <div class="create-wrap">
+        <div>
+
+            <form action="/create_event" method="POST" enctype="multipart/form-data" id="createForm" novalidate>
+
+                <!-- ══ 1. BASIC DETAILS ══ -->
+                <div class="scard" id="s-basic">
+                    <div class="scard-head">
+                        <div class="scard-icon"><i class="bi bi-pencil-square"></i></div>
+                        <div>
+                            <div class="scard-title">Basic Details</div>
+                            <div class="scard-sub">Name, date, time and category of your event</div>
+                        </div>
+                    </div>
+                    <div class="scard-body">
+
+                        <div class="mb20">
+                            <label class="form-lbl">Event Name <span class="req">*</span></label>
+                            <div class="icon-field">
+                                <i class="bi bi-stars fi"></i>
+                                <input type="text" name="event_name" id="event_name" class="form-control"
+                                    placeholder="e.g. Sunburn After Party 2025" required maxlength="100"
+                                    oninput="syncPreview()">
+                            </div>
+                            <div class="ferr" id="e-name">Event name is required</div>
+                        </div>
+
+                        <div class="g2 mb20">
+                            <div>
+                                <label class="form-lbl">Event Date <span class="req">*</span></label>
+                                <div class="icon-field">
+                                    <i class="bi bi-calendar-event fi"></i>
+                                    <input type="date" name="event_date" id="event_date" class="form-control" required
+                                        oninput="syncPreview()">
+                                </div>
+                                <div class="ferr" id="e-date">Please select a future date</div>
+                            </div>
+                            <div>
+                                <label class="form-lbl">End Date <span
+                                        style="color:var(--muted);font-weight:400;">(optional)</span></label>
+                                <div class="icon-field">
+                                    <i class="bi bi-calendar-check fi"></i>
+                                    <input type="date" name="event_end_date" id="event_end_date" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="g2 mb20">
+                            <div>
+                                <label class="form-lbl">Start Time <span class="req">*</span></label>
+                                <div class="icon-field">
+                                    <i class="bi bi-clock fi"></i>
+                                    <input type="time" name="event_time" id="event_time" class="form-control" required
+                                        oninput="syncPreview()">
+                                </div>
+                                <div class="ferr" id="e-time">Start time is required</div>
+                            </div>
+                            <div>
+                                <label class="form-lbl">End Time <span
+                                        style="color:var(--muted);font-weight:400;">(optional)</span></label>
+                                <div class="icon-field">
+                                    <i class="bi bi-clock-history fi"></i>
+                                    <input type="time" name="event_end_time" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb16">
+                            <label class="form-lbl">Category <span class="req">*</span></label>
+                            <select name="categories" id="categories" required></select>
+                            <div class="cat-grid" id="catGrid">
+                                <div class="cat-pill" data-val="Music" onclick="pickCat(this)"><i
+                                        class="bi bi-music-note-beamed" style="color:#6366f1;"></i>Music</div>
+                                <div class="cat-pill" data-val="Dance" onclick="pickCat(this)"><i
+                                        class="bi bi-person-arms-up" style="color:#ec4899;"></i>Dance</div>
+                                <div class="cat-pill" data-val="Sports" onclick="pickCat(this)"><i class="bi bi-trophy"
+                                        style="color:#f59e0b;"></i>Sports</div>
+                                <div class="cat-pill" data-val="Comedy" onclick="pickCat(this)"><i
+                                        class="bi bi-emoji-laughing" style="color:#eab308;"></i>Comedy</div>
+                                <div class="cat-pill" data-val="Workshop" onclick="pickCat(this)"><i class="bi bi-tools"
+                                        style="color:#10b981;"></i>Workshop</div>
+                                <div class="cat-pill" data-val="Conference" onclick="pickCat(this)"><i
+                                        class="bi bi-people" style="color:#0ea5e9;"></i>Conference</div>
+                                <div class="cat-pill" data-val="Food" onclick="pickCat(this)"><i class="bi bi-cup-hot"
+                                        style="color:#f97316;"></i>Food</div>
+                                <div class="cat-pill" data-val="Others" onclick="pickCat(this)"><i class="bi bi-grid"
+                                        style="color:#8b5cf6;"></i>Others</div>
+                            </div>
+                            <div class="ferr" id="e-cat">Please select a category</div>
+                        </div>
+
+                        <div class="mb16">
+                            <label class="form-lbl">Guest / Speaker <span
+                                    style="color:var(--muted);font-weight:400;">(optional)</span></label>
+                            <div class="icon-field">
+                                <i class="bi bi-person-badge fi"></i>
+                                <input type="text" name="guest_speaker" id="guest_speaker" class="form-control"
+                                    placeholder="e.g. DJ Snake, Vir Das, Dr. Priya Sharma" oninput="syncPreview()">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ══ 2. LOCATION ══ -->
+                <div class="scard" id="s-loc">
+                    <div class="scard-head">
+                        <div class="scard-icon"><i class="bi bi-geo-alt"></i></div>
+                        <div>
+                            <div class="scard-title">Location</div>
+                            <div class="scard-sub">Where is the event being held?</div>
+                        </div>
+                    </div>
+                    <div class="scard-body">
+
+                        <!-- Online toggle -->
+                        <div class="toggle-wrap mb16" onclick="toggleOnline()" id="onlineToggleWrap">
+                            <i class="bi bi-broadcast" style="color:var(--navy);font-size:20px;"></i>
+                            <div>
+                                <div class="toggle-label">This is an online event</div>
+                                <div class="toggle-sub">Hide address, show meeting link instead</div>
+                            </div>
+                            <div class="tog" id="onlineTog"></div>
+                        </div>
+
+                        <!-- Physical address -->
+                        <div id="physicalAddr">
+                            <div class="mb16">
+                                <label class="form-lbl">Venue Name &amp; Full Address <span class="req">*</span></label>
+                                <div class="icon-field">
+                                    <i class="bi bi-building fi"></i>
+                                    <input type="text" name="event_address" id="event_address" class="form-control"
+                                        placeholder="e.g. NSCI Dome, Worli, Mumbai" oninput="syncPreview()">
+                                </div>
+                                <div class="ferr" id="e-addr">Venue address is required</div>
+                            </div>
+                            <div class="g2 mb16">
+                                <div>
+                                    <label class="form-lbl">City <span class="req">*</span></label>
+                                    <div class="icon-field">
+                                        <i class="bi bi-geo fi"></i>
+                                        <input type="text" name="event_city" id="event_city" class="form-control"
+                                            placeholder="e.g. Mumbai" oninput="syncPreview()">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="form-lbl">State</label>
+                                    <select name="event_state" class="form-select">
+                                        <option value="">Select state</option>
+                                        <option>Maharashtra</option>
+                                        <option>Delhi</option>
+                                        <option>Karnataka</option>
+                                        <option>Tamil Nadu</option>
+                                        <option>Telangana</option>
+                                        <option>Gujarat</option>
+                                        <option>Rajasthan</option>
+                                        <option>West Bengal</option>
+                                        <option>Uttar Pradesh</option>
+                                        <option>Punjab</option>
+                                        <option>Haryana</option>
+                                        <option>Goa</option>
+                                        <option>Kerala</option>
+                                        <option>Madhya Pradesh</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Online meeting link -->
+                        <div id="onlineAddr" style="display:none;">
+                            <div class="mb16">
+                                <label class="form-lbl">Meeting Link <span class="req">*</span></label>
+                                <div class="icon-field">
+                                    <i class="bi bi-link-45deg fi"></i>
+                                    <input type="url" name="meeting_link" id="meeting_link" class="form-control"
+                                        placeholder="https://zoom.us/j/... or Google Meet link">
+                                </div>
+                                <div class="fhint">Link will be shared with attendees after ticket purchase</div>
+                            </div>
+                            <div class="mb16">
+                                <label class="form-lbl">Platform</label>
+                                <select name="online_platform" class="form-select">
+                                    <option value="">Select platform</option>
+                                    <option>Zoom</option>
+                                    <option>Google Meet</option>
+                                    <option>Microsoft Teams</option>
+                                    <option>YouTube Live</option>
+                                    <option>Instagram Live</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="g2">
+                            <div>
+                                <label class="form-lbl">Age Limit</label>
+                                <select name="age_limit" class="form-select">
+                                    <option>All Ages</option>
+                                    <option>13+</option>
+                                    <option>18+</option>
+                                    <option>21+</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="form-lbl">Language</label>
+                                <select name="event_language" class="form-select">
+                                    <option>English</option>
+                                    <option>Hindi</option>
+                                    <option>Bilingual (Hindi / English)</option>
+                                    <option>Marathi</option>
+                                    <option>Tamil</option>
+                                    <option>Telugu</option>
+                                    <option>Kannada</option>
+                                    <option>Gujarati</option>
+                                    <option>Bengali</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ══ 3. TICKETS & CAPACITY ══ -->
+                <div class="scard" id="s-ticket">
+                    <div class="scard-head">
+                        <div class="scard-icon"><i class="bi bi-ticket-perforated"></i></div>
+                        <div>
+                            <div class="scard-title">Tickets &amp; Capacity</div>
+                            <div class="scard-sub">Set pricing, availability and per-person limits</div>
+                        </div>
+                    </div>
+                    <div class="scard-body">
+
+                        <div class="mb16">
+                            <label class="form-lbl">Ticket Type <span class="req">*</span></label>
+                            <div class="ticket-type-row">
+                                <div class="tt-opt active" id="tt-free" onclick="pickTicket('free')">
+                                    <i class="bi bi-gift" style="color:var(--green);"></i>
+                                    <div>
+                                        <div>Free</div>
+                                        <div style="font-size:11px;font-weight:400;color:var(--muted);">No charge for
+                                            attendees</div>
+                                    </div>
+                                </div>
+                                <div class="tt-opt" id="tt-paid" onclick="pickTicket('paid')">
+                                    <i class="bi bi-currency-rupee" style="color:var(--navy);"></i>
+                                    <div>
+                                        <div>Paid</div>
+                                        <div style="font-size:11px;font-weight:400;color:var(--muted);">Set your own
+                                            price</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="ticket_type" id="ticket_type" value="free">
+                        </div>
+
+                        <!-- Price fields — shown only for paid -->
+                        <div id="priceFields" style="display:none;" class="mb16">
+                            <div class="g2">
+                                <div>
+                                    <label class="form-lbl">Ticket Price (Rs.) <span class="req">*</span></label>
+                                    <div class="icon-field">
+                                        <i class="bi bi-currency-rupee fi"></i>
+                                        <input type="number" name="ticket_price" id="ticket_price" class="form-control"
+                                            placeholder="e.g. 499" min="1" oninput="syncPreview()">
+                                    </div>
+                                    <div class="ferr" id="e-price">Please enter a ticket price</div>
+                                </div>
+                                <div>
+                                    <label class="form-lbl">Max Tickets Per Person</label>
+                                    <select name="max_per_person" class="form-select">
+                                        <option value="1">1 ticket max</option>
+                                        <option value="2">2 tickets max</option>
+                                        <option value="4" selected>4 tickets max</option>
+                                        <option value="6">6 tickets max</option>
+                                        <option value="10">10 tickets max</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="g2 mb16">
+                            <div>
+                                <label class="form-lbl">Total Capacity <span class="req">*</span></label>
+                                <div class="icon-field">
+                                    <i class="bi bi-people fi"></i>
+                                    <input type="number" name="event_capacity" id="event_capacity" class="form-control"
+                                        placeholder="e.g. 500" min="1" required oninput="updateCheckList()">
+                                </div>
+                                <div class="ferr" id="e-cap">Capacity is required</div>
+                            </div>
+                            <div>
+                                <label class="form-lbl">Registration Deadline</label>
+                                <div class="icon-field">
+                                    <i class="bi bi-calendar-x fi"></i>
+                                    <input type="date" name="reg_deadline" class="form-control">
+                                </div>
+                                <div class="fhint">Leave blank to allow until event day</div>
+                            </div>
+                        </div>
+
+                        <div class="note-box">
+                            <i class="bi bi-info-circle"></i>
+                            <div>Platform fee (5%) + GST (18%) will be calculated automatically at checkout. You receive
+                                the ticket price minus platform fees.</div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ══ 4. HIGHLIGHTS ══ -->
+                <div class="scard" id="s-feat">
+                    <div class="scard-head">
+                        <div class="scard-icon"><i class="bi bi-stars"></i></div>
+                        <div>
+                            <div class="scard-title">Event Highlights</div>
+                            <div class="scard-sub">What makes your event special? Add feature tags</div>
+                        </div>
+                    </div>
+                    <div class="scard-body">
+
+                        <label class="form-lbl">Features &amp; Perks</label>
+                        <div class="tag-input-box" id="tagBox"
+                            onclick="document.getElementById('tagRealInput').focus()">
+                            <!-- tags injected here by JS -->
+                            <input class="tag-inp" id="tagRealInput" placeholder="Type a feature and press Enter…"
+                                autocomplete="off">
+                        </div>
+                        <input type="hidden" name="event_features" id="event_features">
+                        <div class="fhint" style="margin-top:6px;">Press <strong>Enter</strong> or
+                            <strong>comma</strong> to add. Click suggestions below.</div>
+                        <div class="tag-suggestions" id="tagSuggestions">
+                            <span class="tag-sug" onclick="addTag('Live DJ')">Live DJ</span>
+                            <span class="tag-sug" onclick="addTag('Open Bar')">Open Bar</span>
+                            <span class="tag-sug" onclick="addTag('Free Food')">Free Food</span>
+                            <span class="tag-sug" onclick="addTag('Networking')">Networking</span>
+                            <span class="tag-sug" onclick="addTag('Certificate')">Certificate</span>
+                            <span class="tag-sug" onclick="addTag('Kids Friendly')">Kids Friendly</span>
+                            <span class="tag-sug" onclick="addTag('Parking Available')">Parking Available</span>
+                            <span class="tag-sug" onclick="addTag('Live Band')">Live Band</span>
+                            <span class="tag-sug" onclick="addTag('Workshops')">Workshops</span>
+                            <span class="tag-sug" onclick="addTag('Giveaways')">Giveaways</span>
+                            <span class="tag-sug" onclick="addTag('Photo Booth')">Photo Booth</span>
+                            <span class="tag-sug" onclick="addTag('Bonfire')">Bonfire</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ══ 5. MEDIA & DESCRIPTION ══ -->
+                <div class="scard" id="s-media">
+                    <div class="scard-head">
+                        <div class="scard-icon"><i class="bi bi-images"></i></div>
+                        <div>
+                            <div class="scard-title">Media &amp; Description</div>
+                            <div class="scard-sub">Upload images and describe your event</div>
+                        </div>
+                    </div>
+                    <div class="scard-body">
+
+                        <label class="form-lbl mb16">Event Images <span class="req">*</span></label>
+                        <div class="drop-zone" id="dropZone">
+                            <i class="bi bi-cloud-arrow-up"></i>
+                            <p><strong>Click to upload</strong> or drag &amp; drop images here</p>
+                            <p style="margin-top:4px;font-size:11px;">JPG, PNG, WEBP &bull; Max 5MB each &bull; First
+                                image used as cover</p>
+                            <input type="file" name="event_images" id="imgInput" multiple accept="image/*"
+                                onchange="handleFiles(this.files)">
+                        </div>
+                        <div class="img-previews" id="imgPreviews"></div>
+                        <div class="ferr" id="e-img" style="margin-top:8px;">Please upload at least one image</div>
+
+                        <div style="margin-top:22px;">
+                            <label class="form-lbl">Event Description <span class="req">*</span></label>
+                            <div class="desc-wrap">
+                                <!-- Simple formatting toolbar -->
+                                <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+                                    <button type="button" class="fmt-btn" onclick="fmtDesc('bold')" title="Bold"><i
+                                            class="bi bi-type-bold"></i></button>
+                                    <button type="button" class="fmt-btn" onclick="fmtDesc('italic')" title="Italic"><i
+                                            class="bi bi-type-italic"></i></button>
+                                    <button type="button" class="fmt-btn" onclick="fmtDesc('bullet')"
+                                        title="Bullet list"><i class="bi bi-list-ul"></i></button>
+                                    <button type="button" class="fmt-btn" onclick="fmtDesc('heading')"
+                                        title="Heading"><i class="bi bi-type-h2"></i></button>
+                                    <button type="button" class="fmt-btn" onclick="fmtDesc('line')" title="Divider"><i
+                                            class="bi bi-dash-lg"></i></button>
+                                </div>
+                                <style>
+                                    .fmt-btn {
+                                        background: #f8fafc;
+                                        border: 1.5px solid var(--border);
+                                        border-radius: 7px;
+                                        padding: 5px 9px;
+                                        cursor: pointer;
+                                        color: var(--muted);
+                                        font-size: 14px;
+                                        transition: 0.15s;
+                                    }
+
+                                    .fmt-btn:hover {
+                                        border-color: var(--navy);
+                                        color: var(--navy);
+                                        background: var(--navy-lite);
+                                    }
+                                </style>
+                                <textarea name="event_description" id="event_description" class="form-control" rows="5"
+                                    placeholder="Describe what attendees can expect. You can include the schedule, dress code, what to bring, rules, etc."
+                                    oninput="updateCharCount(); syncPreview(); updateCheckList()"
+                                    maxlength="2000"></textarea>
+                                <div class="char-count" id="charCount">0 / 2000</div>
+                            </div>
+                            <div class="ferr" id="e-desc">Description is required</div>
+                        </div>
+
+                        <div style="margin-top:22px;">
+                            <label class="form-lbl">Social &amp; Promotion <span
+                                    style="color:var(--muted);font-weight:400;">(optional)</span></label>
+                            <div class="g2">
+                                <div>
+                                    <div class="icon-field mb16">
+                                        <i class="bi bi-instagram fi" style="color:#e1306c;"></i>
+                                        <input type="text" name="social_instagram" class="form-control"
+                                            placeholder="@yourhandle">
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="icon-field mb16">
+                                        <i class="bi bi-globe fi" style="color:var(--navy);"></i>
+                                        <input type="url" name="event_website" class="form-control"
+                                            placeholder="https://yourevent.com">
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="icon-field">
+                                        <i class="bi bi-whatsapp fi" style="color:#25d366;"></i>
+                                        <input type="url" name="whatsapp_group" class="form-control"
+                                            placeholder="WhatsApp group invite link">
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="icon-field">
+                                        <i class="bi bi-youtube fi" style="color:#ff0000;"></i>
+                                        <input type="url" name="youtube_link" class="form-control"
+                                            placeholder="Promo / teaser video link">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- SUBMIT -->
+                <div
+                    style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;padding:4px 0 8px;">
+                    <a href="/find_events" class="btn-cancel">Cancel</a>
+                    <button type="button" class="btn-publish" id="publishBtn" onclick="submitForm()">
+                        <span id="publishTxt"><i class="bi bi-rocket-takeoff"></i> Publish Event</span>
+                        <span id="publishLoad" style="display:none;"><span class="spinner-border spinner-border-sm me-1"
+                                role="status"></span> Publishing...</span>
+                    </button>
+                </div>
+
+            </form>
+        </div><!-- /left col -->
+
+        <!-- SIDEBAR -->
+        <div class="sidebar-sticky">
+
+            <!-- Live Preview -->
+            <div class="preview-card">
+                <div class="preview-head">
+                    <i class="bi bi-eye"></i> Live Preview
+                    <span>Updates as you type</span>
+                </div>
+                <div class="preview-img-wrap">
+                    <img id="prevImg" src="" alt="">
+                    <div class="preview-img-placeholder" id="prevImgPlaceholder">
+                        <i class="bi bi-image"></i>
+                        <p>Event cover image</p>
+                    </div>
+                    <div class="preview-badge" id="prevBadge" style="display:none;"></div>
+                </div>
+                <div class="preview-body">
+                    <div class="prev-title" id="prevTitle">Your event name will appear here</div>
+                    <div class="prev-meta">
+                        <div class="prev-meta-row"><i class="bi bi-calendar-event"></i><span id="prevDate">Date not
+                                set</span></div>
+                        <div class="prev-meta-row"><i class="bi bi-clock"></i><span id="prevTime">Time not set</span>
+                        </div>
+                        <div class="prev-meta-row"><i class="bi bi-geo-alt"></i><span id="prevLoc">Location not
+                                set</span></div>
+                        <div class="prev-meta-row"><i class="bi bi-person-badge"></i><span id="prevGuest"
+                                style="display:none;"></span></div>
+                    </div>
+                    <div id="prevPrice" class="prev-price free">Free Entry</div>
+                </div>
+            </div>
+
+            <!-- Publish Checklist -->
+            <div class="checklist-card">
+                <div class="checklist-head"><i class="bi bi-check2-all" style="color:var(--navy);"></i> Publish
+                    Checklist</div>
+                <div class="checklist-body">
+                    <div class="cl-item" id="cl-name">
+                        <div class="cl-dot" id="cld-name"></div> <span>Event name added</span>
+                    </div>
+                    <div class="cl-item" id="cl-date">
+                        <div class="cl-dot" id="cld-date"></div> <span>Date &amp; time set</span>
+                    </div>
+                    <div class="cl-item" id="cl-cat">
+                        <div class="cl-dot" id="cld-cat"></div> <span>Category selected</span>
+                    </div>
+                    <div class="cl-item" id="cl-loc">
+                        <div class="cl-dot" id="cld-loc"></div> <span>Location filled</span>
+                    </div>
+                    <div class="cl-item" id="cl-cap">
+                        <div class="cl-dot" id="cld-cap"></div> <span>Capacity set</span>
+                    </div>
+                    <div class="cl-item" id="cl-img">
+                        <div class="cl-dot" id="cld-img"></div> <span>Image uploaded</span>
+                    </div>
+                    <div class="cl-item" id="cl-desc">
+                        <div class="cl-dot" id="cld-desc"></div> <span>Description written</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tips -->
+            <div class="tips-card" style="margin-top:20px;">
+                <div class="tips-head"><i class="bi bi-lightbulb" style="color:var(--amber);"></i> Pro Tips</div>
+                <div class="tips-body">
+                    <div class="tip-row"><i class="bi bi-image"></i>Use a high-quality landscape image (1200×600px) for
+                        the best look on event cards.</div>
+                    <div class="tip-row"><i class="bi bi-clock"></i>Publish at least 2 weeks before the event for
+                        maximum visibility.</div>
+                    <div class="tip-row"><i class="bi bi-tags"></i>Add feature tags like "Free Food" or "Certificate" to
+                        attract more attendees.</div>
+                    <div class="tip-row"><i class="bi bi-shield-check"></i>Verified organiser badge boosts ticket sales
+                        by up to 40%.</div>
+                </div>
+            </div>
+
+        </div>
+    </div><!-- /create-wrap -->
+
+    <script>
+        /* ── CATEGORY ── */
+        function pickCat(el) {
+            document.querySelectorAll('.cat-pill').forEach(function (p) { p.classList.remove('active'); });
+            el.classList.add('active');
+            document.getElementById('categories').value = el.dataset.val;
+            syncPreview();
+            updateCheckList();
+        }
+
+        /* ── ONLINE TOGGLE ── */
+        var isOnline = false;
+        function toggleOnline() {
+            isOnline = !isOnline;
+            document.getElementById('onlineTog').classList.toggle('on', isOnline);
+            document.getElementById('physicalAddr').style.display = isOnline ? 'none' : 'block';
+            document.getElementById('onlineAddr').style.display = isOnline ? 'block' : 'none';
+            syncPreview();
+        }
+
+        /* ── TICKET TYPE ── */
+        function pickTicket(type) {
+            document.getElementById('ticket_type').value = type;
+            document.getElementById('tt-free').classList.toggle('active', type === 'free');
+            document.getElementById('tt-paid').classList.toggle('active', type === 'paid');
+            document.getElementById('priceFields').style.display = type === 'paid' ? 'block' : 'none';
+            syncPreview();
+        }
+
+        /* ── TAG INPUT ── */
+        var tags = [];
+        function addTag(val) {
+            val = val.trim().replace(/,/g, '');
+            if (!val || tags.indexOf(val) !== -1) { return; }
+            tags.push(val);
+            renderTags();
+            updateCheckList();
+        }
+        function removeTag(idx) {
+            tags.splice(idx, 1);
+            renderTags();
+        }
+        function renderTags() {
+            var box = document.getElementById('tagBox');
+            var inp = document.getElementById('tagRealInput');
+            box.querySelectorAll('.tag-chip').forEach(function (c) { c.remove(); });
+            tags.forEach(function (t, i) {
+                var chip = document.createElement('span');
+                chip.className = 'tag-chip';
+                chip.innerHTML = t + '<span class="rm" onclick="removeTag(' + i + ')">&#215;</span>';
+                box.insertBefore(chip, inp);
+            });
+            document.getElementById('event_features').value = tags.join(', ');
+        }
+        document.getElementById('tagRealInput').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ',') {
+                e.preventDefault();
+                addTag(this.value);
+                this.value = '';
+            }
+            if (e.key === 'Backspace' && !this.value && tags.length) {
+                removeTag(tags.length - 1);
+            }
+        });
+
+        /* ── IMAGE DRAG & DROP ── */
+        var selectedFiles = [];
+        var dropZone = document.getElementById('dropZone');
+        dropZone.addEventListener('dragover', function (e) { e.preventDefault(); this.classList.add('dragover'); });
+        dropZone.addEventListener('dragleave', function () { this.classList.remove('dragover'); });
+        dropZone.addEventListener('drop', function (e) {
+            e.preventDefault(); this.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        function handleFiles(files) {
+            Array.from(files).forEach(function (f) {
+                if (!f.type.startsWith('image/')) { return; }
+                selectedFiles.push(f);
+            });
+            renderPreviews();
+            updateCheckList();
+        }
+
+        function renderPreviews() {
+            var grid = document.getElementById('imgPreviews');
+            grid.innerHTML = '';
+            selectedFiles.forEach(function (f, i) {
+                var reader = new FileReader();
+                reader.onload = function (ev) {
+                    var div = document.createElement('div');
+                    div.className = 'img-thumb' + (i === 0 ? ' primary' : '');
+                    div.innerHTML = '<img src="' + ev.target.result + '" alt="">' +
+                        '<button class="rm-img" type="button" onclick="removeImg(' + i + ')"><i class="bi bi-x"></i></button>';
+                    grid.appendChild(div);
+                    if (i === 0) { updatePreviewImg(ev.target.result); }
+                };
+                reader.readAsDataURL(f);
+            });
+            // Rebuild a real FileList-like input from selectedFiles
+            rebuildFileInput();
+        }
+
+        function rebuildFileInput() {
+            // Create a DataTransfer to hold files
+            try {
+                var dt = new DataTransfer();
+                selectedFiles.forEach(function (f) { dt.items.add(f); });
+                document.getElementById('imgInput').files = dt.files;
+            } catch (e) { /* older browsers fallback — files intact */ }
+        }
+
+        function removeImg(idx) {
+            selectedFiles.splice(idx, 1);
+            renderPreviews();
+            if (selectedFiles.length === 0) {
+                document.getElementById('prevImg').style.display = 'none';
+                document.getElementById('prevImgPlaceholder').style.display = 'flex';
+            }
+            updateCheckList();
+        }
+
+        function updatePreviewImg(src) {
+            var img = document.getElementById('prevImg');
+            var ph = document.getElementById('prevImgPlaceholder');
+            img.src = src;
+            img.style.display = 'block';
+            ph.style.display = 'none';
+        }
+
+        /* ── CHAR COUNTER ── */
+        function updateCharCount() {
+            var ta = document.getElementById('event_description');
+            var cc = document.getElementById('charCount');
+            var len = ta.value.length;
+            cc.textContent = len + ' / 2000';
+            cc.className = 'char-count' + (len > 1900 ? ' over' : len > 1600 ? ' warn' : '');
+        }
+
+        /* ── DESCRIPTION FORMATTER ── */
+        function fmtDesc(type) {
+            var ta = document.getElementById('event_description');
+            var start = ta.selectionStart;
+            var end = ta.selectionEnd;
+            var sel = ta.value.substring(start, end);
+            var insert = '';
+            if (type === 'bold') { insert = '**' + (sel || 'bold text') + '**'; }
+            if (type === 'italic') { insert = '_' + (sel || 'italic text') + '_'; }
+            if (type === 'bullet') { insert = '\n• ' + (sel || 'Item'); }
+            if (type === 'heading') { insert = '\n## ' + (sel || 'Section Heading') + '\n'; }
+            if (type === 'line') { insert = '\n---\n'; }
+            ta.value = ta.value.substring(0, start) + insert + ta.value.substring(end);
+            ta.focus();
+            ta.selectionStart = ta.selectionEnd = start + insert.length;
+            updateCharCount(); syncPreview(); updateCheckList();
+        }
+
+        /* ── LIVE PREVIEW SYNC ── */
+        function syncPreview() {
+            var name = document.getElementById('event_name').value.trim();
+            var date = document.getElementById('event_date').value;
+            var time = document.getElementById('event_time').value;
+            var addr = isOnline
+                ? 'Online Event'
+                : (document.getElementById('event_city').value.trim() ||
+                    document.getElementById('event_address').value.trim() || 'Location not set');
+            var guest = document.getElementById('guest_speaker').value.trim();
+            var type = document.getElementById('ticket_type').value;
+            var price = document.getElementById('ticket_price') ? document.getElementById('ticket_price').value : '';
+            var cat = document.getElementById('categories').value;
+
+            document.getElementById('prevTitle').textContent = name || 'Your event name will appear here';
+
+            if (date) {
+                var d = new Date(date);
+                document.getElementById('prevDate').textContent = d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+            } else {
+                document.getElementById('prevDate').textContent = 'Date not set';
+            }
+
+            document.getElementById('prevTime').textContent = time
+                ? formatTime12(time)
+                : 'Time not set';
+
+            document.getElementById('prevLoc').textContent = addr;
+
+            if (guest) {
+                document.getElementById('prevGuest').textContent = guest;
+                document.getElementById('prevGuest').style.display = 'inline';
+            } else {
+                document.getElementById('prevGuest').style.display = 'none';
+            }
+
+            var priceEl = document.getElementById('prevPrice');
+            if (type === 'free') {
+                priceEl.textContent = 'Free Entry';
+                priceEl.className = 'prev-price free';
+            } else {
+                priceEl.textContent = price ? 'Rs.' + parseInt(price).toLocaleString('en-IN') : 'Price TBD';
+                priceEl.className = 'prev-price';
+            }
+
+            if (cat) {
+                document.getElementById('prevBadge').textContent = cat;
+                document.getElementById('prevBadge').style.display = 'block';
+            } else {
+                document.getElementById('prevBadge').style.display = 'none';
+            }
+
+            updateCheckList();
+        }
+
+        function formatTime12(t) {
+            var parts = t.split(':');
+            var h = parseInt(parts[0], 10);
+            var m = parts[1];
+            var ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12 || 12;
+            return h + ':' + m + ' ' + ampm;
+        }
+
+        /* ── CHECKLIST ── */
+        function updateCheckList() {
+            function mark(id, isDone) {
+                var item = document.getElementById('cl-' + id);
+                var dot = document.getElementById('cld-' + id);
+                if (!item || !dot) { return; }
+                item.classList.toggle('done', isDone);
+                dot.innerHTML = isDone ? '<i class="bi bi-check-lg"></i>' : '';
+            }
+            mark('name', document.getElementById('event_name').value.trim().length > 0);
+            mark('date', document.getElementById('event_date').value && document.getElementById('event_time').value);
+            mark('cat', document.getElementById('categories').value !== '');
+            var locFilled = isOnline
+                ? document.getElementById('meeting_link') && document.getElementById('meeting_link').value.trim()
+                : document.getElementById('event_address').value.trim().length > 0;
+            mark('loc', locFilled);
+            mark('cap', document.getElementById('event_capacity').value > 0);
+            mark('img', selectedFiles.length > 0);
+            mark('desc', document.getElementById('event_description').value.trim().length >= 20);
+
+            // update progress strip
+            var segs = ['name', 'date', 'cat', 'loc', 'cap'];
+            var done = segs.filter(function (id) { return document.getElementById('cl-' + id).classList.contains('done'); }).length;
+            done += selectedFiles.length > 0 ? 1 : 0;
+            done += document.getElementById('event_description').value.trim().length >= 20 ? 1 : 0;
+            var total = 7;
+            for (var i = 1; i <= 5; i++) {
+                var fill = (i / 5) <= (done / total);
+                document.getElementById('ps' + i).classList.toggle('filled', fill);
+            }
+        }
+
+        /* ── FORM VALIDATION & SUBMIT ── */
+        function showErr(id, show) {
+            var el = document.getElementById(id);
+            if (el) { el.style.display = show ? 'block' : 'none'; }
+        }
+        function markField(id, isOk) {
+            var el = document.getElementById(id);
+            if (!el) { return; }
+            el.classList.toggle('err-f', !isOk);
+            el.classList.toggle('ok-f', isOk);
+        }
+
+        function submitForm() {
+            var ok = true;
+
+            var name = document.getElementById('event_name').value.trim();
+            markField('event_name', name.length > 0); showErr('e-name', !name.length);
+            if (!name.length) { ok = false; }
+
+            var date = document.getElementById('event_date').value;
+            var dateOk = date && new Date(date) >= new Date(new Date().toDateString());
+            markField('event_date', dateOk); showErr('e-date', !dateOk);
+            if (!dateOk) { ok = false; }
+
+            var time = document.getElementById('event_time').value;
+            markField('event_time', !!time); showErr('e-time', !time);
+            if (!time) { ok = false; }
+
+            var cat = document.getElementById('categories').value;
+            showErr('e-cat', !cat);
+            if (!cat) { ok = false; }
+
+            if (!isOnline) {
+                var addr = document.getElementById('event_address').value.trim();
+                markField('event_address', addr.length > 0); showErr('e-addr', !addr.length);
+                if (!addr.length) { ok = false; }
+            }
+
+            var cap = parseInt(document.getElementById('event_capacity').value, 10);
+            markField('event_capacity', cap > 0); showErr('e-cap', !(cap > 0));
+            if (!(cap > 0)) { ok = false; }
+
+            var tickType = document.getElementById('ticket_type').value;
+            if (tickType === 'paid') {
+                var price = parseFloat(document.getElementById('ticket_price').value);
+                markField('ticket_price', price > 0); showErr('e-price', !(price > 0));
+                if (!(price > 0)) { ok = false; }
+            }
+
+            if (selectedFiles.length === 0) {
+                showErr('e-img', true); ok = false;
+            } else { showErr('e-img', false); }
+
+            var desc = document.getElementById('event_description').value.trim();
+            markField('event_description', desc.length >= 20); showErr('e-desc', desc.length < 20);
+            if (desc.length < 20) { ok = false; }
+
+            if (!ok) {
+                // scroll to first error
+                var firstErr = document.querySelector('.err-f, .ferr[style*="block"]');
+                if (firstErr) { firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+                return;
+            }
+
+            document.getElementById('publishTxt').style.display = 'none';
+            document.getElementById('publishLoad').style.display = 'inline-flex';
+            document.getElementById('publishBtn').disabled = true;
+            document.getElementById('createForm').submit();
+        }
+
+        /* Init */
+        updateCheckList();
+
+        // set min date to today
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementById('event_date').min = today;
+        document.getElementById('event_end_date').min = today;
+    </script>
 
 </body>
 
