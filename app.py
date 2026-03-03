@@ -634,18 +634,7 @@ def buy_ticket(event_id):
         conn.close()
         return "⚠️ This event is SOLD OUT!"
 
-    # Insert ticket
-    cur.execute("""
-        INSERT INTO myticket_user (user_id, event_id, payment_method)
-        VALUES (%s, %s, %s);
-    """, (user_id, event_id, "N/A"))
-
-    # Increment tickets sold
-    cur.execute("""
-        UPDATE events
-        SET tickets_sold = COALESCE(tickets_sold, 0) + 1
-        WHERE event_id = %s;
-    """, (event_id,))
+   
 
     cur.execute("""
         SELECT event_id, event_name, event_date, ticket_price
