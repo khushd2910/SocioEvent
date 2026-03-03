@@ -30,7 +30,7 @@
             padding-bottom: 120px;
         }
 
-        /* ─── HERO ─── */
+        /* HERO */
         .hero-wrap {
             position: relative;
             width: 100%;
@@ -43,23 +43,24 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.75;
+            opacity: 0.78;
         }
 
         .hero-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 40%, transparent 100%);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 45%, transparent 100%);
             display: flex;
             align-items: flex-end;
             padding: 36px 40px;
+            pointer-events: none;
         }
 
         .hero-overlay h1 {
             font-size: clamp(1.6rem, 4vw, 2.4rem);
             font-weight: 800;
             color: #fff;
-            margin: 0 0 10px;
+            margin: 0 0 8px;
             line-height: 1.2;
         }
 
@@ -77,7 +78,60 @@
             backdrop-filter: blur(6px);
         }
 
-        /* ─── CONTENT GRID ─── */
+        /* ACTION BAR */
+        .action-bar {
+            background: var(--navy);
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .action-bar-btn {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 14px 26px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-right: 1px solid rgba(255, 255, 255, 0.12);
+            text-decoration: none;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .action-bar-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .action-bar-btn i {
+            font-size: 17px;
+        }
+
+        .action-bar-btn.liked {
+            color: #fb7185;
+        }
+
+        .action-bar-btn.liked i {
+            color: #fb7185;
+        }
+
+        .action-bar-spacer {
+            flex: 1;
+        }
+
+        @media (max-width: 900px) {
+            .action-bar-btn {
+                padding: 12px 14px;
+                font-size: 13px;
+            }
+        }
+
+        /* CONTENT GRID */
         .content-grid {
             max-width: 1100px;
             margin: 0 auto;
@@ -93,7 +147,7 @@
             }
         }
 
-        /* ─── CARDS ─── */
+        /* CARD BLOCK */
         .card-block {
             background: #fff;
             border-radius: 18px;
@@ -111,7 +165,7 @@
             text-transform: uppercase;
         }
 
-        /* ─── META GRID ─── */
+        /* META GRID */
         .meta-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -150,38 +204,185 @@
             color: #0f172a;
         }
 
-        /* ─── GALLERY ─── */
+        /* GALLERY */
         .gallery-strip {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
-            margin-top: 16px;
         }
 
         .gallery-thumb {
-            width: 80px;
-            height: 60px;
+            width: 90px;
+            height: 68px;
             object-fit: cover;
             border-radius: 10px;
             cursor: pointer;
-            transition: 0.25s;
-            border: 2px solid transparent;
+            transition: 0.22s;
+            border: 2.5px solid transparent;
         }
 
-        .gallery-thumb:hover,
+        .gallery-thumb:hover {
+            border-color: var(--navy);
+            transform: scale(1.05);
+        }
+
         .gallery-thumb.active {
             border-color: var(--navy);
-            transform: scale(1.04);
+            box-shadow: 0 0 0 3px rgba(26, 60, 140, 0.18);
         }
 
-        /* ─── DESCRIPTION ─── */
+        /* LIGHTBOX */
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.88);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(6px);
+        }
+
+        .lightbox-overlay.open {
+            display: flex;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .lightbox-card {
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            max-width: 860px;
+            width: calc(100% - 40px);
+            max-height: 92vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+            animation: popIn 0.22s ease;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0.94);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .lightbox-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .lightbox-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .lightbox-close {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border);
+            background: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            color: #374151;
+            transition: 0.2s;
+        }
+
+        .lightbox-close:hover {
+            background: #f1f5fd;
+            border-color: var(--navy);
+            color: var(--navy);
+        }
+
+        .lightbox-img-wrap {
+            flex: 1;
+            overflow: hidden;
+            background: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 0;
+        }
+
+        .lightbox-img-wrap img {
+            max-width: 100%;
+            max-height: 68vh;
+            object-fit: contain;
+            display: block;
+        }
+
+        .lightbox-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            padding: 14px 20px;
+            border-top: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .lightbox-nav-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border);
+            background: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 15px;
+            color: var(--navy);
+            transition: 0.2s;
+        }
+
+        .lightbox-nav-btn:hover {
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy);
+        }
+
+        .lightbox-counter {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            min-width: 60px;
+            text-align: center;
+        }
+
+        /* DESCRIPTION */
         .desc-text {
             font-size: 15px;
             line-height: 1.75;
             color: #374151;
         }
 
-        /* ─── SIDEBAR ─── */
+        /* SIDEBAR */
         .ticket-sidebar {
             position: sticky;
             top: 80px;
@@ -197,6 +398,7 @@
             font-size: 12px;
             color: var(--text-muted);
             margin-top: 2px;
+            margin-bottom: 20px;
         }
 
         .btn-buy {
@@ -235,58 +437,16 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            text-decoration: none;
         }
 
         .btn-ghost:hover {
             border-color: var(--navy);
             background: #f1f5fd;
+            color: var(--navy);
         }
 
-        /* ─── LIKE BUTTON ─── */
-        .like-btn {
-            background: none;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 10px 18px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            color: #374151;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .like-btn:hover,
-        .like-btn.liked {
-            background: #fff1f2;
-            border-color: #fb7185;
-            color: #e11d48;
-        }
-
-        .like-btn i {
-            font-size: 16px;
-        }
-
-        /* ─── CAPACITY BAR ─── */
-        .capacity-bar {
-            height: 6px;
-            background: #e5e7eb;
-            border-radius: 999px;
-            overflow: hidden;
-            margin-top: 6px;
-        }
-
-        .capacity-fill {
-            height: 100%;
-            background: var(--navy);
-            border-radius: 999px;
-            width: 60%;
-            /* dynamic via inline style if needed */
-        }
-
-        /* ─── COMMENTS ─── */
+        /* COMMENTS */
         .comment-item {
             display: flex;
             gap: 12px;
@@ -363,7 +523,7 @@
             background: var(--navy-dark);
         }
 
-        /* ─── STICKY BOTTOM BAR (mobile) ─── */
+        /* STICKY MOBILE BAR */
         .sticky-bar {
             display: none;
             position: fixed;
@@ -387,7 +547,7 @@
             }
         }
 
-        /* ─── SHARE MODAL ─── */
+        /* SHARE MODAL */
         .share-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -409,17 +569,20 @@
             font-weight: 600;
             color: #374151;
             transition: 0.2s;
+            text-decoration: none;
         }
 
         .share-btn:hover {
             background: #f8fafc;
             border-color: var(--navy);
+            color: #374151;
         }
 
         .share-btn i {
             font-size: 22px;
         }
 
+        /* TOAST */
         .toast-notice {
             position: fixed;
             bottom: 90px;
@@ -447,7 +610,7 @@
 
     {% include "navbar.html" %}
 
-    <!-- ─── HERO ─── -->
+    <!-- HERO -->
     <div class="hero-wrap">
         {% set main_img = event.images[0] if event.images else 'default.jpg' %}
         <img id="heroImg" src="{{ url_for('static', filename='uploads/' + main_img) }}" class="hero-img"
@@ -456,37 +619,48 @@
             <div>
                 <div class="hero-badge">{{ event.categories }}</div>
                 <h1>{{ event.event_name }}</h1>
-                <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                    <form action="{{ url_for('like_event', event_id=event.id) }}" method="POST">
-                        <button type="submit" class="like-btn {% if user_liked %}liked{% endif %}">
-                            <i class="bi bi-heart-fill"></i>
-                            {{ event.like_count }} Likes
-                        </button>
-                    </form>
-                    <button class="btn-ghost" style="width:auto; padding:10px 18px;" data-bs-toggle="modal"
-                        data-bs-target="#shareModal">
-                        <i class="bi bi-share"></i> Share
-                    </button>
-                </div>
             </div>
         </div>
     </div>
 
-    <!-- ─── MAIN CONTENT ─── -->
-    <div class="content-grid">
+    <!-- LIKE / SHARE ACTION BAR -->
+    <div class="action-bar">
+        <form action="{{ url_for('like_event', event_id=event.id) }}" method="POST" style="margin:0;">
+            <button type="submit" class="action-bar-btn {% if user_liked %}liked{% endif %}">
+                <i class="bi bi-heart-fill"></i>
+                {{ event.like_count }}&nbsp;{{ 'Liked' if user_liked else 'Like' }}
+            </button>
+        </form>
 
-        <!-- LEFT COLUMN -->
+        <button class="action-bar-btn" data-bs-toggle="modal" data-bs-target="#shareModal">
+            <i class="bi bi-share-fill"></i> Share
+        </button>
+
+        <a href="https://wa.me/?text={{ request.url }}" target="_blank" class="action-bar-btn">
+            <i class="bi bi-whatsapp"></i> WhatsApp
+        </a>
+
+        <div class="action-bar-spacer"></div>
+
+        <a href="{{ url_for('find_events') }}" class="action-bar-btn"
+            style="border-right:none; border-left:1px solid rgba(255,255,255,0.12);">
+            <i class="bi bi-arrow-left"></i> All Events
+        </a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="content-grid">
         <div>
 
             <!-- Gallery -->
-            {% if event.images|length > 1 %}
-            <div class="card-block" style="padding-bottom:20px;">
+            {% if event.images|length > 0 %}
+            <div class="card-block">
                 <h5>Gallery</h5>
                 <div class="gallery-strip">
                     {% for img in event.images %}
                     <img src="{{ url_for('static', filename='uploads/' + img) }}"
                         class="gallery-thumb {% if loop.first %}active{% endif %}"
-                        onclick="setHero(this, '{{ url_for('static', filename='uploads/' + img) }}')" alt="Event image">
+                        onclick="openLightbox({{ loop.index0 }})" alt="Event image {{ loop.index }}">
                     {% endfor %}
                 </div>
             </div>
@@ -561,7 +735,6 @@
             <!-- Comments -->
             <div class="card-block">
                 <h5>Comments</h5>
-
                 {% if session.get("user") %}
                 <form action="{{ url_for('add_comment', event_id=event.id) }}" method="POST">
                     <textarea name="comment" class="comment-input" rows="3"
@@ -572,7 +745,6 @@
                 </form>
                 <hr style="margin: 20px 0; border-color: var(--border);">
                 {% endif %}
-
                 {% if comments %}
                 {% for c in comments %}
                 <div class="comment-item">
@@ -594,38 +766,21 @@
 
         </div>
 
-        <!-- RIGHT SIDEBAR -->
+        <!-- SIDEBAR -->
         <div class="ticket-sidebar">
             <div class="card-block">
                 <h5>Tickets</h5>
-                <div class="mb-3">
-                    <div class="price-display">
-                        {% if event.ticket_type == 'free' %}Free
-                        {% else %}₹{{ event.ticket_price }}{% endif %}
-                    </div>
-                    <div class="price-label">{{ event.ticket_type | capitalize }} entry</div>
+                <div class="price-display">
+                    {% if event.ticket_type == 'free' %}Free{% else %}Rs.{{ event.ticket_price }}{% endif %}
                 </div>
-
-                <!-- Capacity progress -->
-                <div style="margin-bottom: 18px;">
-                    <div
-                        style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted); margin-bottom:6px;">
-                        <span>Availability</span>
-                        <span>{{ event.event_capacity }} total seats</span>
-                    </div>
-                    <div class="capacity-bar">
-                        <div class="capacity-fill"></div>
-                    </div>
-                </div>
-
+                <div class="price-label">{{ event.ticket_type | capitalize }} entry</div>
                 <a href="{{ url_for('buy_ticket', event_id=event.id) }}" class="btn-buy mb-3">
                     <i class="bi bi-ticket-perforated me-2"></i>Get Ticket
                 </a>
-
                 <div
                     style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-muted); justify-content:center; padding-top:4px;">
                     <i class="bi bi-shield-lock-fill" style="color:var(--navy);"></i>
-                    Secure & encrypted checkout
+                    Secure &amp; encrypted checkout
                 </div>
             </div>
 
@@ -634,8 +789,7 @@
                 <div style="display:flex; align-items:center; gap:12px;">
                     <div
                         style="width:42px; height:42px; border-radius:50%; background:#f1f5fd; display:flex; align-items:center; justify-content:center; color:var(--navy); font-weight:700; font-size:16px;">
-                        E
-                    </div>
+                        E</div>
                     <div>
                         <div style="font-weight:700; font-size:14px;">Event Organizer</div>
                         <div style="font-size:12px; color:var(--text-muted);">Verified Host</div>
@@ -647,34 +801,50 @@
                 <h5>Share Event</h5>
                 <div style="display:flex; gap:10px;">
                     <a href="https://wa.me/?text={{ request.url }}" target="_blank" class="btn-ghost"
-                        style="width:auto; flex:1;">
-                        <i class="bi bi-whatsapp"></i>
-                    </a>
+                        style="width:auto; flex:1;"><i class="bi bi-whatsapp"></i></a>
                     <a href="https://twitter.com/intent/tweet?url={{ request.url }}" target="_blank" class="btn-ghost"
-                        style="width:auto; flex:1;">
-                        <i class="bi bi-twitter-x"></i>
-                    </a>
-                    <button onclick="copyLink()" class="btn-ghost" style="width:auto; flex:1;">
-                        <i class="bi bi-link-45deg"></i>
-                    </button>
+                        style="width:auto; flex:1;"><i class="bi bi-twitter-x"></i></a>
+                    <button onclick="copyLink()" class="btn-ghost" style="width:auto; flex:1;"><i
+                            class="bi bi-link-45deg"></i></button>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- ─── STICKY MOBILE BAR ─── -->
+    <!-- STICKY MOBILE BAR -->
     <div class="sticky-bar">
         <a href="{{ url_for('find_events') }}" class="btn-ghost" style="width:auto; padding: 12px 18px;">
             <i class="bi bi-arrow-left"></i>
         </a>
         <a href="{{ url_for('buy_ticket', event_id=event.id) }}" class="btn-buy" style="flex:1;">
             <i class="bi bi-ticket-perforated me-2"></i>
-            {% if event.ticket_type == 'free' %}Get Free Ticket{% else %}Buy · ₹{{ event.ticket_price }}{% endif %}
+            {% if event.ticket_type == 'free' %}Get Free Ticket{% else %}Buy &middot; Rs.{{ event.ticket_price }}{%
+            endif %}
         </a>
     </div>
 
-    <!-- ─── SHARE MODAL ─── -->
+    <!-- LIGHTBOX -->
+    <div class="lightbox-overlay" id="lightbox" onclick="closeLightboxOutside(event)">
+        <div class="lightbox-card">
+            <div class="lightbox-header">
+                <span class="lightbox-title" id="lightboxTitle">Image</span>
+                <button class="lightbox-close" onclick="closeLightbox()">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            <div class="lightbox-img-wrap">
+                <img id="lightboxImg" src="" alt="Full size image">
+            </div>
+            <div class="lightbox-nav">
+                <button class="lightbox-nav-btn" onclick="prevImage()"><i class="bi bi-chevron-left"></i></button>
+                <span class="lightbox-counter" id="lightboxCounter">1 / 1</span>
+                <button class="lightbox-nav-btn" onclick="nextImage()"><i class="bi bi-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SHARE MODAL -->
     <div class="modal fade" id="shareModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" style="border-radius:20px; padding:28px; border:none;">
@@ -701,15 +871,60 @@
         </div>
     </div>
 
-    <!-- ─── TOAST ─── -->
+    <!-- TOAST -->
     <div class="toast-notice" id="toast">Link copied!</div>
 
     <script>
-        function setHero(el, src) {
-            document.getElementById('heroImg').src = src;
-            document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
-            el.classList.add('active');
+        // Build image array from Jinja
+        const galleryImages = [
+            {% for img in event.images %}
+        "{{ url_for('static', filename='uploads/' + img) }}"{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    ];
+
+        let currentIndex = 0;
+
+        function openLightbox(index) {
+            currentIndex = index;
+            updateLightbox();
+            document.getElementById('lightbox').classList.add('open');
+            document.body.style.overflow = 'hidden';
         }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function closeLightboxOutside(e) {
+            if (e.target === document.getElementById('lightbox')) closeLightbox();
+        }
+
+        function updateLightbox() {
+            document.getElementById('lightboxImg').src = galleryImages[currentIndex];
+            document.getElementById('lightboxCounter').textContent = (currentIndex + 1) + ' / ' + galleryImages.length;
+            document.getElementById('lightboxTitle').textContent = 'Image ' + (currentIndex + 1) + ' of ' + galleryImages.length;
+            document.querySelectorAll('.gallery-thumb').forEach((t, i) => {
+                t.classList.toggle('active', i === currentIndex);
+            });
+        }
+
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+            updateLightbox();
+        }
+
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % galleryImages.length;
+            updateLightbox();
+        }
+
+        document.addEventListener('keydown', function (e) {
+            if (!document.getElementById('lightbox').classList.contains('open')) return;
+            if (e.key === 'ArrowLeft') prevImage();
+            if (e.key === 'ArrowRight') nextImage();
+            if (e.key === 'Escape') closeLightbox();
+        });
 
         function copyLink() {
             navigator.clipboard.writeText(window.location.href);
