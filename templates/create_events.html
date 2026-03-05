@@ -17,7 +17,7 @@
             --navy-dark: #0f2660;
             --navy-lite: #f1f5fd;
             --beige: #f7f3ee;
-            --white: #ffffff;
+            --white: #fff;
             --border: #e5e7eb;
             --muted: #6b7280;
             --green: #16a34a;
@@ -39,11 +39,9 @@
             background: var(--beige);
             font-family: 'DM Sans', sans-serif;
             color: #0f172a;
-            min-height: 100vh;
             padding-bottom: 80px;
         }
 
-        /* ── PAGE HEADER ── */
         .page-header {
             background: var(--navy);
             padding: 32px 0 28px;
@@ -55,20 +53,19 @@
             font-size: 2rem;
             font-weight: 400;
             margin-bottom: 4px;
-            letter-spacing: -0.01em;
         }
 
         .page-header p {
             font-size: 14px;
-            opacity: 0.65;
+            opacity: .65;
         }
 
         .header-badge {
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            background: rgba(255, 255, 255, 0.13);
-            border: 1px solid rgba(255, 255, 255, 0.22);
+            background: rgba(255, 255, 255, .13);
+            border: 1px solid rgba(255, 255, 255, .22);
             color: #fff;
             font-size: 12px;
             font-weight: 600;
@@ -77,26 +74,23 @@
             margin-bottom: 14px;
         }
 
-        /* ── PROGRESS BAR ── */
         .progress-strip {
             background: var(--navy-dark);
-            padding: 0 0 0;
             display: flex;
             overflow: hidden;
         }
 
         .prog-seg {
             height: 4px;
-            background: rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, .18);
             flex: 1;
-            transition: background 0.4s;
+            transition: background .4s;
         }
 
         .prog-seg.filled {
             background: #60a5fa;
         }
 
-        /* ── LAYOUT ── */
         .create-wrap {
             max-width: 1080px;
             margin: 0 auto;
@@ -107,13 +101,12 @@
             align-items: start;
         }
 
-        @media (max-width: 860px) {
+        @media(max-width:860px) {
             .create-wrap {
                 grid-template-columns: 1fr;
             }
         }
 
-        /* ── SECTION CARDS ── */
         .scard {
             background: var(--white);
             border-radius: var(--radius);
@@ -159,14 +152,13 @@
             padding: 26px;
         }
 
-        /* ── FORM ELEMENTS ── */
         .form-lbl {
             font-size: 12px;
             font-weight: 700;
             color: #374151;
             margin-bottom: 6px;
             display: block;
-            letter-spacing: 0.025em;
+            letter-spacing: .025em;
         }
 
         .req {
@@ -184,14 +176,14 @@
             color: #0f172a;
             background: #fff;
             width: 100%;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            transition: border-color .2s, box-shadow .2s;
         }
 
         .form-control:focus,
         .form-select:focus {
             outline: none;
             border-color: var(--navy);
-            box-shadow: 0 0 0 3px rgba(26, 60, 140, 0.09);
+            box-shadow: 0 0 0 3px rgba(26, 60, 140, .09);
         }
 
         .form-control.err-f {
@@ -239,16 +231,8 @@
             gap: 16px;
         }
 
-        .g3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 14px;
-        }
-
-        @media (max-width: 600px) {
-
-            .g2,
-            .g3 {
+        @media(max-width:600px) {
+            .g2 {
                 grid-template-columns: 1fr;
             }
         }
@@ -261,14 +245,14 @@
             margin-bottom: 20px;
         }
 
-        /* ── CATEGORY PILLS ── */
+        /* CATEGORY PILLS */
         .cat-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
         }
 
-        @media (max-width: 560px) {
+        @media(max-width:560px) {
             .cat-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
@@ -287,7 +271,7 @@
             font-size: 12px;
             font-weight: 600;
             color: var(--muted);
-            transition: 0.2s;
+            transition: .2s;
             user-select: none;
             text-align: center;
         }
@@ -296,24 +280,19 @@
             font-size: 22px;
         }
 
-        .cat-pill:hover {
-            border-color: var(--navy);
-            color: var(--navy);
-            background: var(--navy-lite);
-        }
-
+        .cat-pill:hover,
         .cat-pill.active {
             border-color: var(--navy);
-            background: var(--navy-lite);
             color: var(--navy);
+            background: var(--navy-lite);
         }
 
-        /* hidden real select synced by JS */
-        #categories {
-            display: none;
+        /* RED OUTLINE when invalid and nothing selected */
+        .cat-grid.cat-err .cat-pill {
+            border-color: #fca5a5;
         }
 
-        /* ── ONLINE TOGGLE ── */
+        /* ONLINE TOGGLE */
         .toggle-wrap {
             display: flex;
             align-items: center;
@@ -343,7 +322,7 @@
             background: #d1d5db;
             border-radius: 999px;
             position: relative;
-            transition: background 0.2s;
+            transition: background .2s;
             flex-shrink: 0;
         }
 
@@ -356,8 +335,8 @@
             height: 18px;
             border-radius: 50%;
             background: #fff;
-            transition: 0.2s;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            transition: .2s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
         }
 
         .tog.on {
@@ -368,7 +347,7 @@
             left: 21px;
         }
 
-        /* ── TICKET TOGGLE ── */
+        /* TICKET TYPE */
         .ticket-type-row {
             display: flex;
             gap: 10px;
@@ -384,7 +363,7 @@
             border: 2px solid var(--border);
             border-radius: 12px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: .2s;
             font-size: 13px;
             font-weight: 600;
             color: var(--muted);
@@ -394,22 +373,14 @@
             font-size: 20px;
         }
 
-        .tt-opt:hover {
-            border-color: var(--navy);
-            color: var(--navy);
-        }
-
+        .tt-opt:hover,
         .tt-opt.active {
             border-color: var(--navy);
             background: var(--navy-lite);
             color: var(--navy);
         }
 
-        #ticket_type {
-            display: none;
-        }
-
-        /* ── FEATURES / TAG INPUT ── */
+        /* TAG INPUT */
         .tag-input-box {
             min-height: 52px;
             border: 1.5px solid var(--border);
@@ -420,13 +391,13 @@
             gap: 7px;
             align-items: center;
             cursor: text;
-            transition: border-color 0.2s;
+            transition: border-color .2s;
             background: #fff;
         }
 
         .tag-input-box:focus-within {
             border-color: var(--navy);
-            box-shadow: 0 0 0 3px rgba(26, 60, 140, 0.09);
+            box-shadow: 0 0 0 3px rgba(26, 60, 140, .09);
         }
 
         .tag-chip {
@@ -435,7 +406,7 @@
             gap: 5px;
             background: var(--navy-lite);
             color: var(--navy);
-            border: 1px solid rgba(26, 60, 140, 0.18);
+            border: 1px solid rgba(26, 60, 140, .18);
             font-size: 12px;
             font-weight: 600;
             padding: 4px 10px;
@@ -446,8 +417,7 @@
             cursor: pointer;
             font-size: 14px;
             line-height: 1;
-            opacity: 0.6;
-            transition: opacity 0.15s;
+            opacity: .6;
         }
 
         .tag-chip .rm:hover {
@@ -480,7 +450,7 @@
             padding: 3px 10px;
             cursor: pointer;
             background: #fff;
-            transition: 0.2s;
+            transition: .2s;
         }
 
         .tag-sug:hover {
@@ -489,20 +459,37 @@
             background: var(--navy-lite);
         }
 
-        #event_features {
-            display: none;
+        /* IMAGE UPLOAD */
+        .img-section {
+            margin-bottom: 24px;
         }
 
-        /* ── DRAG & DROP IMAGE UPLOAD ── */
+        .img-section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .img-section-sub {
+            font-size: 11px;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+
         .drop-zone {
             border: 2px dashed var(--border);
             border-radius: 14px;
-            padding: 32px 20px;
+            padding: 26px 20px;
             text-align: center;
             background: #fafafa;
             cursor: pointer;
-            transition: 0.2s;
+            transition: .2s;
             position: relative;
+            overflow: hidden;
         }
 
         .drop-zone.dragover {
@@ -510,10 +497,10 @@
             background: var(--navy-lite);
         }
 
-        .drop-zone i {
-            font-size: 36px;
+        .drop-zone .dz-icon {
+            font-size: 28px;
             color: #d1d5db;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: block;
         }
 
@@ -527,7 +514,7 @@
             color: var(--navy);
         }
 
-        .drop-zone input[type="file"] {
+        .drop-zone input[type=file] {
             position: absolute;
             inset: 0;
             opacity: 0;
@@ -536,35 +523,50 @@
             height: 100%;
         }
 
-        .img-previews {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 10px;
-            margin-top: 14px;
-        }
-
-        .img-thumb {
+        .cover-preview-wrap {
             position: relative;
-            border-radius: 10px;
+            width: 100%;
+            aspect-ratio: 10/3;
+            border-radius: 12px;
             overflow: hidden;
-            aspect-ratio: 1;
             background: #e5e7eb;
+            margin-top: 12px;
+            display: none;
         }
 
-        .img-thumb img {
+        .cover-preview-wrap img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
         }
 
-        .img-thumb .rm-img {
+        .card-preview-wrap {
+            position: relative;
+            width: 200px;
+            aspect-ratio: 11/6;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #e5e7eb;
+            margin-top: 12px;
+            display: none;
+        }
+
+        .card-preview-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .rm-img-btn {
             position: absolute;
-            top: 4px;
-            right: 4px;
-            width: 22px;
-            height: 22px;
+            top: 6px;
+            right: 6px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
-            background: rgba(0, 0, 0, 0.55);
+            background: rgba(0, 0, 0, .55);
             color: #fff;
             border: none;
             cursor: pointer;
@@ -572,27 +574,59 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.15s;
         }
 
-        .img-thumb .rm-img:hover {
+        .rm-img-btn:hover {
             background: var(--red);
         }
 
-        .img-thumb.primary::after {
-            content: 'Cover';
-            position: absolute;
-            bottom: 4px;
-            left: 4px;
-            background: var(--navy);
-            color: #fff;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 7px;
-            border-radius: 999px;
+        .gallery-previews {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
         }
 
-        /* ── DESCRIPTION WITH CHAR COUNTER ── */
+        .gal-thumb {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 9px;
+            overflow: hidden;
+            background: #e5e7eb;
+        }
+
+        .gal-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gal-thumb .rm-img-btn {
+            width: 20px;
+            height: 20px;
+            font-size: 11px;
+            top: 3px;
+            right: 3px;
+        }
+
+        /* DESCRIPTION */
+        .fmt-btn {
+            background: #f8fafc;
+            border: 1.5px solid var(--border);
+            border-radius: 7px;
+            padding: 5px 9px;
+            cursor: pointer;
+            color: var(--muted);
+            font-size: 14px;
+            transition: .15s;
+        }
+
+        .fmt-btn:hover {
+            border-color: var(--navy);
+            color: var(--navy);
+            background: var(--navy-lite);
+        }
+
         .desc-wrap {
             position: relative;
         }
@@ -600,7 +634,7 @@
         .desc-wrap textarea {
             resize: vertical;
             min-height: 110px;
-            padding-right: 60px;
+            padding-right: 64px;
         }
 
         .char-count {
@@ -620,7 +654,6 @@
             color: var(--red);
         }
 
-        /* ── NOTE BOX ── */
         .note-box {
             background: #fff7ed;
             border-left: 3px solid var(--amber);
@@ -639,7 +672,7 @@
             margin-top: 1px;
         }
 
-        /* ── SUBMIT BUTTON ── */
+        /* BUTTONS */
         .btn-publish {
             background: var(--navy);
             color: #fff;
@@ -649,7 +682,7 @@
             font-weight: 700;
             font-size: 15px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background .2s;
             display: inline-flex;
             align-items: center;
             gap: 10px;
@@ -674,22 +707,25 @@
             font-weight: 600;
             font-size: 14px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: .2s;
             font-family: 'DM Sans', sans-serif;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
         }
 
         .btn-cancel:hover {
             border-color: #9ca3af;
             background: #f9fafb;
+            color: #374151;
         }
 
-        /* ── SIDEBAR ── */
+        /* SIDEBAR */
         .sidebar-sticky {
             position: sticky;
             top: 24px;
         }
 
-        /* LIVE PREVIEW CARD */
         .preview-card {
             background: var(--white);
             border-radius: var(--radius);
@@ -712,13 +748,13 @@
         .preview-head span {
             font-size: 11px;
             font-weight: 400;
-            opacity: 0.65;
+            opacity: .65;
             margin-left: auto;
         }
 
         .preview-img-wrap {
-            height: 140px;
-            background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+            height: 130px;
+            background: linear-gradient(135deg, #e5e7eb, #d1d5db);
             position: relative;
             overflow: hidden;
         }
@@ -742,7 +778,7 @@
         }
 
         .preview-img-placeholder i {
-            font-size: 28px;
+            font-size: 26px;
         }
 
         .preview-img-placeholder p {
@@ -752,66 +788,50 @@
 
         .preview-badge {
             position: absolute;
-            top: 10px;
-            left: 10px;
+            top: 8px;
+            left: 8px;
             background: var(--navy);
             color: #fff;
             font-size: 10px;
             font-weight: 700;
             padding: 3px 10px;
             border-radius: 999px;
+            display: none;
         }
 
         .preview-body {
-            padding: 16px 18px;
+            padding: 14px 16px;
         }
 
         .prev-title {
             font-weight: 800;
-            font-size: 15px;
+            font-size: 14px;
             color: #0f172a;
             margin-bottom: 10px;
-            min-height: 20px;
+            min-height: 18px;
             line-height: 1.3;
         }
 
         .prev-meta {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
         }
 
         .prev-meta-row {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 7px;
             font-size: 12px;
             color: var(--muted);
         }
 
         .prev-meta-row i {
             color: var(--navy);
-            font-size: 13px;
-            width: 14px;
-        }
-
-        .prev-price {
-            display: inline-block;
             font-size: 12px;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 999px;
-            margin-top: 12px;
-            background: var(--navy-lite);
-            color: var(--navy);
+            width: 13px;
         }
 
-        .prev-price.free {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        /* CHECKLIST */
         .checklist-card {
             background: var(--white);
             border-radius: var(--radius);
@@ -832,7 +852,7 @@
         }
 
         .checklist-body {
-            padding: 16px 18px;
+            padding: 14px 18px;
         }
 
         .cl-item {
@@ -840,10 +860,10 @@
             align-items: center;
             gap: 10px;
             font-size: 13px;
-            padding: 7px 0;
+            padding: 6px 0;
             border-bottom: 1px solid #f3f4f6;
             color: var(--muted);
-            transition: color 0.2s;
+            transition: color .2s;
         }
 
         .cl-item:last-child {
@@ -860,7 +880,7 @@
             align-items: center;
             justify-content: center;
             font-size: 10px;
-            transition: 0.2s;
+            transition: .2s;
         }
 
         .cl-item.done .cl-dot {
@@ -873,12 +893,12 @@
             color: #374151;
         }
 
-        /* TIPS CARD */
         .tips-card {
             background: var(--white);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             overflow: hidden;
+            margin-top: 20px;
         }
 
         .tips-head {
@@ -893,7 +913,7 @@
         }
 
         .tips-body {
-            padding: 16px 18px;
+            padding: 14px 18px;
         }
 
         .tip-row {
@@ -902,7 +922,7 @@
             gap: 10px;
             font-size: 12px;
             color: var(--muted);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             line-height: 1.5;
         }
 
@@ -920,19 +940,16 @@
 </head>
 
 <body>
-
     {% include "navbar.html" %}
 
-    <!-- PAGE HEADER -->
     <div class="page-header">
         <div class="container">
             <div class="header-badge"><i class="bi bi-calendar-plus"></i> Event Creator</div>
             <h1>Create Your Event</h1>
-            <p>Fill in the details below to publish your event to thousands of attendees</p>
+            <p>Fill in the details below to publish your event</p>
         </div>
     </div>
-    <!-- Progress strip -->
-    <div class="progress-strip" id="progressStrip">
+    <div class="progress-strip">
         <div class="prog-seg" id="ps1"></div>
         <div class="prog-seg" id="ps2"></div>
         <div class="prog-seg" id="ps3"></div>
@@ -942,16 +959,15 @@
 
     <div class="create-wrap">
         <div>
-
             <form action="/create_event" method="POST" enctype="multipart/form-data" id="createForm" novalidate>
 
-                <!-- ══ 1. BASIC DETAILS ══ -->
-                <div class="scard" id="s-basic">
+                <!-- 1. BASIC DETAILS -->
+                <div class="scard">
                     <div class="scard-head">
                         <div class="scard-icon"><i class="bi bi-pencil-square"></i></div>
                         <div>
                             <div class="scard-title">Basic Details</div>
-                            <div class="scard-sub">Name, date, time and category of your event</div>
+                            <div class="scard-sub">Name, date, time and category</div>
                         </div>
                     </div>
                     <div class="scard-body">
@@ -960,7 +976,7 @@
                             <label class="form-lbl">Event Name <span class="req">*</span></label>
                             <div class="icon-field">
                                 <i class="bi bi-stars fi"></i>
-                                <input type="text" name="event_name" id="event_name" class="form-control"
+                                <input type="text" name="event_name" id="f-name" class="form-control"
                                     placeholder="e.g. Sunburn After Party 2025" required maxlength="100"
                                     oninput="syncPreview()">
                             </div>
@@ -970,29 +986,27 @@
                         <div class="g2 mb20">
                             <div>
                                 <label class="form-lbl">Event Date <span class="req">*</span></label>
-                                <div class="icon-field">
-                                    <i class="bi bi-calendar-event fi"></i>
-                                    <input type="date" name="event_date" id="event_date" class="form-control" required
+                                <div class="icon-field"><i class="bi bi-calendar-event fi"></i>
+                                    <input type="date" name="event_date" id="f-date" class="form-control" required
                                         oninput="syncPreview()">
                                 </div>
                                 <div class="ferr" id="e-date">Please select a future date</div>
                             </div>
                             <div>
-                                <label class="form-lbl">End Date <span
+                                <label class="form-lbl">Registration Deadline <span
                                         style="color:var(--muted);font-weight:400;">(optional)</span></label>
-                                <div class="icon-field">
-                                    <i class="bi bi-calendar-check fi"></i>
-                                    <input type="date" name="event_end_date" id="event_end_date" class="form-control">
+                                <div class="icon-field"><i class="bi bi-calendar-x fi"></i>
+                                    <input type="date" name="reg_deadline" id="f-regdeadline" class="form-control">
                                 </div>
+                                <div class="fhint">Users cannot buy tickets after this date</div>
                             </div>
                         </div>
 
                         <div class="g2 mb20">
                             <div>
                                 <label class="form-lbl">Start Time <span class="req">*</span></label>
-                                <div class="icon-field">
-                                    <i class="bi bi-clock fi"></i>
-                                    <input type="time" name="event_time" id="event_time" class="form-control" required
+                                <div class="icon-field"><i class="bi bi-clock fi"></i>
+                                    <input type="time" name="event_time" id="f-time" class="form-control" required
                                         oninput="syncPreview()">
                                 </div>
                                 <div class="ferr" id="e-time">Start time is required</div>
@@ -1000,16 +1014,16 @@
                             <div>
                                 <label class="form-lbl">End Time <span
                                         style="color:var(--muted);font-weight:400;">(optional)</span></label>
-                                <div class="icon-field">
-                                    <i class="bi bi-clock-history fi"></i>
+                                <div class="icon-field"><i class="bi bi-clock-history fi"></i>
                                     <input type="time" name="event_end_time" class="form-control">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="mb16">
+                        <!-- CATEGORY — hidden input is what submits, pills set its value -->
+                        <div class="mb20">
                             <label class="form-lbl">Category <span class="req">*</span></label>
-                            <select name="categories" id="categories" required></select>
+                            <input type="hidden" name="categories" id="f-cat" value="">
                             <div class="cat-grid" id="catGrid">
                                 <div class="cat-pill" data-val="Music" onclick="pickCat(this)"><i
                                         class="bi bi-music-note-beamed" style="color:#6366f1;"></i>Music</div>
@@ -1028,60 +1042,73 @@
                                 <div class="cat-pill" data-val="Others" onclick="pickCat(this)"><i class="bi bi-grid"
                                         style="color:#8b5cf6;"></i>Others</div>
                             </div>
-                            <div class="ferr" id="e-cat">Please select a category</div>
+                            <div class="ferr" id="e-cat">Please select a category by clicking one of the tiles above
+                            </div>
                         </div>
 
-                        <div class="mb16">
-                            <label class="form-lbl">Guest / Speaker <span
-                                    style="color:var(--muted);font-weight:400;">(optional)</span></label>
-                            <div class="icon-field">
-                                <i class="bi bi-person-badge fi"></i>
-                                <input type="text" name="guest_speaker" id="guest_speaker" class="form-control"
-                                    placeholder="e.g. DJ Snake, Vir Das, Dr. Priya Sharma" oninput="syncPreview()">
+                        <div class="g2">
+                            <div>
+                                <label class="form-lbl">Guest / Speaker <span
+                                        style="color:var(--muted);font-weight:400;">(optional)</span></label>
+                                <div class="icon-field"><i class="bi bi-person-badge fi"></i>
+                                    <input type="text" name="guest_speaker" id="f-guest" class="form-control"
+                                        placeholder="e.g. DJ Snake, Vir Das" oninput="syncPreview()">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="form-lbl">Event Language</label>
+                                <select name="event_language" class="form-select">
+                                    <option>English</option>
+                                    <option>Hindi</option>
+                                    <option>Bilingual (Hindi / English)</option>
+                                    <option>Marathi</option>
+                                    <option>Tamil</option>
+                                    <option>Telugu</option>
+                                    <option>Kannada</option>
+                                    <option>Gujarati</option>
+                                    <option>Bengali</option>
+                                    <option>Other</option>
+                                </select>
                             </div>
                         </div>
 
                     </div>
                 </div>
 
-                <!-- ══ 2. LOCATION ══ -->
-                <div class="scard" id="s-loc">
+                <!-- 2. LOCATION -->
+                <div class="scard">
                     <div class="scard-head">
                         <div class="scard-icon"><i class="bi bi-geo-alt"></i></div>
                         <div>
                             <div class="scard-title">Location</div>
-                            <div class="scard-sub">Where is the event being held?</div>
+                            <div class="scard-sub">Physical venue or online meeting</div>
                         </div>
                     </div>
                     <div class="scard-body">
 
-                        <!-- Online toggle -->
-                        <div class="toggle-wrap mb16" onclick="toggleOnline()" id="onlineToggleWrap">
+                        <div class="toggle-wrap" onclick="toggleOnline()">
                             <i class="bi bi-broadcast" style="color:var(--navy);font-size:20px;"></i>
                             <div>
                                 <div class="toggle-label">This is an online event</div>
-                                <div class="toggle-sub">Hide address, show meeting link instead</div>
+                                <div class="toggle-sub">Show meeting link instead of address</div>
                             </div>
                             <div class="tog" id="onlineTog"></div>
                         </div>
 
-                        <!-- Physical address -->
                         <div id="physicalAddr">
                             <div class="mb16">
                                 <label class="form-lbl">Venue Name &amp; Full Address <span class="req">*</span></label>
-                                <div class="icon-field">
-                                    <i class="bi bi-building fi"></i>
-                                    <input type="text" name="event_address" id="event_address" class="form-control"
+                                <div class="icon-field"><i class="bi bi-building fi"></i>
+                                    <input type="text" name="event_address" id="f-addr" class="form-control"
                                         placeholder="e.g. NSCI Dome, Worli, Mumbai" oninput="syncPreview()">
                                 </div>
                                 <div class="ferr" id="e-addr">Venue address is required</div>
                             </div>
                             <div class="g2 mb16">
                                 <div>
-                                    <label class="form-lbl">City <span class="req">*</span></label>
-                                    <div class="icon-field">
-                                        <i class="bi bi-geo fi"></i>
-                                        <input type="text" name="event_city" id="event_city" class="form-control"
+                                    <label class="form-lbl">City</label>
+                                    <div class="icon-field"><i class="bi bi-geo fi"></i>
+                                        <input type="text" name="event_city" id="f-city" class="form-control"
                                             placeholder="e.g. Mumbai" oninput="syncPreview()">
                                     </div>
                                 </div>
@@ -1109,16 +1136,14 @@
                             </div>
                         </div>
 
-                        <!-- Online meeting link -->
                         <div id="onlineAddr" style="display:none;">
                             <div class="mb16">
                                 <label class="form-lbl">Meeting Link <span class="req">*</span></label>
-                                <div class="icon-field">
-                                    <i class="bi bi-link-45deg fi"></i>
-                                    <input type="url" name="meeting_link" id="meeting_link" class="form-control"
-                                        placeholder="https://zoom.us/j/... or Google Meet link">
+                                <div class="icon-field"><i class="bi bi-link-45deg fi"></i>
+                                    <input type="url" name="meeting_link" id="f-meetlink" class="form-control"
+                                        placeholder="https://zoom.us/j/...">
                                 </div>
-                                <div class="fhint">Link will be shared with attendees after ticket purchase</div>
+                                <div class="fhint">Shared with attendees after ticket purchase</div>
                             </div>
                             <div class="mb16">
                                 <label class="form-lbl">Platform</label>
@@ -1145,32 +1170,25 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="form-lbl">Language</label>
-                                <select name="event_language" class="form-select">
-                                    <option>English</option>
-                                    <option>Hindi</option>
-                                    <option>Bilingual (Hindi / English)</option>
-                                    <option>Marathi</option>
-                                    <option>Tamil</option>
-                                    <option>Telugu</option>
-                                    <option>Kannada</option>
-                                    <option>Gujarati</option>
-                                    <option>Bengali</option>
-                                    <option>Other</option>
-                                </select>
+                                <label class="form-lbl">Total Capacity <span class="req">*</span></label>
+                                <div class="icon-field"><i class="bi bi-people fi"></i>
+                                    <input type="number" name="event_capacity" id="f-cap" class="form-control"
+                                        placeholder="e.g. 500" min="1" required oninput="updateCheckList()">
+                                </div>
+                                <div class="ferr" id="e-cap">Capacity is required</div>
                             </div>
                         </div>
 
                     </div>
                 </div>
 
-                <!-- ══ 3. TICKETS & CAPACITY ══ -->
-                <div class="scard" id="s-ticket">
+                <!-- 3. TICKETS -->
+                <div class="scard">
                     <div class="scard-head">
                         <div class="scard-icon"><i class="bi bi-ticket-perforated"></i></div>
                         <div>
-                            <div class="scard-title">Tickets &amp; Capacity</div>
-                            <div class="scard-sub">Set pricing, availability and per-person limits</div>
+                            <div class="scard-title">Tickets &amp; Pricing</div>
+                            <div class="scard-sub">Set ticket type and price</div>
                         </div>
                     </div>
                     <div class="scard-body">
@@ -1182,98 +1200,59 @@
                                     <i class="bi bi-gift" style="color:var(--green);"></i>
                                     <div>
                                         <div>Free</div>
-                                        <div style="font-size:11px;font-weight:400;color:var(--muted);">No charge for
-                                            attendees</div>
+                                        <div style="font-size:11px;font-weight:400;color:var(--muted);">No charge</div>
                                     </div>
                                 </div>
                                 <div class="tt-opt" id="tt-paid" onclick="pickTicket('paid')">
                                     <i class="bi bi-currency-rupee" style="color:var(--navy);"></i>
                                     <div>
                                         <div>Paid</div>
-                                        <div style="font-size:11px;font-weight:400;color:var(--muted);">Set your own
-                                            price</div>
+                                        <div style="font-size:11px;font-weight:400;color:var(--muted);">Set your price
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <input type="hidden" name="ticket_type" id="ticket_type" value="free">
+                            <input type="hidden" name="ticket_type" id="f-ttype" value="free">
                         </div>
 
-                        <!-- Price fields — shown only for paid -->
                         <div id="priceFields" style="display:none;" class="mb16">
-                            <div class="g2">
-                                <div>
-                                    <label class="form-lbl">Ticket Price (Rs.) <span class="req">*</span></label>
-                                    <div class="icon-field">
-                                        <i class="bi bi-currency-rupee fi"></i>
-                                        <input type="number" name="ticket_price" id="ticket_price" class="form-control"
-                                            placeholder="e.g. 499" min="1" oninput="syncPreview()">
-                                    </div>
-                                    <div class="ferr" id="e-price">Please enter a ticket price</div>
-                                </div>
-                                <div>
-                                    <label class="form-lbl">Max Tickets Per Person</label>
-                                    <select name="max_per_person" class="form-select">
-                                        <option value="1">1 ticket max</option>
-                                        <option value="2">2 tickets max</option>
-                                        <option value="4" selected>4 tickets max</option>
-                                        <option value="6">6 tickets max</option>
-                                        <option value="10">10 tickets max</option>
-                                    </select>
-                                </div>
+                            <label class="form-lbl">Ticket Price (Rs.) <span class="req">*</span></label>
+                            <div class="icon-field">
+                                <i class="bi bi-currency-rupee fi"></i>
+                                <input type="number" name="ticket_price" id="f-price" class="form-control"
+                                    placeholder="e.g. 499" min="1" oninput="syncPreview()">
                             </div>
-                        </div>
-
-                        <div class="g2 mb16">
-                            <div>
-                                <label class="form-lbl">Total Capacity <span class="req">*</span></label>
-                                <div class="icon-field">
-                                    <i class="bi bi-people fi"></i>
-                                    <input type="number" name="event_capacity" id="event_capacity" class="form-control"
-                                        placeholder="e.g. 500" min="1" required oninput="updateCheckList()">
-                                </div>
-                                <div class="ferr" id="e-cap">Capacity is required</div>
-                            </div>
-                            <div>
-                                <label class="form-lbl">Registration Deadline</label>
-                                <div class="icon-field">
-                                    <i class="bi bi-calendar-x fi"></i>
-                                    <input type="date" name="reg_deadline" class="form-control">
-                                </div>
-                                <div class="fhint">Leave blank to allow until event day</div>
-                            </div>
+                            <div class="ferr" id="e-price">Please enter a ticket price</div>
                         </div>
 
                         <div class="note-box">
                             <i class="bi bi-info-circle"></i>
-                            <div>Platform fee (5%) + GST (18%) will be calculated automatically at checkout. You receive
-                                the ticket price minus platform fees.</div>
+                            <div>Platform fee (5%) + GST (18%) calculated automatically at checkout.</div>
                         </div>
 
                     </div>
                 </div>
 
-                <!-- ══ 4. HIGHLIGHTS ══ -->
-                <div class="scard" id="s-feat">
+                <!-- 4. HIGHLIGHTS -->
+                <div class="scard">
                     <div class="scard-head">
                         <div class="scard-icon"><i class="bi bi-stars"></i></div>
                         <div>
                             <div class="scard-title">Event Highlights</div>
-                            <div class="scard-sub">What makes your event special? Add feature tags</div>
+                            <div class="scard-sub">Add feature tags shown on your event page</div>
                         </div>
                     </div>
                     <div class="scard-body">
-
                         <label class="form-lbl">Features &amp; Perks</label>
                         <div class="tag-input-box" id="tagBox"
                             onclick="document.getElementById('tagRealInput').focus()">
-                            <!-- tags injected here by JS -->
                             <input class="tag-inp" id="tagRealInput" placeholder="Type a feature and press Enter…"
                                 autocomplete="off">
                         </div>
-                        <input type="hidden" name="event_features" id="event_features">
+                        <input type="hidden" name="event_features" id="f-features">
                         <div class="fhint" style="margin-top:6px;">Press <strong>Enter</strong> or
-                            <strong>comma</strong> to add. Click suggestions below.</div>
-                        <div class="tag-suggestions" id="tagSuggestions">
+                            <strong>comma</strong> to add.</div>
+                        <div class="tag-suggestions">
                             <span class="tag-sug" onclick="addTag('Live DJ')">Live DJ</span>
                             <span class="tag-sug" onclick="addTag('Open Bar')">Open Bar</span>
                             <span class="tag-sug" onclick="addTag('Free Food')">Free Food</span>
@@ -1282,17 +1261,16 @@
                             <span class="tag-sug" onclick="addTag('Kids Friendly')">Kids Friendly</span>
                             <span class="tag-sug" onclick="addTag('Parking Available')">Parking Available</span>
                             <span class="tag-sug" onclick="addTag('Live Band')">Live Band</span>
-                            <span class="tag-sug" onclick="addTag('Workshops')">Workshops</span>
-                            <span class="tag-sug" onclick="addTag('Giveaways')">Giveaways</span>
                             <span class="tag-sug" onclick="addTag('Photo Booth')">Photo Booth</span>
+                            <span class="tag-sug" onclick="addTag('Giveaways')">Giveaways</span>
                             <span class="tag-sug" onclick="addTag('Bonfire')">Bonfire</span>
+                            <span class="tag-sug" onclick="addTag('Workshops')">Workshops</span>
                         </div>
-
                     </div>
                 </div>
 
-                <!-- ══ 5. MEDIA & DESCRIPTION ══ -->
-                <div class="scard" id="s-media">
+                <!-- 5. MEDIA & DESCRIPTION -->
+                <div class="scard">
                     <div class="scard-head">
                         <div class="scard-icon"><i class="bi bi-images"></i></div>
                         <div>
@@ -1302,92 +1280,113 @@
                     </div>
                     <div class="scard-body">
 
-                        <label class="form-lbl mb16">Event Images <span class="req">*</span></label>
-                        <div class="drop-zone" id="dropZone">
-                            <i class="bi bi-cloud-arrow-up"></i>
-                            <p><strong>Click to upload</strong> or drag &amp; drop images here</p>
-                            <p style="margin-top:4px;font-size:11px;">JPG, PNG, WEBP &bull; Max 5MB each &bull; First
-                                image used as cover</p>
-                            <input type="file" name="event_images" id="imgInput" multiple accept="image/*"
-                                onchange="handleFiles(this.files)">
+                        <!-- COVER IMAGE -->
+                        <div class="img-section">
+                            <div class="img-section-title"><i class="bi bi-panorama" style="color:var(--navy);"></i>
+                                Cover / Banner Image <span class="req">*</span></div>
+                            <div class="img-section-sub">Ideal ratio 10:3 (1859×562 px) — full-width banner on event
+                                page. Any size auto-cropped to fit.</div>
+                            <div class="drop-zone" id="coverDrop">
+                                <i class="bi bi-image dz-icon"></i>
+                                <p><strong>Click to upload</strong> or drag &amp; drop</p>
+                                <p style="margin-top:4px;font-size:11px;">JPG, PNG, WEBP &bull; Auto-cropped to 10:3
+                                    ratio</p>
+                                <input type="file" name="cover_image" id="coverInput" accept="image/*"
+                                    onchange="handleCover(this.files[0])">
+                            </div>
+                            <div class="cover-preview-wrap" id="coverPreviewWrap">
+                                <img id="coverPreviewImg" src="" alt="">
+                                <button type="button" class="rm-img-btn" onclick="removeCover()"><i
+                                        class="bi bi-x"></i></button>
+                            </div>
+                            <div class="ferr" id="e-cover" style="margin-top:6px;">Please upload a cover image</div>
                         </div>
-                        <div class="img-previews" id="imgPreviews"></div>
-                        <div class="ferr" id="e-img" style="margin-top:8px;">Please upload at least one image</div>
 
-                        <div style="margin-top:22px;">
+                        <!-- CARD IMAGE -->
+                        <div class="img-section">
+                            <div class="img-section-title"><i class="bi bi-card-image" style="color:var(--navy);"></i>
+                                Card / Thumbnail Image <span class="req">*</span></div>
+                            <div class="img-section-sub">Ideal ratio 11:6 (306×171 px) — shown on event listing cards.
+                                Any size auto-cropped to fit.</div>
+                            <div class="drop-zone" id="cardDrop">
+                                <i class="bi bi-card-image dz-icon"></i>
+                                <p><strong>Click to upload</strong> or drag &amp; drop</p>
+                                <p style="margin-top:4px;font-size:11px;">JPG, PNG, WEBP &bull; Auto-cropped to 11:6
+                                    ratio</p>
+                                <input type="file" name="card_image" id="cardInput" accept="image/*"
+                                    onchange="handleCard(this.files[0])">
+                            </div>
+                            <div class="card-preview-wrap" id="cardPreviewWrap">
+                                <img id="cardPreviewImg" src="" alt="">
+                                <button type="button" class="rm-img-btn" onclick="removeCard()"><i
+                                        class="bi bi-x"></i></button>
+                            </div>
+                            <div class="ferr" id="e-card" style="margin-top:6px;">Please upload a card image</div>
+                        </div>
+
+                        <!-- GALLERY -->
+                        <div class="img-section">
+                            <div class="img-section-title"><i class="bi bi-images" style="color:var(--navy);"></i> Event
+                                Gallery <span
+                                    style="font-size:11px;font-weight:400;color:var(--muted);">(optional)</span></div>
+                            <div class="img-section-sub">Additional photos shown in the gallery section of the event
+                                page.</div>
+                            <div class="drop-zone" id="galleryDrop">
+                                <i class="bi bi-collection dz-icon"></i>
+                                <p><strong>Click to upload</strong> multiple photos or drag &amp; drop</p>
+                                <p style="margin-top:4px;font-size:11px;">JPG, PNG, WEBP &bull; Multiple files allowed
+                                </p>
+                                <input type="file" name="gallery_images" id="galleryInput" accept="image/*" multiple
+                                    onchange="handleGallery(this.files)">
+                            </div>
+                            <div class="gallery-previews" id="galleryPreviews"></div>
+                        </div>
+
+                        <!-- DESCRIPTION -->
+                        <div class="mb20">
                             <label class="form-lbl">Event Description <span class="req">*</span></label>
+                            <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+                                <button type="button" class="fmt-btn" onclick="fmtDesc('bold')"><i
+                                        class="bi bi-type-bold"></i></button>
+                                <button type="button" class="fmt-btn" onclick="fmtDesc('italic')"><i
+                                        class="bi bi-type-italic"></i></button>
+                                <button type="button" class="fmt-btn" onclick="fmtDesc('bullet')"><i
+                                        class="bi bi-list-ul"></i></button>
+                                <button type="button" class="fmt-btn" onclick="fmtDesc('heading')"><i
+                                        class="bi bi-type-h2"></i></button>
+                                <button type="button" class="fmt-btn" onclick="fmtDesc('line')"><i
+                                        class="bi bi-dash-lg"></i></button>
+                            </div>
                             <div class="desc-wrap">
-                                <!-- Simple formatting toolbar -->
-                                <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
-                                    <button type="button" class="fmt-btn" onclick="fmtDesc('bold')" title="Bold"><i
-                                            class="bi bi-type-bold"></i></button>
-                                    <button type="button" class="fmt-btn" onclick="fmtDesc('italic')" title="Italic"><i
-                                            class="bi bi-type-italic"></i></button>
-                                    <button type="button" class="fmt-btn" onclick="fmtDesc('bullet')"
-                                        title="Bullet list"><i class="bi bi-list-ul"></i></button>
-                                    <button type="button" class="fmt-btn" onclick="fmtDesc('heading')"
-                                        title="Heading"><i class="bi bi-type-h2"></i></button>
-                                    <button type="button" class="fmt-btn" onclick="fmtDesc('line')" title="Divider"><i
-                                            class="bi bi-dash-lg"></i></button>
-                                </div>
-                                <style>
-                                    .fmt-btn {
-                                        background: #f8fafc;
-                                        border: 1.5px solid var(--border);
-                                        border-radius: 7px;
-                                        padding: 5px 9px;
-                                        cursor: pointer;
-                                        color: var(--muted);
-                                        font-size: 14px;
-                                        transition: 0.15s;
-                                    }
-
-                                    .fmt-btn:hover {
-                                        border-color: var(--navy);
-                                        color: var(--navy);
-                                        background: var(--navy-lite);
-                                    }
-                                </style>
-                                <textarea name="event_description" id="event_description" class="form-control" rows="5"
-                                    placeholder="Describe what attendees can expect. You can include the schedule, dress code, what to bring, rules, etc."
-                                    oninput="updateCharCount(); syncPreview(); updateCheckList()"
+                                <textarea name="event_description" id="f-desc" class="form-control" rows="5"
+                                    placeholder="Describe what attendees can expect — schedule, dress code, what to bring, rules…"
+                                    oninput="updateCharCount();syncPreview();updateCheckList()"
                                     maxlength="2000"></textarea>
                                 <div class="char-count" id="charCount">0 / 2000</div>
                             </div>
-                            <div class="ferr" id="e-desc">Description is required</div>
+                            <div class="ferr" id="e-desc">Description is required (min 20 characters)</div>
                         </div>
 
-                        <div style="margin-top:22px;">
+                        <!-- SOCIAL LINKS -->
+                        <div>
                             <label class="form-lbl">Social &amp; Promotion <span
                                     style="color:var(--muted);font-weight:400;">(optional)</span></label>
                             <div class="g2">
-                                <div>
-                                    <div class="icon-field mb16">
-                                        <i class="bi bi-instagram fi" style="color:#e1306c;"></i>
-                                        <input type="text" name="social_instagram" class="form-control"
-                                            placeholder="@yourhandle">
-                                    </div>
+                                <div class="icon-field mb16"><i class="bi bi-instagram fi" style="color:#e1306c;"></i>
+                                    <input type="text" name="social_instagram" class="form-control"
+                                        placeholder="@yourhandle">
                                 </div>
-                                <div>
-                                    <div class="icon-field mb16">
-                                        <i class="bi bi-globe fi" style="color:var(--navy);"></i>
-                                        <input type="url" name="event_website" class="form-control"
-                                            placeholder="https://yourevent.com">
-                                    </div>
+                                <div class="icon-field mb16"><i class="bi bi-globe fi" style="color:var(--navy);"></i>
+                                    <input type="url" name="event_website" class="form-control"
+                                        placeholder="https://yourevent.com">
                                 </div>
-                                <div>
-                                    <div class="icon-field">
-                                        <i class="bi bi-whatsapp fi" style="color:#25d366;"></i>
-                                        <input type="url" name="whatsapp_group" class="form-control"
-                                            placeholder="WhatsApp group invite link">
-                                    </div>
+                                <div class="icon-field"><i class="bi bi-whatsapp fi" style="color:#25d366;"></i>
+                                    <input type="url" name="whatsapp_group" class="form-control"
+                                        placeholder="WhatsApp group invite link">
                                 </div>
-                                <div>
-                                    <div class="icon-field">
-                                        <i class="bi bi-youtube fi" style="color:#ff0000;"></i>
-                                        <input type="url" name="youtube_link" class="form-control"
-                                            placeholder="Promo / teaser video link">
-                                    </div>
+                                <div class="icon-field"><i class="bi bi-youtube fi" style="color:#ff0000;"></i>
+                                    <input type="url" name="youtube_link" class="form-control"
+                                        placeholder="Promo / teaser video link">
                                 </div>
                             </div>
                         </div>
@@ -1398,7 +1397,7 @@
                 <!-- SUBMIT -->
                 <div
                     style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;padding:4px 0 8px;">
-                    <a href="/find_events" class="btn-cancel">Cancel</a>
+                    <a href="/find_events" class="btn-cancel"><i class="bi bi-arrow-left me-2"></i>Cancel</a>
                     <button type="button" class="btn-publish" id="publishBtn" onclick="submitForm()">
                         <span id="publishTxt"><i class="bi bi-rocket-takeoff"></i> Publish Event</span>
                         <span id="publishLoad" style="display:none;"><span class="spinner-border spinner-border-sm me-1"
@@ -1407,27 +1406,21 @@
                 </div>
 
             </form>
-        </div><!-- /left col -->
+        </div>
 
         <!-- SIDEBAR -->
         <div class="sidebar-sticky">
-
-            <!-- Live Preview -->
             <div class="preview-card">
-                <div class="preview-head">
-                    <i class="bi bi-eye"></i> Live Preview
-                    <span>Updates as you type</span>
-                </div>
+                <div class="preview-head"><i class="bi bi-eye"></i> Live Preview<span>Updates as you type</span></div>
                 <div class="preview-img-wrap">
                     <img id="prevImg" src="" alt="">
-                    <div class="preview-img-placeholder" id="prevImgPlaceholder">
-                        <i class="bi bi-image"></i>
-                        <p>Event cover image</p>
+                    <div class="preview-img-placeholder" id="prevImgPh"><i class="bi bi-image"></i>
+                        <p>Card image preview</p>
                     </div>
-                    <div class="preview-badge" id="prevBadge" style="display:none;"></div>
+                    <div class="preview-badge" id="prevBadge"></div>
                 </div>
                 <div class="preview-body">
-                    <div class="prev-title" id="prevTitle">Your event name will appear here</div>
+                    <div class="prev-title" id="prevTitle">Your event name</div>
                     <div class="prev-meta">
                         <div class="prev-meta-row"><i class="bi bi-calendar-event"></i><span id="prevDate">Date not
                                 set</span></div>
@@ -1435,14 +1428,12 @@
                         </div>
                         <div class="prev-meta-row"><i class="bi bi-geo-alt"></i><span id="prevLoc">Location not
                                 set</span></div>
-                        <div class="prev-meta-row"><i class="bi bi-person-badge"></i><span id="prevGuest"
-                                style="display:none;"></span></div>
+                        <div class="prev-meta-row"><i class="bi bi-ticket-perforated"></i><span id="prevPriceLabel"
+                                style="font-weight:700;color:#16a34a;">Free Entry</span></div>
                     </div>
-                    <div id="prevPrice" class="prev-price free">Free Entry</div>
                 </div>
             </div>
 
-            <!-- Publish Checklist -->
             <div class="checklist-card">
                 <div class="checklist-head"><i class="bi bi-check2-all" style="color:var(--navy);"></i> Publish
                     Checklist</div>
@@ -1462,8 +1453,11 @@
                     <div class="cl-item" id="cl-cap">
                         <div class="cl-dot" id="cld-cap"></div> <span>Capacity set</span>
                     </div>
-                    <div class="cl-item" id="cl-img">
-                        <div class="cl-dot" id="cld-img"></div> <span>Image uploaded</span>
+                    <div class="cl-item" id="cl-cover">
+                        <div class="cl-dot" id="cld-cover"></div><span>Cover image uploaded</span>
+                    </div>
+                    <div class="cl-item" id="cl-card">
+                        <div class="cl-dot" id="cld-card"></div> <span>Card image uploaded</span>
                     </div>
                     <div class="cl-item" id="cl-desc">
                         <div class="cl-dot" id="cld-desc"></div> <span>Description written</span>
@@ -1471,338 +1465,266 @@
                 </div>
             </div>
 
-            <!-- Tips -->
-            <div class="tips-card" style="margin-top:20px;">
+            <div class="tips-card">
                 <div class="tips-head"><i class="bi bi-lightbulb" style="color:var(--amber);"></i> Pro Tips</div>
                 <div class="tips-body">
-                    <div class="tip-row"><i class="bi bi-image"></i>Use a high-quality landscape image (1200×600px) for
-                        the best look on event cards.</div>
-                    <div class="tip-row"><i class="bi bi-clock"></i>Publish at least 2 weeks before the event for
-                        maximum visibility.</div>
-                    <div class="tip-row"><i class="bi bi-tags"></i>Add feature tags like "Free Food" or "Certificate" to
-                        attract more attendees.</div>
-                    <div class="tip-row"><i class="bi bi-shield-check"></i>Verified organiser badge boosts ticket sales
-                        by up to 40%.</div>
+                    <div class="tip-row"><i class="bi bi-panorama"></i>Banner: 1859×562 px (10:3). Any size
+                        auto-cropped.</div>
+                    <div class="tip-row"><i class="bi bi-card-image"></i>Card: 306×171 px (11:6). Used on event listing
+                        grids.</div>
+                    <div class="tip-row"><i class="bi bi-tags"></i>Feature tags like "Free Food" attract 2× more clicks.
+                    </div>
+                    <div class="tip-row"><i class="bi bi-clock"></i>Publish 2+ weeks early for maximum visibility.</div>
                 </div>
             </div>
-
         </div>
-    </div><!-- /create-wrap -->
+    </div>
 
     <script>
-        /* ── CATEGORY ── */
+        var isOnline = false, coverFile = null, cardFile = null, galleryFiles = [], tags = [];
+
+        /* ── CATEGORY FIX: value is set on hidden input, validation checks that ── */
         function pickCat(el) {
             document.querySelectorAll('.cat-pill').forEach(function (p) { p.classList.remove('active'); });
             el.classList.add('active');
-            document.getElementById('categories').value = el.dataset.val;
-            syncPreview();
-            updateCheckList();
+            document.getElementById('f-cat').value = el.dataset.val;
+            // hide error + remove red border on grid
+            document.getElementById('e-cat').style.display = 'none';
+            document.getElementById('catGrid').classList.remove('cat-err');
+            syncPreview(); updateCheckList();
         }
 
-        /* ── ONLINE TOGGLE ── */
-        var isOnline = false;
         function toggleOnline() {
             isOnline = !isOnline;
             document.getElementById('onlineTog').classList.toggle('on', isOnline);
             document.getElementById('physicalAddr').style.display = isOnline ? 'none' : 'block';
             document.getElementById('onlineAddr').style.display = isOnline ? 'block' : 'none';
-            syncPreview();
+            syncPreview(); updateCheckList();
         }
 
-        /* ── TICKET TYPE ── */
         function pickTicket(type) {
-            document.getElementById('ticket_type').value = type;
+            document.getElementById('f-ttype').value = type;
             document.getElementById('tt-free').classList.toggle('active', type === 'free');
             document.getElementById('tt-paid').classList.toggle('active', type === 'paid');
             document.getElementById('priceFields').style.display = type === 'paid' ? 'block' : 'none';
             syncPreview();
         }
 
-        /* ── TAG INPUT ── */
-        var tags = [];
+        /* TAG INPUT */
         function addTag(val) {
             val = val.trim().replace(/,/g, '');
-            if (!val || tags.indexOf(val) !== -1) { return; }
-            tags.push(val);
-            renderTags();
-            updateCheckList();
+            if (!val || tags.indexOf(val) !== -1) return;
+            tags.push(val); renderTags();
         }
-        function removeTag(idx) {
-            tags.splice(idx, 1);
-            renderTags();
-        }
+        function removeTag(idx) { tags.splice(idx, 1); renderTags(); }
         function renderTags() {
-            var box = document.getElementById('tagBox');
-            var inp = document.getElementById('tagRealInput');
+            var box = document.getElementById('tagBox'), inp = document.getElementById('tagRealInput');
             box.querySelectorAll('.tag-chip').forEach(function (c) { c.remove(); });
             tags.forEach(function (t, i) {
-                var chip = document.createElement('span');
-                chip.className = 'tag-chip';
-                chip.innerHTML = t + '<span class="rm" onclick="removeTag(' + i + ')">&#215;</span>';
-                box.insertBefore(chip, inp);
+                var c = document.createElement('span');
+                c.className = 'tag-chip';
+                c.innerHTML = t + '<span class="rm" onclick="removeTag(' + i + ')">&#215;</span>';
+                box.insertBefore(c, inp);
             });
-            document.getElementById('event_features').value = tags.join(', ');
+            document.getElementById('f-features').value = tags.join(', ');
         }
         document.getElementById('tagRealInput').addEventListener('keydown', function (e) {
-            if (e.key === 'Enter' || e.key === ',') {
-                e.preventDefault();
-                addTag(this.value);
-                this.value = '';
-            }
-            if (e.key === 'Backspace' && !this.value && tags.length) {
-                removeTag(tags.length - 1);
-            }
+            if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); addTag(this.value); this.value = ''; }
+            if (e.key === 'Backspace' && !this.value && tags.length) removeTag(tags.length - 1);
         });
 
-        /* ── IMAGE DRAG & DROP ── */
-        var selectedFiles = [];
-        var dropZone = document.getElementById('dropZone');
-        dropZone.addEventListener('dragover', function (e) { e.preventDefault(); this.classList.add('dragover'); });
-        dropZone.addEventListener('dragleave', function () { this.classList.remove('dragover'); });
-        dropZone.addEventListener('drop', function (e) {
-            e.preventDefault(); this.classList.remove('dragover');
-            handleFiles(e.dataTransfer.files);
-        });
+        /* IMAGE DRAG & DROP */
+        function setupDrop(id, fn) {
+            var z = document.getElementById(id);
+            z.addEventListener('dragover', function (e) { e.preventDefault(); z.classList.add('dragover'); });
+            z.addEventListener('dragleave', function () { z.classList.remove('dragover'); });
+            z.addEventListener('drop', function (e) { e.preventDefault(); z.classList.remove('dragover'); fn(e.dataTransfer.files); });
+        }
+        setupDrop('coverDrop', function (f) { handleCover(f[0]); });
+        setupDrop('cardDrop', function (f) { handleCard(f[0]); });
+        setupDrop('galleryDrop', function (f) { handleGallery(f); });
 
-        function handleFiles(files) {
-            Array.from(files).forEach(function (f) {
-                if (!f.type.startsWith('image/')) { return; }
-                selectedFiles.push(f);
-            });
-            renderPreviews();
+        function handleCover(file) {
+            if (!file || !file.type.startsWith('image/')) return;
+            coverFile = file;
+            var r = new FileReader();
+            r.onload = function (e) {
+                document.getElementById('coverPreviewImg').src = e.target.result;
+                document.getElementById('coverPreviewWrap').style.display = 'block';
+                document.getElementById('e-cover').style.display = 'none';
+                document.getElementById('prevImg').src = e.target.result;
+                document.getElementById('prevImg').style.display = 'block';
+                document.getElementById('prevImgPh').style.display = 'none';
+            };
+            r.readAsDataURL(file); updateCheckList();
+        }
+        function removeCover() {
+            coverFile = null;
+            document.getElementById('coverPreviewWrap').style.display = 'none';
+            document.getElementById('coverInput').value = '';
+            document.getElementById('prevImg').style.display = 'none';
+            document.getElementById('prevImgPh').style.display = 'flex';
             updateCheckList();
         }
-
-        function renderPreviews() {
-            var grid = document.getElementById('imgPreviews');
+        function handleCard(file) {
+            if (!file || !file.type.startsWith('image/')) return;
+            cardFile = file;
+            var r = new FileReader();
+            r.onload = function (e) {
+                document.getElementById('cardPreviewImg').src = e.target.result;
+                document.getElementById('cardPreviewWrap').style.display = 'block';
+                document.getElementById('e-card').style.display = 'none';
+            };
+            r.readAsDataURL(file); updateCheckList();
+        }
+        function removeCard() {
+            cardFile = null;
+            document.getElementById('cardPreviewWrap').style.display = 'none';
+            document.getElementById('cardInput').value = '';
+            updateCheckList();
+        }
+        function handleGallery(files) {
+            Array.from(files).forEach(function (f) { if (f.type.startsWith('image/')) galleryFiles.push(f); });
+            renderGallery();
+        }
+        function renderGallery() {
+            var grid = document.getElementById('galleryPreviews');
             grid.innerHTML = '';
-            selectedFiles.forEach(function (f, i) {
-                var reader = new FileReader();
-                reader.onload = function (ev) {
-                    var div = document.createElement('div');
-                    div.className = 'img-thumb' + (i === 0 ? ' primary' : '');
-                    div.innerHTML = '<img src="' + ev.target.result + '" alt="">' +
-                        '<button class="rm-img" type="button" onclick="removeImg(' + i + ')"><i class="bi bi-x"></i></button>';
-                    grid.appendChild(div);
-                    if (i === 0) { updatePreviewImg(ev.target.result); }
+            galleryFiles.forEach(function (f, i) {
+                var r = new FileReader();
+                r.onload = function (ev) {
+                    var d = document.createElement('div');
+                    d.className = 'gal-thumb';
+                    d.innerHTML = '<img src="' + ev.target.result + '"><button type="button" class="rm-img-btn" onclick="removeGallery(' + i + ')"><i class="bi bi-x"></i></button>';
+                    grid.appendChild(d);
                 };
-                reader.readAsDataURL(f);
+                r.readAsDataURL(f);
             });
-            // Rebuild a real FileList-like input from selectedFiles
-            rebuildFileInput();
+            try { var dt = new DataTransfer(); galleryFiles.forEach(function (f) { dt.items.add(f); }); document.getElementById('galleryInput').files = dt.files; } catch (e) { }
         }
+        function removeGallery(idx) { galleryFiles.splice(idx, 1); renderGallery(); }
 
-        function rebuildFileInput() {
-            // Create a DataTransfer to hold files
-            try {
-                var dt = new DataTransfer();
-                selectedFiles.forEach(function (f) { dt.items.add(f); });
-                document.getElementById('imgInput').files = dt.files;
-            } catch (e) { /* older browsers fallback — files intact */ }
-        }
-
-        function removeImg(idx) {
-            selectedFiles.splice(idx, 1);
-            renderPreviews();
-            if (selectedFiles.length === 0) {
-                document.getElementById('prevImg').style.display = 'none';
-                document.getElementById('prevImgPlaceholder').style.display = 'flex';
-            }
-            updateCheckList();
-        }
-
-        function updatePreviewImg(src) {
-            var img = document.getElementById('prevImg');
-            var ph = document.getElementById('prevImgPlaceholder');
-            img.src = src;
-            img.style.display = 'block';
-            ph.style.display = 'none';
-        }
-
-        /* ── CHAR COUNTER ── */
         function updateCharCount() {
-            var ta = document.getElementById('event_description');
+            var len = document.getElementById('f-desc').value.length;
             var cc = document.getElementById('charCount');
-            var len = ta.value.length;
             cc.textContent = len + ' / 2000';
             cc.className = 'char-count' + (len > 1900 ? ' over' : len > 1600 ? ' warn' : '');
         }
-
-        /* ── DESCRIPTION FORMATTER ── */
         function fmtDesc(type) {
-            var ta = document.getElementById('event_description');
-            var start = ta.selectionStart;
-            var end = ta.selectionEnd;
-            var sel = ta.value.substring(start, end);
-            var insert = '';
-            if (type === 'bold') { insert = '**' + (sel || 'bold text') + '**'; }
-            if (type === 'italic') { insert = '_' + (sel || 'italic text') + '_'; }
-            if (type === 'bullet') { insert = '\n• ' + (sel || 'Item'); }
-            if (type === 'heading') { insert = '\n## ' + (sel || 'Section Heading') + '\n'; }
-            if (type === 'line') { insert = '\n---\n'; }
-            ta.value = ta.value.substring(0, start) + insert + ta.value.substring(end);
-            ta.focus();
-            ta.selectionStart = ta.selectionEnd = start + insert.length;
+            var ta = document.getElementById('f-desc'), s = ta.selectionStart, e = ta.selectionEnd, sel = ta.value.substring(s, e);
+            var ins = '';
+            if (type === 'bold') ins = '**' + (sel || 'bold text') + '**';
+            if (type === 'italic') ins = '_' + (sel || 'italic text') + '_';
+            if (type === 'bullet') ins = '\n• ' + (sel || 'Item');
+            if (type === 'heading') ins = '\n## ' + (sel || 'Heading') + '\n';
+            if (type === 'line') ins = '\n---\n';
+            ta.value = ta.value.substring(0, s) + ins + ta.value.substring(e);
+            ta.focus(); ta.selectionStart = ta.selectionEnd = s + ins.length;
             updateCharCount(); syncPreview(); updateCheckList();
         }
 
-        /* ── LIVE PREVIEW SYNC ── */
         function syncPreview() {
-            var name = document.getElementById('event_name').value.trim();
-            var date = document.getElementById('event_date').value;
-            var time = document.getElementById('event_time').value;
-            var addr = isOnline
-                ? 'Online Event'
-                : (document.getElementById('event_city').value.trim() ||
-                    document.getElementById('event_address').value.trim() || 'Location not set');
-            var guest = document.getElementById('guest_speaker').value.trim();
-            var type = document.getElementById('ticket_type').value;
-            var price = document.getElementById('ticket_price') ? document.getElementById('ticket_price').value : '';
-            var cat = document.getElementById('categories').value;
+            var name = document.getElementById('f-name').value.trim();
+            var date = document.getElementById('f-date').value;
+            var time = document.getElementById('f-time').value;
+            var cityEl = document.getElementById('f-city'), addrEl = document.getElementById('f-addr');
+            var loc = isOnline ? 'Online Event' : ((cityEl && cityEl.value.trim()) || (addrEl && addrEl.value.trim()) || 'Location not set');
+            var type = document.getElementById('f-ttype').value;
+            var priceEl = document.getElementById('f-price');
+            var price = priceEl ? priceEl.value : '';
+            var cat = document.getElementById('f-cat').value;
 
-            document.getElementById('prevTitle').textContent = name || 'Your event name will appear here';
+            document.getElementById('prevTitle').textContent = name || 'Your event name';
+            document.getElementById('prevDate').textContent = date ? new Date(date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Date not set';
+            document.getElementById('prevTime').textContent = time ? fmtTime(time) : 'Time not set';
+            document.getElementById('prevLoc').textContent = loc;
 
-            if (date) {
-                var d = new Date(date);
-                document.getElementById('prevDate').textContent = d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-            } else {
-                document.getElementById('prevDate').textContent = 'Date not set';
-            }
+            var pl = document.getElementById('prevPriceLabel');
+            if (type === 'free') { pl.textContent = 'Free Entry'; pl.style.color = '#16a34a'; }
+            else { pl.textContent = price ? 'Rs.' + parseInt(price).toLocaleString('en-IN') + ' / ticket' : 'Price TBD'; pl.style.color = 'var(--navy)'; }
 
-            document.getElementById('prevTime').textContent = time
-                ? formatTime12(time)
-                : 'Time not set';
-
-            document.getElementById('prevLoc').textContent = addr;
-
-            if (guest) {
-                document.getElementById('prevGuest').textContent = guest;
-                document.getElementById('prevGuest').style.display = 'inline';
-            } else {
-                document.getElementById('prevGuest').style.display = 'none';
-            }
-
-            var priceEl = document.getElementById('prevPrice');
-            if (type === 'free') {
-                priceEl.textContent = 'Free Entry';
-                priceEl.className = 'prev-price free';
-            } else {
-                priceEl.textContent = price ? 'Rs.' + parseInt(price).toLocaleString('en-IN') : 'Price TBD';
-                priceEl.className = 'prev-price';
-            }
-
-            if (cat) {
-                document.getElementById('prevBadge').textContent = cat;
-                document.getElementById('prevBadge').style.display = 'block';
-            } else {
-                document.getElementById('prevBadge').style.display = 'none';
-            }
-
+            var badge = document.getElementById('prevBadge');
+            if (cat) { badge.textContent = cat; badge.style.display = 'block'; } else { badge.style.display = 'none'; }
             updateCheckList();
         }
+        function fmtTime(t) { var p = t.split(':'); var h = parseInt(p[0], 10); var ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return h + ':' + p[1] + ' ' + ap; }
 
-        function formatTime12(t) {
-            var parts = t.split(':');
-            var h = parseInt(parts[0], 10);
-            var m = parts[1];
-            var ampm = h >= 12 ? 'PM' : 'AM';
-            h = h % 12 || 12;
-            return h + ':' + m + ' ' + ampm;
-        }
-
-        /* ── CHECKLIST ── */
         function updateCheckList() {
-            function mark(id, isDone) {
-                var item = document.getElementById('cl-' + id);
-                var dot = document.getElementById('cld-' + id);
-                if (!item || !dot) { return; }
-                item.classList.toggle('done', isDone);
-                dot.innerHTML = isDone ? '<i class="bi bi-check-lg"></i>' : '';
+            function mark(id, done) {
+                var item = document.getElementById('cl-' + id), dot = document.getElementById('cld-' + id);
+                if (!item || !dot) return;
+                item.classList.toggle('done', done);
+                dot.innerHTML = done ? '<i class="bi bi-check-lg"></i>' : '';
             }
-            mark('name', document.getElementById('event_name').value.trim().length > 0);
-            mark('date', document.getElementById('event_date').value && document.getElementById('event_time').value);
-            mark('cat', document.getElementById('categories').value !== '');
-            var locFilled = isOnline
-                ? document.getElementById('meeting_link') && document.getElementById('meeting_link').value.trim()
-                : document.getElementById('event_address').value.trim().length > 0;
-            mark('loc', locFilled);
-            mark('cap', document.getElementById('event_capacity').value > 0);
-            mark('img', selectedFiles.length > 0);
-            mark('desc', document.getElementById('event_description').value.trim().length >= 20);
-
-            // update progress strip
-            var segs = ['name', 'date', 'cat', 'loc', 'cap'];
-            var done = segs.filter(function (id) { return document.getElementById('cl-' + id).classList.contains('done'); }).length;
-            done += selectedFiles.length > 0 ? 1 : 0;
-            done += document.getElementById('event_description').value.trim().length >= 20 ? 1 : 0;
-            var total = 7;
-            for (var i = 1; i <= 5; i++) {
-                var fill = (i / 5) <= (done / total);
-                document.getElementById('ps' + i).classList.toggle('filled', fill);
-            }
+            mark('name', document.getElementById('f-name').value.trim().length > 0);
+            mark('date', !!(document.getElementById('f-date').value && document.getElementById('f-time').value));
+            mark('cat', document.getElementById('f-cat').value !== '');   /* ← reads hidden input */
+            var locOk = isOnline ? (document.getElementById('f-meetlink') && document.getElementById('f-meetlink').value.trim().length > 0)
+                : (document.getElementById('f-addr') && document.getElementById('f-addr').value.trim().length > 0);
+            mark('loc', locOk);
+            mark('cap', parseInt(document.getElementById('f-cap').value, 10) > 0);
+            mark('cover', coverFile !== null);
+            mark('card', cardFile !== null);
+            mark('desc', document.getElementById('f-desc').value.trim().length >= 20);
+            var keys = ['name', 'date', 'cat', 'loc', 'cap', 'cover', 'card', 'desc'];
+            var done = keys.filter(function (id) { return document.getElementById('cl-' + id).classList.contains('done'); }).length;
+            for (var i = 1; i <= 5; i++)document.getElementById('ps' + i).classList.toggle('filled', (i / 5) <= (done / keys.length));
         }
 
-        /* ── FORM VALIDATION & SUBMIT ── */
-        function showErr(id, show) {
-            var el = document.getElementById(id);
-            if (el) { el.style.display = show ? 'block' : 'none'; }
-        }
-        function markField(id, isOk) {
-            var el = document.getElementById(id);
-            if (!el) { return; }
-            el.classList.toggle('err-f', !isOk);
-            el.classList.toggle('ok-f', isOk);
-        }
+        /* ── VALIDATION — category check reads hidden input value ── */
+        function se(id, show) { var el = document.getElementById(id); if (el) el.style.display = show ? 'block' : 'none'; }
+        function mf(id, ok) { var el = document.getElementById(id); if (el) { el.classList.toggle('err-f', !ok); el.classList.toggle('ok-f', ok); } }
 
         function submitForm() {
             var ok = true;
 
-            var name = document.getElementById('event_name').value.trim();
-            markField('event_name', name.length > 0); showErr('e-name', !name.length);
-            if (!name.length) { ok = false; }
+            var name = document.getElementById('f-name').value.trim();
+            mf('f-name', name.length > 0); se('e-name', !name.length);
+            if (!name.length) ok = false;
 
-            var date = document.getElementById('event_date').value;
+            var date = document.getElementById('f-date').value;
             var dateOk = date && new Date(date) >= new Date(new Date().toDateString());
-            markField('event_date', dateOk); showErr('e-date', !dateOk);
-            if (!dateOk) { ok = false; }
+            mf('f-date', dateOk); se('e-date', !dateOk);
+            if (!dateOk) ok = false;
 
-            var time = document.getElementById('event_time').value;
-            markField('event_time', !!time); showErr('e-time', !time);
-            if (!time) { ok = false; }
+            var time = document.getElementById('f-time').value;
+            mf('f-time', !!time); se('e-time', !time);
+            if (!time) ok = false;
 
-            var cat = document.getElementById('categories').value;
-            showErr('e-cat', !cat);
-            if (!cat) { ok = false; }
+            /* ── CATEGORY: check hidden input, highlight grid if empty ── */
+            var cat = document.getElementById('f-cat').value;
+            se('e-cat', !cat);
+            document.getElementById('catGrid').classList.toggle('cat-err', !cat);
+            if (!cat) ok = false;
 
             if (!isOnline) {
-                var addr = document.getElementById('event_address').value.trim();
-                markField('event_address', addr.length > 0); showErr('e-addr', !addr.length);
-                if (!addr.length) { ok = false; }
+                var addr = document.getElementById('f-addr').value.trim();
+                mf('f-addr', addr.length > 0); se('e-addr', !addr.length);
+                if (!addr.length) ok = false;
             }
 
-            var cap = parseInt(document.getElementById('event_capacity').value, 10);
-            markField('event_capacity', cap > 0); showErr('e-cap', !(cap > 0));
-            if (!(cap > 0)) { ok = false; }
+            var cap = parseInt(document.getElementById('f-cap').value, 10);
+            mf('f-cap', cap > 0); se('e-cap', !(cap > 0));
+            if (!(cap > 0)) ok = false;
 
-            var tickType = document.getElementById('ticket_type').value;
-            if (tickType === 'paid') {
-                var price = parseFloat(document.getElementById('ticket_price').value);
-                markField('ticket_price', price > 0); showErr('e-price', !(price > 0));
-                if (!(price > 0)) { ok = false; }
+            if (document.getElementById('f-ttype').value === 'paid') {
+                var price = parseFloat(document.getElementById('f-price').value);
+                mf('f-price', price > 0); se('e-price', !(price > 0));
+                if (!(price > 0)) ok = false;
             }
 
-            if (selectedFiles.length === 0) {
-                showErr('e-img', true); ok = false;
-            } else { showErr('e-img', false); }
+            if (!coverFile) { se('e-cover', true); ok = false; } else { se('e-cover', false); }
+            if (!cardFile) { se('e-card', true); ok = false; } else { se('e-card', false); }
 
-            var desc = document.getElementById('event_description').value.trim();
-            markField('event_description', desc.length >= 20); showErr('e-desc', desc.length < 20);
-            if (desc.length < 20) { ok = false; }
+            var desc = document.getElementById('f-desc').value.trim();
+            mf('f-desc', desc.length >= 20); se('e-desc', desc.length < 20);
+            if (desc.length < 20) ok = false;
 
             if (!ok) {
-                // scroll to first error
-                var firstErr = document.querySelector('.err-f, .ferr[style*="block"]');
-                if (firstErr) { firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+                /* scroll to first visible error */
+                var first = document.querySelector('.cat-err, .err-f');
+                if (!first) first = document.querySelector('.ferr[style*="block"]');
+                if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
 
@@ -1812,15 +1734,12 @@
             document.getElementById('createForm').submit();
         }
 
-        /* Init */
-        updateCheckList();
-
-        // set min date to today
+        /* init */
         var today = new Date().toISOString().split('T')[0];
-        document.getElementById('event_date').min = today;
-        document.getElementById('event_end_date').min = today;
+        document.getElementById('f-date').min = today;
+        document.getElementById('f-regdeadline').min = today;
+        updateCheckList();
     </script>
-
 </body>
 
 </html>

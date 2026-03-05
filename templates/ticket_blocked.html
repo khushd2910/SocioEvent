@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cannot Purchase Ticket</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&family=DM+Serif+Display&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            background: #f7f3ee;
+            font-family: 'DM Sans', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .block-card {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 48px 40px;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 36px;
+        }
+
+        .icon-circle.sold-out {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .icon-circle.deadline {
+            background: #fff7ed;
+            color: #d97706;
+        }
+
+        h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.6rem;
+            font-weight: 400;
+            margin-bottom: 10px;
+            color: #0f172a;
+        }
+
+        .sub {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        .event-name {
+            font-weight: 700;
+            color: #1A3C8C;
+        }
+
+        .info-box {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 14px 18px;
+            font-size: 13px;
+            color: #374151;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-box i {
+            color: #1A3C8C;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .btn-back {
+            background: #1A3C8C;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 13px 28px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background .2s;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .btn-back:hover {
+            background: #0f2660;
+            color: #fff;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #374151;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: .2s;
+            font-family: 'DM Sans', sans-serif;
+            margin-right: 10px;
+        }
+
+        .btn-outline:hover {
+            border-color: #1A3C8C;
+            color: #1A3C8C;
+            background: #f1f5fd;
+        }
+    </style>
+</head>
+
+<body>
+
+    {% if reason == 'sold_out' %}
+
+    <div class="block-card">
+        <div class="icon-circle sold-out"><i class="bi bi-x-circle-fill"></i></div>
+        <h2>Event Sold Out</h2>
+        <p class="sub">Sorry, all tickets for <span class="event-name">{{ event_name }}</span> have been sold. No more
+            tickets are available.</p>
+        <div class="info-box">
+            <i class="bi bi-info-circle-fill"></i>
+            <div>You can follow the event page to be notified if tickets become available again.</div>
+        </div>
+        <div>
+            <a href="{{ url_for('event_detail', event_id=event_id) }}" class="btn-outline"><i
+                    class="bi bi-arrow-left"></i> Back to Event</a>
+            <a href="{{ url_for('find_events') }}" class="btn-back"><i class="bi bi-search"></i> Find Other Events</a>
+        </div>
+    </div>
+
+    {% elif reason == 'deadline_passed' %}
+
+    <div class="block-card">
+        <div class="icon-circle deadline"><i class="bi bi-calendar-x-fill"></i></div>
+        <h2>Registration Closed</h2>
+        <p class="sub">Ticket registration for <span class="event-name">{{ event_name }}</span> closed on <strong>{{
+                deadline }}</strong>. It is no longer possible to purchase tickets for this event.</p>
+        <div class="info-box">
+            <i class="bi bi-clock-history"></i>
+            <div>The organiser set <strong>{{ deadline }}</strong> as the last date for ticket purchases.</div>
+        </div>
+        <div>
+            <a href="{{ url_for('event_detail', event_id=event_id) }}" class="btn-outline"><i
+                    class="bi bi-arrow-left"></i> Back to Event</a>
+            <a href="{{ url_for('find_events') }}" class="btn-back"><i class="bi bi-search"></i> Find Other Events</a>
+        </div>
+    </div>
+
+    {% endif %}
+
+</body>
+
+</html>

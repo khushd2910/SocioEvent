@@ -198,6 +198,7 @@ def filter_by_category(category):
     return render_template("find_events.html", events=events)
 
 # ---------------- CREATE EVENT (ADMIN ONLY) ----------------
+# ─── CREATE EVENT ─────────────────────────────────────────────────────────────
 @app.route("/create_event", methods=["GET", "POST"])
 @admin_required
 def create_event():
@@ -206,73 +207,96 @@ def create_event():
 
     form = request.form
 
-    event_name = form.get("event_name")
-    event_date = form.get("event_date")
-    event_time = form.get("event_time")
-    categories = form.get("categories")
-    event_features = form.get("event_features")
-    guest_speaker = form.get("guest_speaker")
-    ticket_type = form.get("ticket_type")
-    event_description = form.get("event_description")
-    event_address = form.get("event_address")
-    age_limit = form.get("age_limit")
-    event_language = form.get("event_language")
+    # ── Core fields (match your exact DB columns) ──────────────────────────
+    event_name        = form.get("event_name", "").strip()
+    event_date        = form.get("event_date")
+    event_time        = form.get("event_time")
+    categories        = form.get("categories", "")
+    event_features    = form.get("event_features", "")
+    guest_speaker     = form.get("guest_speaker", "")
+    ticket_type       = form.get("ticket_type", "free")
+    event_description = form.get("event_description", "")
+    event_address     = form.get("event_address", "")
+    age_limit         = form.get("age_limit", "All Ages")
+    event_language    = form.get("event_language", "English")
 
+    # ── New fields (already in your DB from migration) ─────────────────────
+    reg_deadline_raw = form.get("reg_deadline", "").strip()
+    reg_deadline     = reg_deadline_raw if reg_deadline_raw else None
 
-    capacity_text = form.get("event_capacity", "")
+    social_instagram = form.get("social_instagram", "") or None
+    event_website    = form.get("event_website", "") or None
+    whatsapp_group   = form.get("whatsapp_group", "") or None
+    youtube_link     = form.get("youtube_link", "") or None
+
+    capacity_text  = form.get("event_capacity", "")
     event_capacity = int(capacity_text) if capacity_text.strip() else 0
 
     ticket_price_text = form.get("ticket_price", "")
     ticket_price = 0.0 if ticket_price_text.strip() == "" or ticket_type == "free" else float(ticket_price_text)
 
-    images = request.files.getlist("event_images")
-    images = [img for img in images if img and img.filename]
+    # ── Images ────────────────────────────────────────────────────────────
+    # cover_image  → image_type = 'cover'   (single file, name="cover_image")
+    # card_image   → image_type = 'card'    (single file, name="card_image")
+    # gallery_images → image_type = 'gallery' (multiple, name="gallery_images")
+    cover_file   = request.files.get("cover_image")
+    card_file    = request.files.get("card_image")
+    gallery_files = request.files.getlist("gallery_images")
+    gallery_files = [f for f in gallery_files if f and f.filename]
 
-
+    def save_file(f):
+        name, ext = os.path.splitext(secure_filename(f.filename))
+        new_name  = f"{name}_{int(time.time())}{ext}"
+        f.save(os.path.join(app.config["UPLOAD_FOLDER"], new_name))
+        return new_name
 
     try:
         conn = get_db_connection()
-        cur = conn.cursor()
+        cur  = conn.cursor()
 
         cur.execute("""
             INSERT INTO events (
                 event_name, event_date, event_time, categories, event_features,
                 guest_speaker, event_capacity, ticket_type, ticket_price,
-                event_description, event_address, age_limit, event_language
+                event_description, event_address, age_limit, event_language,
+                reg_deadline,
+                social_instagram, event_website, whatsapp_group, youtube_link
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            VALUES (%s,%s,%s,%s,%s, %s,%s,%s,%s, %s,%s,%s,%s, %s, %s,%s,%s,%s)
             RETURNING event_id;
         """, (
-                event_name,
-                event_date,
-                event_time,
-                categories,
-                event_features,
-                guest_speaker,
-                event_capacity,
-                ticket_type,
-                ticket_price,
-                event_description,
-                event_address,
-                age_limit,
-                event_language
-            ))
-
+            event_name, event_date, event_time, categories, event_features,
+            guest_speaker, event_capacity, ticket_type, ticket_price,
+            event_description, event_address, age_limit, event_language,
+            reg_deadline,
+            social_instagram, event_website, whatsapp_group, youtube_link
+        ))
 
         event_id = cur.fetchone()[0]
 
-        for image in images:
-            filename = image.filename
-            if filename:
-                name, ext = os.path.splitext(filename)
-                new_filename = f"{name}_{int(time.time())}{ext}"
-                filepath = os.path.join(app.config["UPLOAD_FOLDER"], new_filename)
-                image.save(filepath)
+        # Save cover image
+        if cover_file and cover_file.filename:
+            fname = save_file(cover_file)
+            cur.execute(
+                "INSERT INTO event_images (event_id, image_path, image_type) VALUES (%s,%s,%s)",
+                (event_id, fname, 'cover')
+            )
 
-                cur.execute(
-                    "INSERT INTO event_images (event_id, image_path) VALUES (%s, %s)",
-                    (event_id, new_filename)
-                )
+        # Save card image
+        if card_file and card_file.filename:
+            fname = save_file(card_file)
+            cur.execute(
+                "INSERT INTO event_images (event_id, image_path, image_type) VALUES (%s,%s,%s)",
+                (event_id, fname, 'card')
+            )
+
+        # Save gallery images
+        for gf in gallery_files:
+            fname = save_file(gf)
+            cur.execute(
+                "INSERT INTO event_images (event_id, image_path, image_type) VALUES (%s,%s,%s)",
+                (event_id, fname, 'gallery')
+            )
 
         conn.commit()
         cur.close()
@@ -282,6 +306,7 @@ def create_event():
 
     except Exception as e:
         return f"<h3>Database Error:</h3><pre>{str(e)}</pre>", 500
+
 
 # ---------------- FIND EVENTS ----------------
 @app.route("/find_events")
@@ -601,20 +626,20 @@ def event_detail(event_id):
         related_events=related_events
     )
 
-
-
 @app.route("/buy_ticket/<int:event_id>", methods=["GET"])
 @login_required
 def buy_ticket(event_id):
+    from datetime import date as date_type
+
     back = request.args.get("back")
     user_id = session["user"]["id"]
 
     conn = get_db_connection()
     cur = conn.cursor()
 
-    # Check event capacity
+    # Check event capacity + reg_deadline
     cur.execute("""
-        SELECT event_id, event_capacity, tickets_sold
+        SELECT event_id, event_capacity, tickets_sold, reg_deadline
         FROM events
         WHERE event_id = %s
         FOR UPDATE;
@@ -626,15 +651,34 @@ def buy_ticket(event_id):
         conn.close()
         return "Event not found", 404
 
-    event_id_db, capacity, sold = row
+    event_id_db, capacity, sold, reg_deadline = row
     sold = sold or 0
 
     if sold >= capacity:
         cur.close()
         conn.close()
-        return "⚠️ This event is SOLD OUT!"
+        return render_template("ticket_blocked.html",
+            reason="sold_out",
+            event_name=None,
+            event_id=event_id
+        )
 
-   
+    # Check registration deadline
+    if reg_deadline:
+        today = date_type.today()
+        deadline = reg_deadline if isinstance(reg_deadline, date_type) else date_type.fromisoformat(str(reg_deadline))
+        if today > deadline:
+            # fetch event name for the blocked page
+            cur.execute("SELECT event_name FROM events WHERE event_id = %s;", (event_id,))
+            ev = cur.fetchone()
+            cur.close()
+            conn.close()
+            return render_template("ticket_blocked.html",
+                reason="deadline_passed",
+                event_name=ev[0] if ev else "",
+                event_id=event_id,
+                deadline=deadline.strftime("%d %B %Y")
+            )
 
     cur.execute("""
         SELECT event_id, event_name, event_date, ticket_price
@@ -720,6 +764,8 @@ def confirm_ticket(event_id):
         conn.close()
 
     return redirect("/tickets")
+
+
 
 
 
