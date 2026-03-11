@@ -960,6 +960,7 @@
     <div class="create-wrap">
         <div>
             <form action="/create_event" method="POST" enctype="multipart/form-data" id="createForm" novalidate>
+                <input type="hidden" name="is_online" id="f-isonline" value="false">
 
                 <!-- 1. BASIC DETAILS -->
                 <div class="scard">
@@ -996,9 +997,11 @@
                                 <label class="form-lbl">Registration Deadline <span
                                         style="color:var(--muted);font-weight:400;">(optional)</span></label>
                                 <div class="icon-field"><i class="bi bi-calendar-x fi"></i>
-                                    <input type="date" name="reg_deadline" id="f-regdeadline" class="form-control">
+                                    <input type="date" name="reg_deadline" id="f-regdeadline" class="form-control"
+                                        oninput="validateDeadline()">
                                 </div>
-                                <div class="fhint">Users cannot buy tickets after this date</div>
+                                <div class="fhint">Must be on or before the event date</div>
+                                <div class="ferr" id="e-regdeadline">Deadline must be on or before the event date</div>
                             </div>
                         </div>
 
@@ -1499,6 +1502,7 @@
             document.getElementById('onlineTog').classList.toggle('on', isOnline);
             document.getElementById('physicalAddr').style.display = isOnline ? 'none' : 'block';
             document.getElementById('onlineAddr').style.display = isOnline ? 'block' : 'none';
+            document.getElementById('f-isonline').value = isOnline ? 'true' : 'false';
             syncPreview(); updateCheckList();
         }
 
@@ -1687,6 +1691,14 @@
             mf('f-date', dateOk); se('e-date', !dateOk);
             if (!dateOk) ok = false;
 
+            /* reg_deadline must not be after event date */
+            var rd = document.getElementById('f-regdeadline').value;
+            if (rd && date && rd > date) {
+                document.getElementById('f-regdeadline').classList.add('err-f');
+                document.getElementById('e-regdeadline').style.display = 'block';
+                ok = false;
+            }
+
             var time = document.getElementById('f-time').value;
             mf('f-time', !!time); se('e-time', !time);
             if (!time) ok = false;
@@ -1738,6 +1750,27 @@
         var today = new Date().toISOString().split('T')[0];
         document.getElementById('f-date').min = today;
         document.getElementById('f-regdeadline').min = today;
+
+        // When event date changes, update reg_deadline max and re-validate
+        document.getElementById('f-date').addEventListener('change', function () {
+            var ed = this.value;
+            document.getElementById('f-regdeadline').max = ed || '';
+            validateDeadline();
+        });
+
+        function validateDeadline() {
+            var rd = document.getElementById('f-regdeadline').value;
+            var ed = document.getElementById('f-date').value;
+            var errEl = document.getElementById('e-regdeadline');
+            if (rd && ed && rd > ed) {
+                errEl.style.display = 'block';
+                document.getElementById('f-regdeadline').classList.add('err-f');
+            } else {
+                errEl.style.display = 'none';
+                document.getElementById('f-regdeadline').classList.remove('err-f');
+            }
+        }
+
         updateCheckList();
     </script>
 </body>
