@@ -199,6 +199,31 @@ def filter_by_category(category):
 
 # ---------------- CREATE EVENT (ADMIN ONLY) ----------------
 # ─── CREATE EVENT ─────────────────────────────────────────────────────────────
+# Replace ONLY your existing create_event() function in app.py with this.
+
+ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png', 'webp', 'gif'}
+MAX_IMAGE_BYTES = 10 * 1024 * 1024  # 10 MB
+
+def allowed_image(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def save_file(f):
+    """Validate and save an uploaded image. Returns saved filename or None."""
+    if not f or not f.filename:
+        return None
+    if not allowed_image(f.filename):
+        return None
+    f.seek(0, 2)  # seek to end
+    size = f.tell()
+    f.seek(0)     # reset
+    if size > MAX_IMAGE_BYTES:
+        return None
+    name, ext = os.path.splitext(secure_filename(f.filename))
+    new_name  = f"{name}_{int(time.time())}{ext}"
+    f.save(os.path.join(app.config["UPLOAD_FOLDER"], new_name))
+    return new_name
+
+
 @app.route("/create_event", methods=["GET", "POST"])
 @admin_required
 def create_event():
@@ -207,96 +232,167 @@ def create_event():
 
     form = request.form
 
-    # ── Core fields (match your exact DB columns) ──────────────────────────
+    # ── Core fields ───────────────────────────────────────────────────────
     event_name        = form.get("event_name", "").strip()
-    event_date        = form.get("event_date")
-    event_time        = form.get("event_time")
-    categories        = form.get("categories", "")
+    event_date        = form.get("event_date", "").strip()
+    event_time        = form.get("event_time", "").strip()
+    categories        = form.get("categories", "").strip()
     event_features    = form.get("event_features", "")
     guest_speaker     = form.get("guest_speaker", "")
     ticket_type       = form.get("ticket_type", "free")
     event_description = form.get("event_description", "")
-    event_address     = form.get("event_address", "")
     age_limit         = form.get("age_limit", "All Ages")
     event_language    = form.get("event_language", "English")
 
-    # ── New fields (already in your DB from migration) ─────────────────────
-    reg_deadline_raw = form.get("reg_deadline", "").strip()
-    reg_deadline     = reg_deadline_raw if reg_deadline_raw else None
+    # ── Location ──────────────────────────────────────────────────────────
+    is_online       = form.get("is_online", "false") == "true"
+    event_address   = form.get("event_address", "").strip() if not is_online else "Online Event"
+    event_city      = form.get("event_city", "").strip() if not is_online else ""
+    event_state     = form.get("event_state", "").strip() if not is_online else ""
+    meeting_link    = form.get("meeting_link", "").strip() if is_online else None
+    online_platform = form.get("online_platform", "") if is_online else None
+    meeting_link    = meeting_link or None
+    online_platform = online_platform or None
 
-    social_instagram = form.get("social_instagram", "") or None
-    event_website    = form.get("event_website", "") or None
-    whatsapp_group   = form.get("whatsapp_group", "") or None
-    youtube_link     = form.get("youtube_link", "") or None
-
+    # ── Ticket ────────────────────────────────────────────────────────────
     capacity_text  = form.get("event_capacity", "")
     event_capacity = int(capacity_text) if capacity_text.strip() else 0
 
     ticket_price_text = form.get("ticket_price", "")
-    ticket_price = 0.0 if ticket_price_text.strip() == "" or ticket_type == "free" else float(ticket_price_text)
+    if ticket_type == "free" or not ticket_price_text.strip():
+        ticket_price = 0.0
+    else:
+        try:
+            ticket_price = float(ticket_price_text)
+            if ticket_price <= 0:
+                ticket_price = 0.0
+                ticket_type  = "free"
+        except ValueError:
+            ticket_price = 0.0
+            ticket_type  = "free"
 
-    # ── Images ────────────────────────────────────────────────────────────
-    # cover_image  → image_type = 'cover'   (single file, name="cover_image")
-    # card_image   → image_type = 'card'    (single file, name="card_image")
-    # gallery_images → image_type = 'gallery' (multiple, name="gallery_images")
+    # ── Registration deadline — must not be after event date ─────────────
+    reg_deadline_raw = form.get("reg_deadline", "").strip()
+    reg_deadline = None
+    if reg_deadline_raw and event_date:
+        try:
+            from datetime import date as date_type
+            rd = date_type.fromisoformat(reg_deadline_raw)
+            ed = date_type.fromisoformat(event_date)
+            if rd <= ed:          # valid only if deadline is on or before event date
+                reg_deadline = reg_deadline_raw
+            # if deadline > event date, silently drop it (invalid)
+        except ValueError:
+            reg_deadline = None
+
+    # ── Social fields ─────────────────────────────────────────────────────
+    social_instagram = form.get("social_instagram", "").strip() or None
+    event_website    = form.get("event_website", "").strip() or None
+    whatsapp_group   = form.get("whatsapp_group", "").strip() or None
+    youtube_link     = form.get("youtube_link", "").strip() or None
+
+    # ── Server-side validation ────────────────────────────────────────────
+    errors = []
+    if not event_name:
+        errors.append("Event name is required.")
+    if not event_date:
+        errors.append("Event date is required.")
+    if not event_time:
+        errors.append("Event time is required.")
+    if not categories:
+        errors.append("Category is required.")
+    if not is_online and not event_address:
+        errors.append("Event address is required.")
+    if is_online and not meeting_link:
+        errors.append("Meeting link is required for online events.")
+    if event_capacity <= 0:
+        errors.append("Capacity must be greater than 0.")
+    if ticket_type == "paid" and ticket_price <= 0:
+        errors.append("Ticket price is required for paid events.")
+    if not event_description or len(event_description.strip()) < 20:
+        errors.append("Description must be at least 20 characters.")
+
+    # Image presence check
     cover_file   = request.files.get("cover_image")
     card_file    = request.files.get("card_image")
+    if not cover_file or not cover_file.filename:
+        errors.append("Cover image is required.")
+    if not card_file or not card_file.filename:
+        errors.append("Card image is required.")
+
+    if errors:
+        return f"<h3>Validation Error:</h3><ul>" + "".join(f"<li>{e}</li>" for e in errors) + "</ul>", 400
+
+    # ── Save images ───────────────────────────────────────────────────────
     gallery_files = request.files.getlist("gallery_images")
     gallery_files = [f for f in gallery_files if f and f.filename]
 
-    def save_file(f):
-        name, ext = os.path.splitext(secure_filename(f.filename))
-        new_name  = f"{name}_{int(time.time())}{ext}"
-        f.save(os.path.join(app.config["UPLOAD_FOLDER"], new_name))
-        return new_name
+    cover_fname   = save_file(cover_file)
+    card_fname    = save_file(card_file)
 
+    if not cover_fname:
+        return "<h3>Error:</h3><p>Cover image is invalid or too large (max 10MB, JPG/PNG/WEBP only).</p>", 400
+    if not card_fname:
+        return "<h3>Error:</h3><p>Card image is invalid or too large (max 10MB, JPG/PNG/WEBP only).</p>", 400
+
+    # ── Insert into DB ────────────────────────────────────────────────────
     try:
         conn = get_db_connection()
         cur  = conn.cursor()
 
         cur.execute("""
             INSERT INTO events (
-                event_name, event_date, event_time, categories, event_features,
-                guest_speaker, event_capacity, ticket_type, ticket_price,
-                event_description, event_address, age_limit, event_language,
+                event_name, event_date, event_time,
+                categories, event_features, guest_speaker,
+                event_capacity, ticket_type, ticket_price,
+                event_description, event_address, event_city, event_state,
+                age_limit, event_language,
                 reg_deadline,
+                meeting_link, online_platform,
                 social_instagram, event_website, whatsapp_group, youtube_link
             )
-            VALUES (%s,%s,%s,%s,%s, %s,%s,%s,%s, %s,%s,%s,%s, %s, %s,%s,%s,%s)
+            VALUES (
+                %s,%s,%s,
+                %s,%s,%s,
+                %s,%s,%s,
+                %s,%s,%s,%s,
+                %s,%s,
+                %s,
+                %s,%s,
+                %s,%s,%s,%s
+            )
             RETURNING event_id;
         """, (
-            event_name, event_date, event_time, categories, event_features,
-            guest_speaker, event_capacity, ticket_type, ticket_price,
-            event_description, event_address, age_limit, event_language,
+            event_name, event_date, event_time,
+            categories, event_features, guest_speaker,
+            event_capacity, ticket_type, ticket_price,
+            event_description, event_address, event_city, event_state,
+            age_limit, event_language,
             reg_deadline,
+            meeting_link, online_platform,
             social_instagram, event_website, whatsapp_group, youtube_link
         ))
 
         event_id = cur.fetchone()[0]
 
-        # Save cover image
-        if cover_file and cover_file.filename:
-            fname = save_file(cover_file)
-            cur.execute(
-                "INSERT INTO event_images (event_id, image_path, image_type) VALUES (%s,%s,%s)",
-                (event_id, fname, 'cover')
-            )
-
-        # Save card image
-        if card_file and card_file.filename:
-            fname = save_file(card_file)
-            cur.execute(
-                "INSERT INTO event_images (event_id, image_path, image_type) VALUES (%s,%s,%s)",
-                (event_id, fname, 'card')
-            )
-
-        # Save gallery images
+        # Cover image
+        cur.execute(
+            "INSERT INTO event_images (event_id, image_path, image_type) VALUES (%s,%s,%s)",
+            (event_id, cover_fname, 'cover')
+        )
+        # Card image
+        cur.execute(
+            "INSERT INTO event_images (event_id, image_path, image_type) VALUES (%s,%s,%s)",
+            (event_id, card_fname, 'card')
+        )
+        # Gallery images
         for gf in gallery_files:
             fname = save_file(gf)
-            cur.execute(
-                "INSERT INTO event_images (event_id, image_path, image_type) VALUES (%s,%s,%s)",
-                (event_id, fname, 'gallery')
-            )
+            if fname:
+                cur.execute(
+                    "INSERT INTO event_images (event_id, image_path, image_type) VALUES (%s,%s,%s)",
+                    (event_id, fname, 'gallery')
+                )
 
         conn.commit()
         cur.close()
